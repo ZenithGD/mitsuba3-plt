@@ -12498,6 +12498,92 @@ static const char *__doc_mitsuba_xyz_to_srgb = R"doc(Convert XYZ tristimulus val
 
 static const char *__doc_operator_lshift = R"doc(Turns a vector of elements into a human-readable representation)doc";
 
+static const char *__doc_mitsuba_Coherence = R"doc()doc";
+
+static const char *__doc_mitsuba_Coherence_dmat = R"doc()doc";
+
+static const char *__doc_mitsuba_Coherence_opl = R"doc()doc";
+
+static const char *__doc_mitsuba_Coherence_Coherence = R"doc()doc";
+
+static const char *__doc_mitsuba_Coherence_Coherence_2 = R"doc()doc";
+
+static const char *__doc_mitsuba_Coherence_Coherence_3 = R"doc()doc";
+
+static const char *__doc_mitsuba_Coherence_rmm = R"doc()doc";
+
+static const char *__doc_mitsuba_Coherence_inv_coherence_matrix = R"doc()doc";
+
+static const char *__doc_mitsuba_Coherence_inv_coherence_matrix_2 = R"doc()doc";
+
+static const char *__doc_mitsuba_Coherence_inv_coherence_det = R"doc()doc";
+
+static const char *__doc_mitsuba_Coherence_inv_coherence_det_2 = R"doc()doc";
+
+static const char *__doc_mitsuba_Coherence_transform = R"doc()doc";
+
+static const char *__doc_mitsuba_GeneralizedRadiance = R"doc()doc";
+
+static const char *__doc_mitsuba_GeneralizedRadiance_L = R"doc()doc";
+
+static const char *__doc_mitsuba_GeneralizedRadiance_L1 = R"doc()doc";
+
+static const char *__doc_mitsuba_GeneralizedRadiance_L2 = R"doc()doc";
+
+static const char *__doc_mitsuba_GeneralizedRadiance_L3 = R"doc()doc";
+
+static const char *__doc_mitsuba_GeneralizedRadiance_coherence = R"doc()doc";
+
+static const char *__doc_mitsuba_GeneralizedRadiance_GeneralizedRadiance = R"doc()doc";
+
+static const char *__doc_mitsuba_GeneralizedRadiance_GeneralizedRadiance_2 = R"doc()doc";
+
+static const char *__doc_mitsuba_PLTInteraction_sp_coherence = R"doc()doc";
+
+static const char *__doc_mitsuba_PLTInteraction = R"doc()doc";
+
+static const char *__doc_mitsuba_PLTInteraction_t = R"doc()doc";
+
+static const char *__doc_mitsuba_PLTInteraction_PLTInteraction = R"doc()doc";
+
+static const char *__doc_mitsuba_DiffractionGratingType = R"doc()doc";
+
+static const char *__doc_mitsuba_DiffractionGratingType_Sinusoidal = R"doc()doc";
+
+static const char *__doc_mitsuba_DiffractionGratingType_Rectangular = R"doc()doc";
+
+static const char *__doc_mitsuba_DiffractionGratingType_Linear = R"doc()doc";
+
+static const char *__doc_mitsuba_DiffractionGratingType_Radial = R"doc()doc";
+
+static const char *__doc_mitsuba_DiffractionGrating = R"doc()doc";
+
+static const char *__doc_mitsuba_DiffractionGrating_DiffractionGrating = R"doc()doc";
+
+static const char *__doc_mitsuba_DiffractionGrating_is_1D_grating = R"doc()doc";
+
+static const char *__doc_mitsuba_DiffractionGrating_alpha = R"doc()doc";
+
+static const char *__doc_mitsuba_DiffractionGrating_sample_lobe = R"doc()doc";
+
+static const char *__doc_mitsuba_DiffractionGrating_diffract = R"doc()doc";
+
+static const char *__doc_mitsuba_DiffractionGrating_lobe_intensity = R"doc()doc";
+
+static const char *__doc_mitsuba_BounceData = R"doc()doc";
+
+static const char *__doc_mitsuba_BounceData_BounceData = R"doc()doc";
+
+static const char *__doc_mitsuba_BounceBuffer = R"doc()doc";
+
+static const char *__doc_mitsuba_BounceBuffer_BounceBuffer = R"doc()doc";
+
+static const char *__doc_mitsuba_BounceBuffer_read_last_bounce = R"doc()doc";
+
+static const char *__doc_mitsuba_BounceBuffer_pop_bounce = R"doc()doc";
+
+static const char *__doc_mitsuba_BounceBuffer_push_bounce = R"doc()doc";
+
 #if defined(__GNUG__)
 #pragma GCC diagnostic pop
 #endif

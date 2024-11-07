@@ -56,14 +56,14 @@ def compute_jn(dmin, dmax, **kwargs) -> tuple:
 
     # compute approximations
     vxr, vor = dr.cuda.Float(vx.ravel()), dr.cuda.Int32(vo.ravel())
-    start = time.time_ns()
+    start = time.perf_counter_ns()
     approx = np.array(mi.math.bessel_j(vxr, vor)).reshape(orders, npoints)
-    ap_time = time.time_ns() - start
+    ap_time = time.perf_counter_ns() - start
     
     # compute errors w.r.t reference impl
-    start = time.time_ns()
+    start = time.perf_counter_ns()
     jn = sp.jn(vo, vx)
-    jn_time = time.time_ns() - start
+    jn_time = time.perf_counter_ns() - start
     
     print(f"time approx = {ap_time*1e-3:.9f} us.")
     print(f"jn approx = {jn_time*1e-3:.9f} us.")

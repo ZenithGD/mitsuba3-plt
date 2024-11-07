@@ -116,6 +116,10 @@ MI_PY_DECLARE(Texture);
 MI_PY_DECLARE(Volume);
 MI_PY_DECLARE(VolumeGrid);
 
+// PLT
+MI_PY_DECLARE(BounceData);
+MI_PY_DECLARE(BounceBuffer);
+
 using Caster = nb::object(*)(mitsuba::Object *);
 Caster cast_object = nullptr;
 
@@ -214,6 +218,8 @@ NB_MODULE(MI_VARIANT_NAME, m) {
     MI_PY_IMPORT(Texture);
     MI_PY_IMPORT(Volume);
     MI_PY_IMPORT(VolumeGrid);
+    MI_PY_IMPORT(BounceData);
+    MI_PY_IMPORT(BounceBuffer);
 
     /* Callback function cleanup static variant-specific data structures, this
      * should be called when the interpreter is exiting */
