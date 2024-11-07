@@ -200,6 +200,152 @@ template <typename T> T log2i_ceil(T value) {
     return result;
 }
 
+
+template <typename T> T integrate_simpson(std::function<T(T)>& fn, const T& a, const T& b, uint32_t points)
+{
+    const T h = (b - a) / T(points - 1);
+
+    T I_odd = 0, I_even = 0;
+    for (uint32_t i = 1; i < points - 1; i += 2) 
+    {
+        T t = a + h * T(i);
+        I_odd += fn(t);
+    }
+
+    for (uint32_t i = 2; i < points - 1; i += 2) 
+    {
+        T t = a + h * T(i);
+        I_even += fn(t);
+    }
+
+    // return simpson rule composite quadrature
+    return (h / 3.0) * (fn(a) + 4.0 * I_odd + 2.0 * I_even + fn(b));
+}
+
+//! @}
+// -----------------------------------------------------------------------
+
+// -----------------------------------------------------------------------
+//! @{ \name Special functions
+// -----------------------------------------------------------------------
+
+/**
+ * \brief Simple approximation of the sinc function sin x / x
+ * 
+ * \tparam T A floating point type
+ * \param x The argument to evaluate
+ * \return T sin x / x
+ */
+template <typename T> T sinc(const T& x) {
+    T xx = dr::abs(x);
+    return dr::select(xx < 1e-5f, 1.0f, dr::sin(xx) / xx);
+}
+
+/**
+ * \brief Compute the factorial for small integers (n < 13)
+ * 
+ * \param n The argument of the factorial
+ * \return uint32_t n! if n < 13
+ */
+template <typename T>
+inline dr::int_array_t<T> fact_small(const dr::int_array_t<T>& n)
+{
+    using IntArray = dr::int_array_t<T>;
+
+    // ensure argument is within bounds
+    Assert(n >= 0 && n < 13);
+
+    // Create a static array containing the factorial lookup table
+    static const uint32_t lookup_data[] = {1, 1, 2, 6, 24, 120, 720, 5040,
+                                           40320, 362880, 3628800, 39916800, 479001600};
+
+    static const IntArray lookup = dr::load<IntArray>(lookup_data, 13);
+
+    // ensure gather operation is always within bounds
+    return dr::gather<IntArray>(lookup, n);
+}
+
+/**
+ * \brief Approximate the gamma function with Gosper's approximation.
+ * 
+ * \param x The argument of the gamma function
+ * \return Gamma(x)
+ */
+template <typename T> T gamma(T x)
+{
+    return dr::sqrt(dr::Pi<T> * (2.0 * x + 1.0 / 3.0));
+}
+
+template <typename T> dr::int_array_t<T> fact(const dr::int_array_t<T>& n)
+{
+    using IntArray = dr::int_array_t<T>;
+
+    // use stirling approximation
+    return dr::select(n >= 0 && n < 13, fact_small<T>(n), IntArray(gamma<T>(n + 1)));
+}
+
+/**
+ * \brief Approximate J_n(x) asymptotically. Accurate if |x| >= nu
+ * 
+ * \tparam T the function variable's type
+ * \param x The value to evaluate the function
+ * \param nu The order of the Bessel function of the first kind
+ * \return T J_n(x)
+ */
+template <typename T> T bessel_j_asymp(const T& x, const dr::int_array_t<T>& nu)
+{
+    const T sign = dr::select((x >= 0) || (nu % 2 != 0), 1.0, -1.0);
+    const T x_abs = dr::abs(x);
+
+    // cover edge cases
+    return dr::select(
+        x_abs > 10 * dr::Epsilon<T>, 
+        sign * dr::sqrt(2.0f / (dr::Pi<T> * x_abs)) *
+           dr::cos(x_abs - dr::Pi<T> * nu / 2.0 - dr::Pi<T> / 4.0), 
+        dr::select(nu == 0, 1.0, 0.0));
+}
+
+/**
+ * \brief Approximation of the Bessel function of the first kind for small values of x
+ * 
+ * \tparam T the function variable's type
+ * \param x The value to evaluate the function
+ * \param nu The order of the Bessel function of the first kind
+ * \return T J_n(x)
+ */
+template <typename T> T bessel_j_small(const T& x, const dr::int_array_t<T>& nu, const uint32_t points = 20) 
+{   
+    using IntArray = dr::int_array_t<T>;
+
+    std::function<T(T)> gm = [&](const T t) -> T {
+        return dr::cos(nu * t - x * dr::sin(t));
+    };
+    return dr::InvPi<T> * integrate_simpson<T>(gm, 0.0, dr::Pi<dr::scalar_t<T>>, points);
+}
+
+/**
+ * \brief Evaluate bessel function of the first kind of order n (J_n(x))
+ * 
+ * \tparam T the function variable's type
+ * \param x The value to evaluate the function
+ * \param nu The order of the Bessel function of the first kind
+ * \return T J_n(x)
+ */
+template <typename T> T bessel_j(const T& x, const dr::int_array_t<T>& nu, const uint32_t points = 20, const float c = 45, const float f = 1.5)
+{
+    using IntArray = dr::int_array_t<T>;
+
+    const T nu_abs = IntArray(dr::abs(nu));
+    const T nsign  = dr::sign(nu);
+
+    // interpolate between polynomial and asymptotic approximations with a smooth weighting function
+    T center = c + nu_abs;
+    T falloff = f;
+    T weight_fn = 1.0 / (1.0 + dr::exp(-falloff * (dr::abs(x) - center)));
+
+    return nsign * ((1 - weight_fn) * bessel_j_small(x, nu_abs, points) + weight_fn * bessel_j_asymp(x, nu_abs));
+}
+
 /**
  * \brief Find an interval in an ordered set
  *

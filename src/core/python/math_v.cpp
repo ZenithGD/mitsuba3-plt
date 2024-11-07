@@ -36,6 +36,26 @@ MI_PY_EXPORT(math) {
 
     m.def("is_power_of_two", &math::is_power_of_two<ScalarUInt64>, D(math, is_power_of_two));
 
+    m.def("sinc", &math::sinc<Float>, "x"_a, "Compute the sinc function");
+
+    m.def("integrate_simpson", &math::integrate_simpson<Float>, "fn"_a, "a"_a, "b"_a, "points"_a, "Integrate a function with Simpson's rule");
+      
+    m.def("fact_small", &math::fact_small<Float>, "n"_a, "Compute the factorial of a number up to 13");
+
+    m.def("fact", &math::fact<Float>, "n"_a, "Compute the factorial of a number");
+
+    m.def("gamma", &math::gamma<Float>, "x"_a,
+          "Return the Gosper approximation of the gamma function");
+
+    m.def("bessel_j", &math::bessel_j<Float>, "x"_a, "nu"_a, "points"_a = 20, "c"_a = 45, "f"_a = 1.5,
+          "Approximate the Bessel function of the first kind");
+
+    m.def("bessel_j_asymp", &math::bessel_j_asymp<Float>, "x"_a, "nu"_a,
+          "Approximate the Bessel function of the first kind asymptotically");
+          
+    m.def("bessel_j_small", &math::bessel_j_small<Float>, "x"_a, "nu"_a, "points"_a = 20,
+          "Approximate the Bessel function of the first kind for small values of x");
+
     m.def("round_to_power_of_two", &math::round_to_power_of_two<ScalarUInt64>,
           D(math, round_to_power_of_two));
 

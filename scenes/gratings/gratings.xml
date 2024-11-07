@@ -8,7 +8,7 @@
 
 <!-- Camera and Rendering Parameters -->
 
-	<integrator type="wavepath" id="elm__0" name="elm__0">
+	<integrator type="path" id="elm__0" name="elm__0">
 		<!-- <integer name="maxDepth" value="15" />
 
 		<float name="sigma2_min_um" value="3500" />
