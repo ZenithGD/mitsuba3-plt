@@ -56,7 +56,7 @@ struct BounceData {
     /// \brief Whether this vertex of the path belongs to an active path.
     Mask active;
     
-    BounceData(
+    explicit BounceData(
         const UInt32 id_,
         const SurfaceInteraction3f& it_, 
         const Vector3f& wi_, const Vector3f& wo_, const UInt32& bf_,
@@ -75,6 +75,7 @@ struct BounceData {
           last_nd_pdf(ld_), 
           active(active_) {}
 
+    // This macro already defines a suitable copy constructor
     DRJIT_STRUCT(BounceData, id, interaction, wi, wo, 
         bsdf_flags, rr_thp, throughput, bsdf_weight, 
         is_emitter, last_nd_pdf, active);

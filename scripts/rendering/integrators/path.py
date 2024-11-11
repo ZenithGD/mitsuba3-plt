@@ -11,9 +11,9 @@ class MISPathIntegrator(ADIntegrator):
     
     def __init__(self, arg : mi.Properties):
         
+        self.max_depth = arg.get("max_depth", def_value=16)
+        self.rr_depth = arg.get("rr_depth", def_value=4)
         super().__init__(arg)
-
-        self.max_depth = 12
 
     @dr.syntax
     def sample(self,

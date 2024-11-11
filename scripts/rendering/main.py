@@ -11,10 +11,11 @@ import matplotlib.pyplot as plt
 import argparse
 
 from scripts.rendering.integrators.path import MISPathIntegrator
+from scripts.rendering.integrators.plt import PLTIntegrator
 # from scripts.rendering.integrators.plt import PLTIntegrator
 
 def main(args):
-
+    dr.set_flag(dr.JitFlag.Debug, True)
     # load scene
     print("Loading scene...")
     start = time.perf_counter_ns()
@@ -28,8 +29,8 @@ def main(args):
 
     # render scene using the desired integrator
     plt_integrator = mi.load_dict({
-        "type": "mispath",
-        "max_depth": 10,
+        "type": "plt", # "mispath",
+        "max_depth": 6,
         "rr_depth": 50
     })
 

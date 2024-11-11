@@ -480,6 +480,23 @@ std::pair<wavelength_t<Spectrum>, Spectrum> sample_wavelength(Float sample) {
 }
 
 /**
+ * \brief Sample an arbitrary spectrum uniformly
+ * 
+ * \tparam Value The value type
+ * \param sample The random value, uniformly distributed between 0 and 1
+ * \param min_wavelength The minimum wavelength of the spectrum
+ * \param max_wavelength The maximum wavelength of the spectrum
+ * \return Value T
+ */
+template <typename Value>
+std::pair<Value, Value> sample_arbitrary_spectrum(const Value &sample, const dr::scalar_t<Value>& min_wavelength, const dr::scalar_t<Value>& max_wavelength)
+{
+    Value wavelengths = min_wavelength + (max_wavelength - min_wavelength) * sample;
+
+    return { wavelengths, max_wavelength - min_wavelength };
+}
+
+/**
  * \brief Read a spectral power distribution from an ASCII file.
  *
  * The data should be arranged as follows:

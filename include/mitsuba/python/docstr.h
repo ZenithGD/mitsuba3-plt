@@ -11266,6 +11266,8 @@ matrix)doc";
 
 static const char *__doc_mitsuba_parse_fov = R"doc(Helper function to parse the field of view field of a camera)doc";
 
+static const char *__doc_mitsuba_sample_arbitrary_spectrum = R"doc()doc";
+
 static const char *__doc_mitsuba_pdf_rgb_spectrum =
 R"doc(PDF for the sample_rgb_spectrum strategy. It is valid to call this
 function for a single wavelength (Float), a set of wavelengths

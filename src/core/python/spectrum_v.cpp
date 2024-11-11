@@ -35,6 +35,7 @@ MI_PY_EXPORT(Spectrum) {
         D(sample_rgb_spectrum))
     .def("sample_rgb_spectrum", &sample_rgb_spectrum<Spectrum>, "sample"_a,
         D(sample_rgb_spectrum))
+    .def("sample_arbitrary_spectrum", &sample_arbitrary_spectrum<Float>, "sample"_a, "min_wavelength"_a, "max_wavelength"_a, D(sample_arbitrary_spectrum))
     .def("pdf_rgb_spectrum", &pdf_rgb_spectrum<Float>, "wavelengths"_a,
         D(pdf_rgb_spectrum))
     .def("pdf_rgb_spectrum", &pdf_rgb_spectrum<Spectrum>, "wavelengths"_a,

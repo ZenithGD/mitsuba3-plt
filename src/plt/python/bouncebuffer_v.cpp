@@ -17,13 +17,14 @@ MI_PY_EXPORT(BounceData) {
             .def_field(BounceData3f, wi, "wi")
             .def_field(BounceData3f, wo, "wo")
             .def_field(BounceData3f, bsdf_flags, "bsdf_flags")
-            .def_field(BounceData3f, rr_thp, "id")
+            .def_field(BounceData3f, rr_thp, "rr_thp")
             .def_field(BounceData3f, throughput, "throughput")
             .def_field(BounceData3f, bsdf_weight, "bsdf_weight")
             .def_field(BounceData3f, last_nd_pdf, "last_nd_pdf")
             .def_field(BounceData3f, active, "active")
             .def_field(BounceData3f, is_emitter, "is_emitter")
 
+            .def(nb::init<>(), "Blank constructor")
             .def(nb::init<UInt32, SurfaceInteraction3f, Vector3f, Vector3f, UInt32,
                           Float, Spectrum, Spectrum, Mask, Float, Mask>(),
                  "id"_a, "interaction"_a, "wi"_a, "wo"_a, "bsdf_flags"_a,
