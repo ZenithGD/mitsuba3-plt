@@ -67,7 +67,7 @@ class PLTIntegrator(ADIntegrator):
             is_emitter = si.shape.is_emitter()
 
             # continue iteration?
-            active_next = (depth + 1 < self.max_depth) & si.is_valid() & ~is_emitter
+            active_next = (depth + 1 < self.max_depth) & si.is_valid() # & ~is_emitter
 
             # 3. sample new direction with BSDF
             bsdf = si.bsdf(ray)
@@ -284,7 +284,7 @@ class PLTIntegrator(ADIntegrator):
         """
 
         # Read bounce
-        bounce = bounce_buffer.read(bounce_idx, bounce_idx > 0)
+        bounce = bounce_buffer.read(bounce_idx)
         prev_bounce = bounce_buffer.read(bounce_idx - 1, bounce_idx > 0)
 
         # Prepare information to evaluate emissive contribution
@@ -306,9 +306,9 @@ class PLTIntegrator(ADIntegrator):
         mis_bsdf = dr.select(~bounce.is_emitter & (mi.UInt32(bounce_idx) > 0), mis_bsdf, 1)
 
         # Emitted intensity with MIS weight
-        Lem = ds.emitter.eval(bounce.interaction, bounce.active & bounce.is_emitter) * mis_bsdf
+        Lem = ds.emitter.eval(bounce.interaction) * mis_bsdf
 
-        Li = self.replay_path(mode, 
+        α = self.replay_path(mode, 
             scene, 
             sampler, 
             depth, 
@@ -318,8 +318,11 @@ class PLTIntegrator(ADIntegrator):
             bounce.active,
             bounce_buffer,
             wavelength, 
-            bounce_idx, 
-            Lem)
+            bounce_idx)
+            
+        Li = Lem * α
+
+        #Li = dr.select(bounce.is_emitter, ds.emitter.eval(bounce.interaction), 0.0)
 
         # return self.__measure(
         #     mode,
@@ -349,8 +352,7 @@ class PLTIntegrator(ADIntegrator):
                       active : mi.Bool,
                       bounce_buffer : dr.Local[mi.BounceData3f],
                       wavelength : mi.Float,
-                      bounce_idx : mi.UInt32,
-                      Lem : mi.Spectrum) -> mi.Spectrum:
+                      bounce_idx : mi.UInt32) -> mi.Spectrum:
         """Compute the weight of this path and compute forward coherence transport
         The initial light distribution Lem will be evolved towards the sensor.
 
@@ -368,8 +370,6 @@ class PLTIntegrator(ADIntegrator):
         Returns:
             mi.Spectrum: The weight of this light path
         """
-        
-        Li = Lem
         bsdf_ctx = mi.BSDFContext()
         i = mi.Int32(bounce_idx - 1) 
         α = mi.Spectrum(1.0)
@@ -396,9 +396,7 @@ class PLTIntegrator(ADIntegrator):
             # next bounce in forward path
             i -= 1
 
-        Li *= α
-
-        return Li 
+        return α 
 
     @dr.syntax
     def __measure(self,
