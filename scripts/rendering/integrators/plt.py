@@ -321,8 +321,6 @@ class PLTIntegrator(ADIntegrator):
             bounce_idx, 
             Lem)
 
-        Li = Lem
-
         # return self.__measure(
         #     mode,
         #     scene, 
@@ -373,13 +371,15 @@ class PLTIntegrator(ADIntegrator):
         
         Li = Lem
         bsdf_ctx = mi.BSDFContext()
-        i = mi.UInt32(bounce_idx - 1) 
-        bounce = bounce_buffer.read(i, i >= 0)
+        i = mi.Int32(bounce_idx - 1) 
         α = mi.Spectrum(1.0)
 
-        while i > 0:
+        while i >= 0:
+
+            bidx = mi.UInt32(i) 
+
             # Read subpath bounce
-            bounce = bounce_buffer.read(i, i >= 0)
+            bounce = bounce_buffer[bidx]
 
             # Propagate beam and evolve distribution (TODO)
 
@@ -390,7 +390,7 @@ class PLTIntegrator(ADIntegrator):
             
             bsdf = bounce.interaction.bsdf()
             α = dr.select(bounce.active, 
-                           α * bsdf.eval(bsdf_ctx, bounce.interaction, bounce.wo, bounce.active & evaluate_bounce), 
+                           α * bounce.bsdf_weight, #bsdf.eval(bsdf_ctx, bounce.interaction, bounce.wo, bounce.active & evaluate_bounce), 
                            α)
 
             # next bounce in forward path

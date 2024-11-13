@@ -29,7 +29,7 @@ def main(args):
 
     # render scene using the desired integrator
     plt_integrator = mi.load_dict({
-        "type": "plt", # "mispath",
+        "type": args.integrator,
         "max_depth": 6,
         "rr_depth": 50
     })
@@ -59,6 +59,7 @@ if __name__ == '__main__':
     parser.add_argument("--spectral", "-s", action="store_true", help="Whether to perform spectral rendering.")
     parser.add_argument("--verbose", "-v", action="store_true", help="Shows additional information during rendering (ONLY USE WHILE DEBUGGING!).")
     parser.add_argument("--plot", "-p", action="store_true", help="Plot result")
+    parser.add_argument("--integrator", "-i", type=str, help="Integrator type.", default="mispath")
 
     args = parser.parse_args()
     main(args)
