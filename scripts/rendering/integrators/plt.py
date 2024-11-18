@@ -145,11 +145,6 @@ class PLTIntegrator(ADIntegrator):
         # Solve data
         L = mi.Spectrum(0.0)
 
-        # loop = mi.Loop(name="PLT Path tracer (solve phase)",
-        #                state=lambda:(L, i, bounce_buffer))
-        
-        # loop.set_max_iterations(self.max_depth)
-
         i = mi.UInt32(0)
 
         while i < self.max_depth:
@@ -164,13 +159,13 @@ class PLTIntegrator(ADIntegrator):
                 bounce_buffer, wavelength, i)
 
             # account for emissive geometry
-            L += self.solve_replay_emissive(mode, 
-                scene, 
-                sampler, 
-                depth, 
-                δL, δaovs, 
-                state_in, active, 
-                bounce_buffer, wavelength, i)
+            # L += self.solve_replay_emissive(mode, 
+            #     scene, 
+            #     sampler, 
+            #     depth, 
+            #     δL, δaovs, 
+            #     state_in, active, 
+            #     bounce_buffer, wavelength, i)
             
             # perform NEE for this bounce
             L += self.solve_replay_NEE(mode, 
@@ -339,7 +334,7 @@ class PLTIntegrator(ADIntegrator):
             scene.pdf_emitter_direction(prev_si, ds, ~prev_bsdf_delta)
         )
 
-        mis_bsdf = dr.select(~bounce.is_emitter & (mi.UInt32(bounce_idx) > 0), mis_bsdf, 1)
+        mis_bsdf = dr.select(~bounce.is_emitter, mis_bsdf, 1)
 
         # Emitted intensity with MIS weight
         Lem = ds.emitter.eval(bounce.interaction) * mis_bsdf
@@ -357,7 +352,7 @@ class PLTIntegrator(ADIntegrator):
             bounce_idx)
             
         Li = Lem * α
-        
+
         # return self.__measure(
         #     mode,
         #     scene, 
