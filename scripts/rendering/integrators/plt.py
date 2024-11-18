@@ -357,9 +357,7 @@ class PLTIntegrator(ADIntegrator):
             bounce_idx)
             
         Li = Lem * α
-
-        #Li = dr.select(bounce.is_emitter, ds.emitter.eval(bounce.interaction), 0.0)
-
+        
         # return self.__measure(
         #     mode,
         #     scene, 
