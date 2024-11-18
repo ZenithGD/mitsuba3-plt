@@ -159,13 +159,13 @@ class PLTIntegrator(ADIntegrator):
                 bounce_buffer, wavelength, i)
 
             # account for emissive geometry
-            # L += self.solve_replay_emissive(mode, 
-            #     scene, 
-            #     sampler, 
-            #     depth, 
-            #     δL, δaovs, 
-            #     state_in, active, 
-            #     bounce_buffer, wavelength, i)
+            L += self.solve_replay_emissive(mode, 
+                scene, 
+                sampler, 
+                depth, 
+                δL, δaovs, 
+                state_in, active, 
+                bounce_buffer, wavelength, i)
             
             # perform NEE for this bounce
             L += self.solve_replay_NEE(mode, 

@@ -32,13 +32,13 @@ def main(args):
 
     axes[0].set_title("Image 1")
     axes[1].set_title("Image 2")
-    axes[2].set_title("Difference")
+    axes[2].set_title("Difference (clamped)")
 
-    im0 = axes[0].imshow(np.clip(np.mean(img1, axis=2), 0, 1))
-    im1 = axes[1].imshow(np.clip(np.mean(img2, axis=2), 0, 1))
-    im2 = axes[2].imshow(np.clip(np.mean(img1 - img2, axis=2), 0, 1))
+    im0 = axes[0].imshow(np.mean(img1, axis=2), vmin=0, vmax=1)
+    im1 = axes[1].imshow(np.mean(img2, axis=2), vmin=0, vmax=1)
+    im2 = axes[2].imshow(np.mean(img1 - img2, axis=2), vmin=-1, vmax=1, cmap='seismic')
 
-    fig.suptitle(f"RMSE = {np.sqrt(np.mean(np.square(img1 - img2)))}")
+    fig.suptitle(f"RMSE = {np.sqrt(np.mean(np.square(np.mean(img1 - img2, axis=2))))}")
 
     fig.colorbar(im0, ax=axes[0], orientation='vertical')
     fig.colorbar(im1, ax=axes[1], orientation='vertical')

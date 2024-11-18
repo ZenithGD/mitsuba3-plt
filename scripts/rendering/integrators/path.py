@@ -60,7 +60,7 @@ class MISPathIntegrator(ADIntegrator):
             )
 
             # add the direct emission term into the result
-            #result += α * ds.emitter.eval(si) * mis_bsdf
+            result += α * ds.emitter.eval(si) * mis_bsdf
 
             # continue iteration?
             is_emitter = si.shape.is_emitter()
