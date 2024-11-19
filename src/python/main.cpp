@@ -45,6 +45,9 @@ MI_PY_DECLARE(VolumeGrid);
 MI_PY_DECLARE(FilmFlags);
 MI_PY_DECLARE(DiscontinuityFlags);
 
+// plt
+MI_PY_DECLARE(DiffractionGratingType);
+
 NB_MODULE(mitsuba_ext, m) {
     // Temporarily change the module name (for pydoc)
     m.attr("__name__") = "mitsuba";
@@ -159,6 +162,9 @@ NB_MODULE(mitsuba_ext, m) {
     MI_PY_IMPORT(Sensor);
     MI_PY_IMPORT(FilmFlags);
     MI_PY_IMPORT(DiscontinuityFlags);
+
+    //plt
+    MI_PY_DECLARE(DiffractionGratingType);
 
     /* Register a cleanup callback function to wait for pending tasks (this is
      * called before all Python variables are cleaned up */

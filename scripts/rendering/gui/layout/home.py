@@ -35,19 +35,36 @@ class Home(ttk.Frame):
         menu = self.__create_menu()
         menu.pack(side=tk.TOP, anchor=tk.NW, fill='x')
 
+        # Separate console and tooling
+        console_paned_window = ttk.PanedWindow(self.parent, orient=VERTICAL)
+        console_paned_window.pack(fill=BOTH, expand=True)
+
+        self.tool_frame = ttk.Frame(self.parent)
+        self.tool_frame.pack(fill="both", expand=True)
+        tool_paned_window = self.__create_tool_views(self.tool_frame)
+
+        # add console at the bottom
+        self.console = PrintLogger(self.parent)
+        self.console.pack(fill="x")
+
+        # Add frames to the PanedWindow with resizable option
+        console_paned_window.add(self.tool_frame, weight=1)  # left frame can resize
+        console_paned_window.add(self.console, weight=1)  # right frame can resize
+
+    def __create_tool_views(self, parent):
         # paned window allows to resize in one direction
-        paned_window = ttk.PanedWindow(self.parent, orient=HORIZONTAL)
-        paned_window.pack(fill=BOTH, expand=True)
+        tool_paned_window = ttk.PanedWindow(parent, orient=HORIZONTAL)
+        tool_paned_window.pack(fill=BOTH, expand=True)
 
         # Add two frames to the PanedWindow
-        self.frame_left, self.label_frame_left = self.__create_scene_edit(paned_window)
-        self.frame_right, self.label_frame_right = self.__create_render_view(paned_window)
+        self.frame_left, self.label_frame_left = self.__create_scene_edit(tool_paned_window)
+        self.frame_right, self.label_frame_right = self.__create_render_view(tool_paned_window)
 
         self.scene_view = SceneView(self.label_frame_left)
 
         # Add frames to the PanedWindow with resizable option
-        paned_window.add(self.frame_left, weight=1)  # left frame can resize
-        paned_window.add(self.frame_right, weight=1)  # right frame can resize
+        tool_paned_window.add(self.frame_left, weight=1)  # left frame can resize
+        tool_paned_window.add(self.frame_right, weight=1)  # right frame can resize
 
     def __create_menu(self):
 
@@ -100,9 +117,11 @@ class Home(ttk.Frame):
 
     def __load_scene(self):
         scene_path = fd.askopenfilename()
+        self.console.write(f"Loading scene...")
         scene = self.scene_ctrl.load_scene(scene_path)
         self.current_scene = props_to_dict(scene)
 
         self.scene_view.update_scene(scene_path, self.current_scene)
+        self.console.write(f"done...")
 
 

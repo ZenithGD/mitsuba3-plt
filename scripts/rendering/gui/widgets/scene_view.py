@@ -12,20 +12,9 @@ class SceneView(ttk.Frame):
         self.parent = parent
         self.current_scene = None
 
-        # Initialize style for gridlines
-        style = ttk.Style()
-        style.configure("Treeview", rowheight=25)
-        style.configure("Treeview", highlightthickness=0, bd=0, font=('Helvetica', 10))
-        style.layout("Treeview", [('Treeview.treearea', {'sticky': 'nswe'})])
-        style.map("Treeview", background=[('selected', '#a1a1a1')])
-        style.configure("Treeview.Heading", font=('Helvetica', 11, 'bold'))
-        
-        # Setting the gridlines by enabling border
-        style.configure("Treeview", bordercolor="white")
-        style.configure("Treeview.Heading", bordercolor="white")
-
         self.scene_view = ttk.Label(self.parent, text="No scene loaded")
         self.scene_view.pack(side=tk.TOP)
+        self.treeview = None
 
     def update_scene(self, scene_name, scene):
         if self.scene_view:
@@ -36,30 +25,46 @@ class SceneView(ttk.Frame):
 
         label = ttk.Label(self.scene_view, text=scene_name).pack(side="top")
         # Create the Treeview with two columns: "name" and "value"
-        tree_view = ttk.Treeview(self.scene_view, columns=("value"))
-        tree_view.pack(side="top", fill="both", expand=True)
+        self.tree_view = Sheet(self.scene_view, treeview=True)
+        self.tree_view.pack(fill=BOTH, expand=True)
+        self.tree_view.change_theme("dark")
 
-        # Set up the column headers
-        tree_view.heading("#0", text="Property")  # Heading for the tree column
-        tree_view.heading("value", text="Value")
+        # enable various bindings
+        self.tree_view.enable_bindings("all", "edit_index", "edit_header")
 
-        # Set up column widths and alignments if needed
-        tree_view.column("#0", width=150, anchor="w")  # The first tree column
-        tree_view.column("value", width=100, anchor="center")
+        # self.sheet_was_modified is your function
+        self.tree_view.bind("<<SheetModified>>", self.__on_modify)
 
-        self._insert_tree_node(tree_view, "", scene)
+        self._insert_tree_node(self.tree_view, "", scene)
 
-    def _insert_tree_node(self, tree_view, tree_node, obj):
+    def _insert_tree_node(self, tree_view, tree_node, obj, prefix = ""):
 
         if isinstance(obj, dict):
             for k, v in obj.items():
+                compound_key = f"{prefix}.{k}"
                 if isinstance(v, dict):
-                    item = tree_view.insert(tree_node, tk.END, text=k)
+                    node_iid = tree_view.insert(
+                        iid=compound_key,
+                        parent=tree_node,
+                        text=k)
+                    
                 else:
-                    item = tree_view.insert(tree_node, tk.END, text=k, values=(repr(v)))
+                    node_iid = tree_view.insert(
+                        iid=compound_key,
+                        parent=tree_node,
+                        text=k, 
+                        values=[repr(v)]
+                    )
 
-                self._insert_tree_node(tree_view, item, obj[k])
+                self._insert_tree_node(tree_view, node_iid, obj[k], compound_key)
 
     def clear_scene(self):
         self.scene_view.destroy()
         self.scene_view = ttk.Label(self.parent, "No scene loaded").pack(side=tk.TOP)
+        self.tree_view.unbind("<<SheetModified>>")
+        self.tree_view.destroy()
+
+    def __on_modify(self, event):
+
+        for (row, column), old_value in event.cells.table.items():
+            print (f"R{row}", f"C{column}", "Old Value:", old_value)

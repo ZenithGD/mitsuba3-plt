@@ -117,6 +117,10 @@ MI_PY_DECLARE(Volume);
 MI_PY_DECLARE(VolumeGrid);
 
 // PLT
+MI_PY_DECLARE(Coherence);
+MI_PY_DECLARE(GeneralizedRadiance);
+MI_PY_DECLARE(PLTInteraction);
+MI_PY_DECLARE(DiffractionGrating);
 MI_PY_DECLARE(BounceData);
 MI_PY_DECLARE(BounceBuffer);
 
@@ -218,6 +222,12 @@ NB_MODULE(MI_VARIANT_NAME, m) {
     MI_PY_IMPORT(Texture);
     MI_PY_IMPORT(Volume);
     MI_PY_IMPORT(VolumeGrid);
+    
+    // plt
+    MI_PY_IMPORT(Coherence);
+    MI_PY_IMPORT(GeneralizedRadiance);
+    MI_PY_IMPORT(PLTInteraction);
+    // MI_PY_IMPORT(DiffractionGrating);
     MI_PY_IMPORT(BounceData);
     MI_PY_IMPORT(BounceBuffer);
 

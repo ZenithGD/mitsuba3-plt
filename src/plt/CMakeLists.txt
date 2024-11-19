@@ -7,7 +7,7 @@ set(INC_DIR "../../include/mitsuba/plt")
 add_library(mitsuba-plt OBJECT
   ${INC_DIR}/fwd.h
 
-#   plt.cpp                       ${INC_DIR}/plt.h
+  plt.cpp                       ${INC_DIR}/plt.h
   bouncebuffer.cpp              ${INC_DIR}/bouncebuffer.h
 #   diffractiongrating.cpp        ${INC_DIR}/diffractiongrating.h
 )
