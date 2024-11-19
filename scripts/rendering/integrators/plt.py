@@ -145,11 +145,6 @@ class PLTIntegrator(ADIntegrator):
         # Solve data
         L = mi.Spectrum(0.0)
 
-        # loop = mi.Loop(name="PLT Path tracer (solve phase)",
-        #                state=lambda:(L, i, bounce_buffer))
-        
-        # loop.set_max_iterations(self.max_depth)
-
         i = mi.UInt32(0)
 
         while i < self.max_depth:
@@ -172,14 +167,14 @@ class PLTIntegrator(ADIntegrator):
                 state_in, active, 
                 bounce_buffer, wavelength, i)
             
-            # # perform NEE for this bounce
-            # L += self.solve_replay_NEE(mode, 
-            #     scene, 
-            #     sampler, 
-            #     depth, 
-            #     δL, δaovs, 
-            #     state_in, active, 
-            #     bounce_buffer, wavelength, i)
+            # perform NEE for this bounce
+            L += self.solve_replay_NEE(mode, 
+                scene, 
+                sampler, 
+                depth, 
+                δL, δaovs, 
+                state_in, active, 
+                bounce_buffer, wavelength, i)
 
             # next bounce
             i += 1
@@ -250,7 +245,43 @@ class PLTIntegrator(ADIntegrator):
             mi.Spectrum: The contribution of this light path
         """
 
-        return mi.Spectrum(0.0)
+        bounce = bounce_buffer.read(bounce_idx)
+        bsdf_ctx = mi.BSDFContext()
+        si = bounce.interaction
+
+        active_em = bounce.active & mi.has_flag(bounce.bsdf_flags, mi.BSDFFlags.Smooth);
+
+        ds, em_weight = scene.sample_emitter_direction(si, sampler.next_2d(), True, active_em)
+
+        # enable AD and recompute contribution of the emitter sample
+        with dr.resume_grad():
+            # direction towards the emitter
+            ds.d = dr.normalize(ds.p - si.p)
+
+            em_val = scene.eval_emitter_direction(si, ds, active_em)
+            em_weight = dr.select(ds.pdf != 0.0, em_val / ds.pdf, 0)
+
+        wo = si.to_local(ds.d)
+
+        # no need to recompute UV coordinates again, just get the bsdf
+        bsdf = si.bsdf()
+        bsdf_val, bsdf_pdf = bsdf.eval_pdf(bsdf_ctx, si, wo, bounce.active)
+
+        mis_em = dr.select(ds.delta, 1.0, mis_weight(ds.pdf, bsdf_pdf))
+
+        α = self.replay_path(mode, 
+            scene, 
+            sampler, 
+            depth, 
+            δL, 
+            δaovs, 
+            state_in, 
+            bounce.active,
+            bounce_buffer,
+            wavelength, 
+            bounce_idx)
+
+        return α * bsdf_val * em_weight * mis_em
     
     @dr.syntax    
     def solve_replay_emissive(self, 
@@ -303,7 +334,7 @@ class PLTIntegrator(ADIntegrator):
             scene.pdf_emitter_direction(prev_si, ds, ~prev_bsdf_delta)
         )
 
-        mis_bsdf = dr.select(~bounce.is_emitter & (mi.UInt32(bounce_idx) > 0), mis_bsdf, 1)
+        mis_bsdf = dr.select(~bounce.is_emitter, mis_bsdf, 1)
 
         # Emitted intensity with MIS weight
         Lem = ds.emitter.eval(bounce.interaction) * mis_bsdf
@@ -321,8 +352,6 @@ class PLTIntegrator(ADIntegrator):
             bounce_idx)
             
         Li = Lem * α
-
-        #Li = dr.select(bounce.is_emitter, ds.emitter.eval(bounce.interaction), 0.0)
 
         # return self.__measure(
         #     mode,
@@ -382,15 +411,10 @@ class PLTIntegrator(ADIntegrator):
             bounce = bounce_buffer[bidx]
 
             # Propagate beam and evolve distribution (TODO)
-
-            # Get BSDF and update path contribution
-            evaluate_bounce = ~bounce.interaction.shape.is_emitter() \
-                & bounce.interaction.is_valid() \
-                & ~mi.has_flag(bounce.bsdf_flags, mi.BSDFFlags.Delta)
             
             bsdf = bounce.interaction.bsdf()
             α = dr.select(bounce.active, 
-                           α * bounce.bsdf_weight, #bsdf.eval(bsdf_ctx, bounce.interaction, bounce.wo, bounce.active & evaluate_bounce), 
+                           α * bounce.bsdf_weight, #bsdf.wbsdf_eval(bsdf_ctx, bounce.interaction, bounce.wo, bounce.active & evaluate_bounce), 
                            α)
 
             # next bounce in forward path

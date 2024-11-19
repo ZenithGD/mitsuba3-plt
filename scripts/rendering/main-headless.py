@@ -30,7 +30,7 @@ def main(args):
     # render scene using the desired integrator
     plt_integrator = mi.load_dict({
         "type": args.integrator,
-        "max_depth": 6,
+        "max_depth": 12,
         "rr_depth": 50
     })
 
@@ -42,6 +42,7 @@ def main(args):
     print(f"...done. ({el / 1e6} ms)")
 
     mi.util.write_bitmap('result.exr', bmp, write_async=True)
+    mi.util.write_bitmap('result.png', bmp, write_async=True)
 
     if args.plot:
         fig, ax = plt.subplots(3, 1)
