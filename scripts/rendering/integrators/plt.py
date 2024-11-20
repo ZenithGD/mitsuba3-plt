@@ -334,8 +334,6 @@ class PLTIntegrator(ADIntegrator):
             scene.pdf_emitter_direction(prev_si, ds, ~prev_bsdf_delta)
         )
 
-        mis_bsdf = dr.select(~bounce.is_emitter, mis_bsdf, 1)
-
         # Emitted intensity with MIS weight
         Lem = ds.emitter.eval(bounce.interaction) * mis_bsdf
 

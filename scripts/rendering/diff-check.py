@@ -1,6 +1,5 @@
 import argparse
 import matplotlib.pyplot as plt
-import imageio.v3 as iio
 import numpy as np
 
 import OpenEXR

@@ -121,7 +121,7 @@ class Home(ttk.Frame):
         scene = self.scene_ctrl.load_scene(scene_path)
         self.current_scene = props_to_dict(scene)
 
-        self.scene_view.update_scene(scene_path, self.current_scene)
+        self.scene_view.update_scene(scene_path, self.current_scene, scene)
         self.console.write(f"done...")
 
 
