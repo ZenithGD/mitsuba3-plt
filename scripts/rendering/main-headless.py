@@ -34,6 +34,8 @@ def main(args):
         "rr_depth": 50
     })
 
+    print(mi.xml_to_props(args.scene))
+
     print("Rendering...")
     start = time.perf_counter_ns()
     result = plt_integrator.render(scene, scene.sensors()[0])
