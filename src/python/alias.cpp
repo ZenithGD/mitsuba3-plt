@@ -18,12 +18,13 @@
  */
 
 #include <mitsuba/core/config.h>
+#include <mitsuba/mitsuba.h>
 #include <nanobind/nanobind.h>
 
 namespace nb = nanobind;
 
 /**
- * On Windows the GIL is not held when we load DLLs due to potential deadlocks 
+ * On Windows the GIL is not held when we load DLLs due to potential deadlocks
  * with the Windows loader-lock.
  * (see https://github.com/python/cpython/issues/78076 that describes a similar
  * issue). Here, initialization of static variables is performed during DLL
@@ -43,6 +44,10 @@ PyObject *mi_dict = nullptr;
 
 /// Current variant (string)
 nb::object curr_variant;
+
+/// Set of user-provided callback functions to call when switching variants
+nb::object variant_change_callbacks;
+
 
 nb::object import_with_deepbind_if_necessary(const char* name) {
 #if defined(__clang__) && !defined(__APPLE__)
@@ -112,22 +117,59 @@ static void set_variant(nb::args args) {
     }
 
     if (!curr_variant.equal(new_variant)) {
-        curr_variant = new_variant;
-        nb::object curr_variant_module = variant_module(curr_variant);
+        nb::object new_variant_module = variant_module(new_variant);
 
-        nb::dict variant_dict = curr_variant_module.attr("__dict__");
+        nb::dict variant_dict = new_variant_module.attr("__dict__");
         for (const auto &k : variant_dict.keys())
             if (!nb::bool_(k.attr("startswith")("__")) &&
                 !nb::bool_(k.attr("endswith")("__")))
                 Safe_PyDict_SetItem(mi_dict, k.ptr(),
                     PyDict_GetItem(variant_dict.ptr(), k.ptr()));
 
+        nb::object old_variant = curr_variant;
+
+        // Need to update curr_variant = mi.variant() before reloading internal plugins
+        curr_variant = new_variant;
         if (new_variant.attr("startswith")(nb::make_tuple("llvm_", "cuda_"))) {
             nb::module_ mi_python = nb::module_::import_("mitsuba.python.ad.integrators");
             nb::steal(PyImport_ReloadModule(mi_python.ptr()));
         }
+
+        // Only invoke callbacks after Mitsuba plugins have reloaded as there
+        // may be a dependency
+        const auto &callbacks = nb::borrow<nb::set>(variant_change_callbacks);
+        for (const auto &cb : callbacks)
+            cb(old_variant, new_variant);
+
     }
 }
+
+/**
+ * The given callable will be called each time the Mitsuba variable is changed.
+ * Note that callbacks are kept in a set: a given callback function will only be
+ * called once, even if it is added multiple times.
+ *
+ * `callback` will be called with the arguments `old_variant: str, new_variant: str`.
+ */
+static void add_variant_callback(const nb::callable &callback) {
+    nb::borrow<nb::set>(variant_change_callbacks).add(callback);
+}
+
+/**
+ * Removes the given `callback` callable from the list of callbacks to be called
+ * when the Mitsuba variant changes.
+ */
+static void remove_variant_callback(const nb::callable &callback) {
+    nb::borrow<nb::set>(variant_change_callbacks).discard(callback);
+}
+
+/**
+ * Removes all callbacks to be called when the Mitsuba variant changes.
+ */
+static void clear_variant_callbacks() {
+    nb::borrow<nb::set>(variant_change_callbacks).clear();
+}
+
 
 /// Fallback for when we're attempting to fetch variant-specific attribute
 static nb::object get_attr(nb::handle key) {
@@ -140,8 +182,10 @@ static nb::object get_attr(nb::handle key) {
 
 NB_MODULE(mitsuba_alias, m) {
     m.attr("__name__") = "mitsuba";
+    m.attr("__version__")      = MI_VERSION;
 
     curr_variant = nb::none();
+    variant_change_callbacks = nb::set();
 
     if (!variant_modules) {
         variant_modules = PyDict_New();
@@ -178,10 +222,15 @@ NB_MODULE(mitsuba_alias, m) {
     /// Only used for variant-specific attributes e.g. mi.scalar_rgb.T
     m.def("__getattr__", [](nb::handle key) { return get_attr(key); });
 
+    // `mitsuba.detail` submodule
+    nb::module_ mi_detail = m.def_submodule("detail");
+    mi_detail.def("add_variant_callback", add_variant_callback);
+    mi_detail.def("remove_variant_callback", remove_variant_callback);
+    mi_detail.def("clear_variant_callbacks", clear_variant_callbacks);
+
     /// Fill `__dict__` with all objects in `mitsuba_ext` and `mitsuba.python`
     mi_dict = m.attr("__dict__").ptr();
     nb::object mi_ext = import_with_deepbind_if_necessary("mitsuba.mitsuba_ext");
-    nb::object mi_python = nb::module_::import_("mitsuba.python");
     nb::dict mitsuba_ext_dict = mi_ext.attr("__dict__");
     for (const auto &k : mitsuba_ext_dict.keys())
         if (!nb::bool_(k.attr("startswith")("__")) &&
@@ -189,6 +238,8 @@ NB_MODULE(mitsuba_alias, m) {
             Safe_PyDict_SetItem(mi_dict, k.ptr(), mitsuba_ext_dict[k].ptr());
         }
 
+    // Import contents of `mitsuba.python` into top-level `mitsuba` module
+    nb::object mi_python = nb::module_::import_("mitsuba.python");
     nb::dict mitsuba_python_dict = mi_python.attr("__dict__");
     for (const auto &k : mitsuba_python_dict.keys())
         if (!nb::bool_(k.attr("startswith")("__")) &&
@@ -204,9 +255,11 @@ NB_MODULE(mitsuba_alias, m) {
         PyDict_Clear(mi_dict);
         mi_dict = nullptr;
 
+        variant_change_callbacks.reset();
+
         if (variant_modules) {
             Py_DECREF(variant_modules);
-            variant_modules = nullptr; 
+            variant_modules = nullptr;
         }
     }));
 }
