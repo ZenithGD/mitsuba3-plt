@@ -3,6 +3,9 @@
 #include <mitsuba/render/texture.h>
 #include <mitsuba/render/ior.h>
 
+#include <mitsuba/plt/fwd.h>
+#include <mitsuba/plt/plt.h>
+
 NAMESPACE_BEGIN(mitsuba)
 
 /**!
@@ -206,6 +209,7 @@ class SmoothDielectric final : public BSDF<Float, Spectrum> {
 public:
     MI_IMPORT_BASE(BSDF, m_flags, m_components)
     MI_IMPORT_TYPES(Texture)
+    MI_IMPORT_PLT_BASIC_TYPES()
 
     SmoothDielectric(const Properties &props) : Base(props) {
 
@@ -373,6 +377,11 @@ public:
                   const Vector3f & /* wo */, Mask /* active */) const override {
         return 0.f;
     }
+
+    // GeneralizedRadiance3f wbsdf_eval(const BSDFContext & ctx, const SurfaceInteraction3f & si,
+    //             const PLTInteraction3f& pit, const Vector3f & wo, Mask active) const override {
+    //     return 0.f;
+    // }
 
     Float pdf(const BSDFContext & /* ctx */, const SurfaceInteraction3f & /* si */,
               const Vector3f & /* wo */, Mask /* active */) const override {

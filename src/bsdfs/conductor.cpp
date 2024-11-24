@@ -311,6 +311,16 @@ public:
         return 0.f;
     }
 
+    GeneralizedRadiance3f wbsdf_eval(const BSDFContext & ctx, const SurfaceInteraction3f & si,
+                const PLTInteraction3f& pit, const Vector3f & wo, Mask active) const override {
+        
+        
+        // Here, assume that wo = reflect(si.wi) since the sampled path in the sample phase
+        // is correct and wbsdf_eval is only called in the solve phase.
+
+         
+    }
+
     Float pdf(const BSDFContext & /*ctx*/, const SurfaceInteraction3f & /*si*/,
               const Vector3f & /*wo*/, Mask /*active*/) const override {
         return 0.f;
