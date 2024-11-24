@@ -101,33 +101,5 @@ std::ostream &operator<<(std::ostream &os, const BounceData<Float, Spectrum>& bd
        << "]";
     return os;
 }
-/**
- * \brief Structure that stores the bounces from a ray traced through the scene.
- * Works as a conventional stack.
- */
-template <typename Float_, typename Spectrum_>
-class BounceBuffer {
-public:
-
-    using Float    = Float_;
-    using Spectrum = Spectrum_;
-    using BounceDataTp = BounceData<Float, Spectrum>;
-
-    MI_IMPORT_RENDER_BASIC_TYPES()
-    MI_IMPORT_OBJECT_TYPES()
-
-    /**
-     * \brief Create a new bounce buffer. 
-     * 
-     * \param sensor_origin The origin of the backwards-traced ray.
-     */
-    BounceBuffer() 
-        : m_bdata()
-    {}
-    
-private:
-    std::vector<BounceDataTp> m_bdata;
-    Vector3f m_sensor_origin;
-};
 
 NAMESPACE_END(mitsuba)

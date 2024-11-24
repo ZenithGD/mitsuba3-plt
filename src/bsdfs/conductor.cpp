@@ -318,7 +318,7 @@ public:
         // Here, assume that wo = reflect(si.wi) since the sampled path in the sample phase
         // is correct and wbsdf_eval is only called in the solve phase.
 
-         
+        return GeneralizedRadiance3f(0.0f);
     }
 
     Float pdf(const BSDFContext & /*ctx*/, const SurfaceInteraction3f & /*si*/,

@@ -12578,16 +12578,6 @@ static const char *__doc_mitsuba_BounceData = R"doc()doc";
 
 static const char *__doc_mitsuba_BounceData_BounceData = R"doc()doc";
 
-static const char *__doc_mitsuba_BounceBuffer = R"doc()doc";
-
-static const char *__doc_mitsuba_BounceBuffer_BounceBuffer = R"doc()doc";
-
-static const char *__doc_mitsuba_BounceBuffer_read_last_bounce = R"doc()doc";
-
-static const char *__doc_mitsuba_BounceBuffer_pop_bounce = R"doc()doc";
-
-static const char *__doc_mitsuba_BounceBuffer_push_bounce = R"doc()doc";
-
 #if defined(__GNUG__)
 #pragma GCC diagnostic pop
 #endif

@@ -122,7 +122,6 @@ MI_PY_DECLARE(GeneralizedRadiance);
 MI_PY_DECLARE(PLTInteraction);
 MI_PY_DECLARE(DiffractionGrating);
 MI_PY_DECLARE(BounceData);
-MI_PY_DECLARE(BounceBuffer);
 
 using Caster = nb::object(*)(mitsuba::Object *);
 Caster cast_object = nullptr;
@@ -229,7 +228,6 @@ NB_MODULE(MI_VARIANT_NAME, m) {
     MI_PY_IMPORT(PLTInteraction);
     // MI_PY_IMPORT(DiffractionGrating);
     MI_PY_IMPORT(BounceData);
-    MI_PY_IMPORT(BounceBuffer);
 
     /* Callback function cleanup static variant-specific data structures, this
      * should be called when the interpreter is exiting */

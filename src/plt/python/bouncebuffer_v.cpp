@@ -35,19 +35,3 @@ MI_PY_EXPORT(BounceData) {
     MI_PY_DRJIT_STRUCT(it, BounceData3f, id, interaction, wi, wo, bsdf_flags, 
         rr_thp, throughput, bsdf_weight, is_emitter, last_nd_pdf, active)
 }
-
-MI_PY_EXPORT(BounceBuffer) {
-    
-    MI_PY_IMPORT_TYPES()
-    MI_IMPORT_PLT_BASIC_TYPES()
-
-    nb::class_<BounceBuffer3f>(m, "BounceBuffer", D(BounceBuffer))
-        .def(nb::init<>(), D(BounceBuffer, BounceBuffer));
-    // .def("read_last_bounce", &BounceBuffer3f::read_last_bounce,
-    //      D(BounceBuffer, read_last_bounce))
-    // .def("pop_bounce", &BounceBuffer3f::pop_bounce,
-    //      D(BounceBuffer, pop_bounce))
-    // .def("push_bounce", &BounceBuffer3f::push_bounce,
-    //      "it"_a, "wi"_a, "bsdf_flags"_a, "contrib"_a, "ndpdf"_a, "active"_a,
-    //      D(BounceBuffer, push_bounce));
-}
