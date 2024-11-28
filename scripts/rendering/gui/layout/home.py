@@ -182,7 +182,7 @@ class Home(ttk.Frame):
                 self.render_result = None
         
             self.render_result = ttk.Frame(self.render_window)
-            self.render_result.pack(side=tk.TOP, fill="both", expand=True)
+            self.render_result.pack(side=tk.TOP, fill="both", expand=True, padx=20, pady=20)
 
             mi.util.write_bitmap('result.png', result, write_async=False)
 

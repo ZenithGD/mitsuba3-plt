@@ -7,10 +7,17 @@
 #include <mitsuba/render/fwd.h>
 
 #include <mitsuba/plt/fwd.h>
-#include <mitsuba/plt/plt.h>
 
 NAMESPACE_BEGIN(mitsuba)
 
+/**
+ * \brief This structure holds information related to the variance of
+ * the generalized ray as it propagates through free space and interacts
+ * with the environment.
+ * 
+ * \tparam Float 
+ * \tparam Spectrum 
+ */
 template <typename Float, typename Spectrum>
 class Coherence {
 public:
@@ -92,8 +99,14 @@ public:
         return dr::det(inv_coherence_matrix());
     }
 
-    void transform(Matrix2f mat) {
-        dmat = dr::transpose(mat) * dmat * mat;
+    /**
+     * \brief Transform the diffusivity matrix due to an interaction with
+     * some material.
+     * 
+     * \param U The transformation applied to the diffusivity matrix
+     */
+    void transform(Matrix2f U) {
+        dmat = dr::transpose(U) * (dmat * U);
     }
 
     /**
