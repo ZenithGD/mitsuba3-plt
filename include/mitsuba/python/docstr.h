@@ -12578,6 +12578,35 @@ static const char *__doc_mitsuba_BounceData = R"doc()doc";
 
 static const char *__doc_mitsuba_BounceData_BounceData = R"doc()doc";
 
+
+static const char *__doc_mitsuba_PLTBeam = R"doc()doc";
+
+static const char *__doc_mitsuba_PLTBeam_PLTBeam = R"doc()doc";
+
+static const char *__doc_mitsuba_PLTBeam_scale_sp = R"doc()doc";
+
+static const char *__doc_mitsuba_PLTBeam_scale_sp_2 = R"doc()doc";
+
+static const char *__doc_mitsuba_PLTBeam_transverse_rotation = R"doc()doc";
+
+static const char *__doc_mitsuba_PLTBeam_inv_coherence = R"doc()doc";
+
+static const char *__doc_mitsuba_PLTBeam_inv_coherence_2 = R"doc()doc";
+
+static const char *__doc_mitsuba_PLTBeam_mutual_coherence = R"doc()doc";
+
+static const char *__doc_mitsuba_PLTBeam_mutual_coherence_2 = R"doc()doc";
+
+static const char *__doc_mitsuba_PLTBeam_mutual_coherence_angular = R"doc()doc";
+
+static const char *__doc_mitsuba_PLTBeam_transform_coherence = R"doc()doc";
+
+static const char *__doc_mitsuba_PLTBeam_rotate_frame = R"doc()doc";
+
+static const char *__doc_mitsuba_PLTBeam_create_local_frame = R"doc()doc";
+
+static const char *__doc_mitsuba_PLTBeam_propagate = R"doc()doc";
+
 #if defined(__GNUG__)
 #pragma GCC diagnostic pop
 #endif

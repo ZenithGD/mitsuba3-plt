@@ -23,6 +23,7 @@ MI_PY_EXPORT(Coherence) {
              "diffm"_a, "l"_a,
              D(Coherence, Coherence, 3))
         .def("rmm", &Coherence3f::rmm, D(Coherence, rmm))
+        .def("propagate", &Coherence3f::propagate, "rd"_a, "mask"_a, "Propagate")
         .def("inv_coherence_matrix",nb::overload_cast<Float>(&Coherence3f::inv_coherence_matrix, nb::const_), 
             "k"_a, D(Coherence, inv_coherence_matrix))
         .def("inv_coherence_matrix",nb::overload_cast<>(&Coherence3f::inv_coherence_matrix, nb::const_), 
@@ -31,7 +32,7 @@ MI_PY_EXPORT(Coherence) {
             "k"_a, D(Coherence, inv_coherence_det))
         .def("inv_coherence_det",nb::overload_cast<>(&Coherence3f::inv_coherence_det, nb::const_), 
             D(Coherence, inv_coherence_det, 2))
-        .def("transform", &Coherence3f::transform, "mat"_a, D(Coherence, transform))
+        .def("transform", &Coherence3f::transform, "mat"_a, "mask"_a = true, D(Coherence, transform))
         .def_repr(Coherence3f);
 
     MI_PY_DRJIT_STRUCT(it, Coherence3f, dmat, opl)

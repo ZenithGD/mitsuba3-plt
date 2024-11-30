@@ -54,8 +54,8 @@ public:
      */
     Float rmm() const { return opl * 1e+3f; }
 
-    void propagate(Float rd) {
-        opl += rd;
+    void propagate(Float rd, const Mask& mask = true) {
+        dr::masked(opl, mask) += rd;
     }
 
     /**
@@ -105,8 +105,8 @@ public:
      * 
      * \param U The transformation applied to the diffusivity matrix
      */
-    void transform(Matrix2f U) {
-        dmat = dr::transpose(U) * (dmat * U);
+    void transform(Matrix2f U, const Mask& mask = true) {
+        dr::masked(dmat, mask) = dr::transpose(U) * (dmat * U);
     }
 
     /**
