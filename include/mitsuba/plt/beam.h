@@ -179,6 +179,23 @@ struct PLTBeam {
         return PLTBeam3f(Le, diff, Vector3f(0.0), dir, t, true);
     }
 
+    static PLTBeam3f plt_source_beam_area(
+        const Vector3f& pos, const Vector3f& dir, const Float& area,
+        const Float& dist, const Spectrum& Le, const Wavelength& wavelengths, 
+        const Float& max_beam_omega, const Mask& force_fully_coherent)
+    {
+        // compute squared dist factor in millimeters
+        const Float r2 = dr::square(dist * 1e+3f);
+        const A_r2     = dr::minimum(A, max_beam_omega * r2);
+        const Matrix2f diff = dr::select(force_fully_coherent, 
+            1e-7f * dr::identity<Matrix2f>(),
+            A * dr::identity<Matrix2f>());
+
+        Vector3f t, b;
+        std::tie(s, t) = coordinate_system(new_wo);
+
+        return PLTBeam3f(Le, diff, pos, dir, t, false);
+    }
 
     DRJIT_STRUCT(PLTBeam, sp, origin, dir, tangent, distant, active, coherence)
 };
