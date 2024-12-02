@@ -3,7 +3,9 @@ import drjit as dr
 
 import time
 
-mi.set_variant("cuda_ad_rgb")
+from utils import *
+
+mi.set_variant("cuda_ad_spectral_polarized")
 
 import numpy as np
 import matplotlib.pyplot as plt
@@ -29,30 +31,53 @@ def main(args):
 
     # render scene using the desired integrator
     plt_integrator = mi.load_dict({
-        "type": args.integrator,
-        "max_depth": 12,
-        "rr_depth": 50
+        "type": "stokes",
+        "nested" : {
+            "type" : args.integrator,
+            "max_depth": 12,
+            "rr_depth": 50
+        }
     })
-
-    print(mi.xml_to_props(args.scene))
 
     print("Rendering...")
     start = time.perf_counter_ns()
-    result = plt_integrator.render(scene, scene.sensors()[0])
-    bmp = mi.Bitmap(result).convert(srgb_gamma=False)
+    result = plt_integrator.render(scene)
+    bmp = mi.Bitmap(result).convert()
     el = time.perf_counter_ns() - start
     print(f"...done. ({el / 1e6} ms)")
 
-    mi.util.write_bitmap('result.exr', bmp, write_async=True)
-    mi.util.write_bitmap('result.png', bmp, write_async=True)
+    print(bmp)
+
+    L, sp = stokes_to_bitmaps(bmp)
+    
+    mi.util.write_bitmap(f'result.exr', L, write_async=True)
+    mi.util.write_bitmap(f'result.png', L, write_async=True)
+
+    for i, si in enumerate(sp):
+        mi.util.write_bitmap(f'result_s{i}.exr', si, write_async=True)
+        mi.util.write_bitmap(f'result_s{i}.png', si, write_async=True)
 
     if args.plot:
-        fig, ax = plt.subplots(3, 1)
-        res = mi.TensorXf(bmp)
+        # plot intensity (s0)
+        plt.figure(figsize=(5, 5))
+        plt.imshow(sp[0].convert(srgb_gamma=True), cmap='gray')
+        plt.colorbar()
+        plt.xticks([]); plt.yticks([])
+        plt.xlabel("S0: Intensity", size=14, weight='bold')
+        plt.show()
 
-        for i in range(3):
-            p0 = ax[i].imshow(np.array(res[:, :, i]))
-            fig.colorbar(p0, ax=ax[i])
+        # plot linear, diagonal and circular polarization
+        fig, ax = plt.subplots(ncols=3, figsize=(18, 5))
+        img = plot_stokes_component(ax[0], sp[1])
+        plt.colorbar(img, ax=ax[0])
+        img = plot_stokes_component(ax[1], sp[2])
+        plt.colorbar(img, ax=ax[1])
+        img = plot_stokes_component(ax[2], sp[3])
+        plt.colorbar(img, ax=ax[2])
+
+        ax[0].set_xlabel("S1: Horizontal vs. vertical", size=14, weight='bold')
+        ax[1].set_xlabel("S2: Diagonal", size=14, weight='bold')
+        ax[2].set_xlabel("S3: Circular", size=14, weight='bold')
 
         plt.show()
 

@@ -60,7 +60,7 @@ class MISPathIntegrator(ADIntegrator):
             )
 
             # add the direct emission term into the result
-            result += α * ds.emitter.eval(si) * mis_bsdf
+            result = self.spec_fma(α, ds.emitter.eval(si) * mis_bsdf, result)
 
             # continue iteration?
             is_emitter = si.shape.is_emitter()
@@ -95,7 +95,7 @@ class MISPathIntegrator(ADIntegrator):
             # with delta interactions, only the bsdf term will contribute
             mis_em = dr.select(ds.delta, 1.0, mis_weight(ds.pdf, bsdf_pdf))
 
-            result += α * bsdf_val * em_weight * mis_em
+            result = self.spec_fma(α, bsdf_val * em_weight * mis_em, result)
 
             # 2.5 BSDF sampling
             ray = si.spawn_ray(si.to_world(bsdf_sample.wo))
@@ -119,9 +119,9 @@ class MISPathIntegrator(ADIntegrator):
             # 2.6 stopping criterion
             depth[si.is_valid()] += 1
 
-            α_max = dr.max(α)
-            active_next &= α_max != 0
-            rr_prob = dr.minimum(α_max * dr.sqr(η), 0.95)
+            α_max = dr.max(mi.unpolarized_spectrum(α))
+            active_next &= (α_max != 0)
+            rr_prob = dr.minimum(α_max * dr.sqr(η), mi.Float(0.95))
             rr_active = depth >= self.rr_depth
 
             α[rr_active] *= dr.rcp(dr.detach(rr_prob))
@@ -131,5 +131,11 @@ class MISPathIntegrator(ADIntegrator):
             active = active_next
 
         return (result, active, [], [])
-    
+
+    def spec_fma(self, a : mi.Spectrum, b : mi.Spectrum, c : mi.Spectrum):
+        if mi.is_polarized:
+            return a * b + c
+        else:
+            return dr.fmadd(a, b, c)
+
 mi.register_integrator("mispath", lambda props: MISPathIntegrator(props))

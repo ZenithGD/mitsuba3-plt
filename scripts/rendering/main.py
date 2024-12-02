@@ -5,7 +5,7 @@ from ttkbootstrap.constants import *
 import mitsuba as mi
 import drjit as dr
 
-mi.set_variant("cuda_ad_rgb")
+mi.set_variant("cuda_ad_spectral_polarized")
 
 import argparse
 

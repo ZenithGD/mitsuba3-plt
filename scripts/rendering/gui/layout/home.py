@@ -6,6 +6,7 @@ import time
 from PIL import ImageTk, Image
 
 from ..controller import SceneController, RendererController, props_to_dict
+from utils import *
 
 import os
 import tkinter as tk
@@ -184,7 +185,15 @@ class Home(ttk.Frame):
             self.render_result = ttk.Frame(self.render_window)
             self.render_result.pack(side=tk.TOP, fill="both", expand=True, padx=20, pady=20)
 
-            mi.util.write_bitmap('result.png', result, write_async=False)
+            L, sp = stokes_to_bitmaps(bmp)
+    
+            mi.util.write_bitmap(f'result.exr', L, write_async=True)
+            mi.util.write_bitmap(f'result.png', L, write_async=True)
+
+            for i, si in enumerate(sp):
+                mi.util.write_bitmap(f'result_s{i}.exr', si, write_async=True)
+                mi.util.write_bitmap(f'result_s{i}.png', si, write_async=True)
+
 
             im = Image.open('result.png')
             self.rendered_tkimage = ImageTk.PhotoImage(im)

@@ -5,6 +5,9 @@ from integrators import *
 
 from concurrent.futures import ThreadPoolExecutor
 
+from scripts.rendering.integrators.path import MISPathIntegrator
+from scripts.rendering.integrators.plt import PLTIntegrator
+
 import time
 
 class RendererController:
@@ -27,9 +30,12 @@ class RendererController:
         
         # render scene using the desired integrator
         plt_integrator = mi.load_dict({
-            "type": params["integrator"],
-            "max_depth": 12,
-            "rr_depth": 50
+            "type": "stokes",
+            "nested" : {
+                "type" : params["integrator"],
+                "max_depth": 12,
+                "rr_depth": 50
+            }
         })
 
         result = plt_integrator.render(scene, scene.sensors()[0])

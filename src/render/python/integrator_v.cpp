@@ -238,7 +238,7 @@ public:
         nanobind::detail::ticket nb_ticket(nb_trampoline, "sample", true);
 
         nb::dict kwargs;
-        kwargs["keyword"] = "value";
+        //kwargs["keyword"] = "value";
         kwargs["mode"] = drjit::ADMode::Primal;
         kwargs["scene"] = scene;
         kwargs["sampler"] = sampler;
