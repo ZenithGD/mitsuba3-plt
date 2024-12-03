@@ -38,3 +38,21 @@ def plot_stokes_component(ax, image):
     img = ax.imshow(data, cmap='coolwarm', vmin=-plot_minmax, vmax=+plot_minmax)
     ax.set_xticks([]); ax.set_yticks([])
     return img
+
+def spec_fma(a, b, c):
+    if mi.is_polarized:
+        return a * b + c
+    else:
+        return dr.fmadd(a, b, c)
+    
+def spec_prod(a, b):
+    if mi.is_polarized:
+        return a * b
+    else:
+        return dr.mul(a, b)
+    
+def spec_add(a, b):
+    if mi.is_polarized:
+        return a + b
+    else:
+        return dr.add(a, b)

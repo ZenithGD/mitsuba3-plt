@@ -7,6 +7,8 @@ from typing import List, Tuple, Sequence
 
 from mitsuba.ad.integrators.common import ADIntegrator, mis_weight
 
+from utils import spec_fma
+
 class MISPathIntegrator(ADIntegrator):
     
     def __init__(self, arg : mi.Properties):
@@ -60,7 +62,7 @@ class MISPathIntegrator(ADIntegrator):
             )
 
             # add the direct emission term into the result
-            result = self.spec_fma(α, ds.emitter.eval(si) * mis_bsdf, result)
+            result = spec_fma(α, ds.emitter.eval(si) * mis_bsdf, result)
 
             # continue iteration?
             is_emitter = si.shape.is_emitter()
@@ -95,7 +97,7 @@ class MISPathIntegrator(ADIntegrator):
             # with delta interactions, only the bsdf term will contribute
             mis_em = dr.select(ds.delta, 1.0, mis_weight(ds.pdf, bsdf_pdf))
 
-            result = self.spec_fma(α, bsdf_val * em_weight * mis_em, result)
+            result = spec_fma(α, bsdf_val * em_weight * mis_em, result)
 
             # 2.5 BSDF sampling
             ray = si.spawn_ray(si.to_world(bsdf_sample.wo))
@@ -131,11 +133,5 @@ class MISPathIntegrator(ADIntegrator):
             active = active_next
 
         return (result, active, [], [])
-
-    def spec_fma(self, a : mi.Spectrum, b : mi.Spectrum, c : mi.Spectrum):
-        if mi.is_polarized:
-            return a * b + c
-        else:
-            return dr.fmadd(a, b, c)
 
 mi.register_integrator("mispath", lambda props: MISPathIntegrator(props))

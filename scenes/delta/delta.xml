@@ -51,7 +51,7 @@
 <!-- Emitters -->
 
 	<emitter type="envmap" id="elm__1" name="elm__1">
-		<string name="filename" value="textures/empty_play_room_4k.exr"/>
+		<string name="filename" value="textures/empty_play_room.exr"/>
 		<float name="scale" value="1.000000"/>
 		<transform name="to_world">
 			<matrix value="0.000000 0.000000 1.000000 0.000000 0.000000 1.000000 0.000000 0.000000 -1.000000 0.000000 0.000000 0.000000 0.000000 0.000000 0.000000 1.000000"/>

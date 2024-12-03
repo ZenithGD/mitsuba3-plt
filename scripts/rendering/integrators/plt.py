@@ -6,6 +6,7 @@ import numpy as np
 from collections import namedtuple
 
 from typing import List, Tuple, Sequence
+from utils import spec_fma, spec_prod, spec_add
 
 from mitsuba.ad.integrators.common import ADIntegrator, mis_weight
 
@@ -92,7 +93,7 @@ class PLTIntegrator(ADIntegrator):
             depth[si.is_valid()] += 1
             
             # 6. Russian roulette path termination
-            α_max = dr.max(α)
+            α_max = dr.max(mi.unpolarized_spectrum(α))
             active_next &= α_max != 0
             rr_prob = dr.minimum(α_max * dr.sqr(η), 0.95)
             rr_active = depth >= self.rr_depth
@@ -150,34 +151,36 @@ class PLTIntegrator(ADIntegrator):
         while i < self.max_depth:
 
             # TODO: account for environment lights (distant sources)
-            L += self.solve_replay_miss(mode, 
-                scene, 
-                sampler, 
-                depth, 
-                δL, δaovs, 
-                state_in, active, 
-                bounce_buffer, wavelength, i)
+            # L = L + self.solve_replay_miss(mode, 
+            #     scene, 
+            #     sampler, 
+            #     depth, 
+            #     δL, δaovs, 
+            #     state_in, active, 
+            #     bounce_buffer, wavelength, i)
 
             # account for emissive geometry
-            L += self.solve_replay_emissive(mode, 
+            L = spec_add(L, self.solve_replay_emissive(mode, 
                 scene, 
                 sampler, 
                 depth, 
                 δL, δaovs, 
                 state_in, active, 
-                bounce_buffer, wavelength, i)
+                bounce_buffer, wavelength, i))
             
             # perform NEE for this bounce
-            L += self.solve_replay_NEE(mode, 
+            L = spec_add(L, self.solve_replay_NEE(mode, 
                 scene, 
                 sampler, 
                 depth, 
                 δL, δaovs, 
                 state_in, active, 
-                bounce_buffer, wavelength, i)
+                bounce_buffer, wavelength, i))
 
             # next bounce
             i += 1
+
+            L = mi.Spectrum(L)
 
         return (L, active, [], [])
     
