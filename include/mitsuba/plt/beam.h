@@ -168,13 +168,13 @@ struct PLTBeam {
         const Wavelength& wavelengths, const Float& max_beam_omega,
         const Mask& force_fully_coherent)
     {
-        Float sa = dr::min(solid_angle, max_beam_omega);
+        Float sa = dr::minimum(solid_angle, max_beam_omega);
         const Matrix2f diff =
             dr::select(force_fully_coherent, 1e-9f * dr::identity<Matrix2f>(),
                        sa * dr::identity<Matrix2f>());
 
         Vector3f t, b;
-        std::tie(s, t) = coordinate_system(new_wo);
+        std::tie(b, t) = coordinate_system(dir);
 
         return PLTBeam3f(Le, diff, Vector3f(0.0), dir, t, true);
     }
@@ -185,14 +185,14 @@ struct PLTBeam {
         const Float& max_beam_omega, const Mask& force_fully_coherent)
     {
         // compute squared dist factor in millimeters
-        const Float r2 = dr::square(dist * 1e+3f);
-        const A_r2     = dr::minimum(A, max_beam_omega * r2);
+        const Float r2      = dr::square(dist * 1e+3f);
+        const Matrix2f A    = dr::minimum(A, max_beam_omega * r2);
         const Matrix2f diff = dr::select(force_fully_coherent, 
             1e-7f * dr::identity<Matrix2f>(),
             A * dr::identity<Matrix2f>());
 
         Vector3f t, b;
-        std::tie(s, t) = coordinate_system(new_wo);
+        std::tie(b, t) = coordinate_system(dir);
 
         return PLTBeam3f(Le, diff, pos, dir, t, false);
     }

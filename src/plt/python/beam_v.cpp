@@ -38,23 +38,34 @@ MI_PY_EXPORT(PLTBeam) {
                  nb::overload_cast<>(&PLTBeam3f::inv_coherence),
                  D(PLTBeam, inv_coherence, 2))
             .def("mutual_coherence",
-                 nb::overload_cast<const Wavelength&, const Vector3f&>(
-                     &PLTBeam3f::mutual_coherence), "kw"_a,
-                 "diff"_a, D(PLTBeam, mutual_coherence))
+                 nb::overload_cast<const Wavelength &, const Vector3f &>(
+                     &PLTBeam3f::mutual_coherence),
+                 "kw"_a, "diff"_a, D(PLTBeam, mutual_coherence))
             .def("mutual_coherence",
-                 nb::overload_cast<const Float&, const Vector3f&>(
-                     &PLTBeam3f::mutual_coherence), "k"_a,
-                 "diff"_a, D(PLTBeam, mutual_coherence, 2))
+                 nb::overload_cast<const Float &, const Vector3f &>(
+                     &PLTBeam3f::mutual_coherence),
+                 "k"_a, "diff"_a, D(PLTBeam, mutual_coherence, 2))
             .def("mutual_coherence_angular",
-                     &PLTBeam3f::mutual_coherence_angular, "d1"_a, "d2"_a, D(PLTBeam, mutual_coherence_angular))
+                 &PLTBeam3f::mutual_coherence_angular, "d1"_a, "d2"_a,
+                 D(PLTBeam, mutual_coherence_angular))
             .def("transform_coherence", &PLTBeam3f::transform_coherence, "U"_a,
                  D(PLTBeam, transform_coherence))
             .def("rotate_frame", &PLTBeam3f::rotate_frame, "new_tangent"_a,
                  D(PLTBeam, rotate_frame))
-            .def("create_local_frame", &PLTBeam3f::create_local_frame, "new_wo"_a,
-                 D(PLTBeam, create_local_frame))
+            .def("create_local_frame", &PLTBeam3f::create_local_frame,
+                 "new_wo"_a, D(PLTBeam, create_local_frame))
             .def("propagate", &PLTBeam3f::propagate, "p"_a,
-                 D(PLTBeam, propagate));
+                 D(PLTBeam, propagate))
+            .def_static("plt_source_beam_distant",
+                        &PLTBeam3f::plt_source_beam_distant, "dir"_a,
+                        "solid_angle"_a, "Le"_a, "wavelengths"_a,
+                        "max_beam_omega"_a, "force_fully_coherent"_a,
+                        "Source beam from distant light source")
+            .def_static("plt_source_beam_distant",
+                        &PLTBeam3f::plt_source_beam_area, "pos"_a, "dir"_a,
+                        "area"_a, "dist"_a, "Le"_a, "wavelengths"_a,
+                        "max_beam_omega"_a, "force_fully_coherent"_a,
+                        "Source beam from area light source");
     // .def_repr(PLTBeam3f);
 
     MI_PY_DRJIT_STRUCT(it, PLTBeam3f, sp, origin, dir, tangent, distant, active, coherence)
