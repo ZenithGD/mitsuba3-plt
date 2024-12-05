@@ -10,10 +10,10 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 # initialize variant
-mi.set_variant("cuda_ad_rgb")
+mi.set_variant("cuda_ad_spectral_polarized")
 
 coh = dr.zeros(mi.Coherence3f, 5)
-#print(coh)
+print(coh)
 
 @dataclass
 class BounceData:

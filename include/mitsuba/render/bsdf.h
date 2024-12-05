@@ -374,7 +374,6 @@ public:
     virtual std::pair<BSDFSample3f, GeneralizedRadiance<Float, Spectrum>>
     wbsdf_sample( const BSDFContext &ctx,
            const SurfaceInteraction3f &si,
-           const PLTInteraction3f& pit,
            Float sample1,
            const Point2f &sample2,
            Mask active = true) const;
@@ -436,7 +435,6 @@ public:
      */
     virtual GeneralizedRadiance<Float, Spectrum> wbsdf_eval(const BSDFContext &ctx,
                           const SurfaceInteraction3f &si,
-                          const PLTInteraction3f& pit,
                           const Vector3f &wo,
                           Mask active = true) const;
 
@@ -499,7 +497,6 @@ public:
      */
     virtual Float wbsdf_pdf(const BSDFContext &ctx,
                       const SurfaceInteraction3f &si,
-                      const PLTInteraction3f& pit,
                       const Vector3f &wo,
                       Mask active = true) const;
 
@@ -576,7 +573,6 @@ public:
      */
     virtual std::pair<GeneralizedRadiance<Float, Spectrum>, Float> wbsdf_eval_pdf(const BSDFContext &ctx,
                                                 const SurfaceInteraction3f &si,
-                                                const PLTInteraction3f& pit,
                                                 const Vector3f &wo,
                                                 Mask active = true) const;
 
@@ -653,7 +649,6 @@ public:
     virtual std::tuple<GeneralizedRadiance<Float, Spectrum>, Float, BSDFSample3f, GeneralizedRadiance<Float, Spectrum>>
     wbsdf_eval_pdf_sample(const BSDFContext &ctx,
                     const SurfaceInteraction3f &si,
-                    const PLTInteraction3f& pit,
                     const Vector3f &wo,
                     Float sample1,
                     const Point2f &sample2,
@@ -788,6 +783,20 @@ public:
     virtual Spectrum eval_diffuse_reflectance(const SurfaceInteraction3f &si,
                                               Mask active = true) const;
 
+    virtual Matrix2f coherence_transform(
+        const BSDFContext &ctx,
+        const SurfaceInteraction3f &si,
+        const Vector3f &wo,
+        Mask active = true) const
+    {
+        DRJIT_MARK_USED(ctx);
+        DRJIT_MARK_USED(si);
+        DRJIT_MARK_USED(active);
+
+        const Float cost = dr::sqrt(dr::maximum(1e-2f, Frame3f::cos_theta(wo)));
+        return Matrix2f(cost, 0.0f, 0.0f, dr::rcp(cost));
+    }
+
     /// Return a human-readable representation of the BSDF
     std::string to_string() const override = 0;
 
@@ -870,6 +879,7 @@ DRJIT_CALL_TEMPLATE_BEGIN(mitsuba::BSDF)
     DRJIT_CALL_METHOD(eval_attribute)
     DRJIT_CALL_METHOD(eval_attribute_1)
     DRJIT_CALL_METHOD(eval_attribute_3)
+    DRJIT_CALL_METHOD(coherence_transform)
     DRJIT_CALL_GETTER(flags)
     auto needs_differentials() const {
         return has_flag(flags(), mitsuba::BSDFFlags::NeedsDifferentials);

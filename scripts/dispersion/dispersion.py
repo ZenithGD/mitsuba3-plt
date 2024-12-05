@@ -13,7 +13,7 @@ def diffuse_dispersion(args, n = 400):
         'type': 'diffuse',
         'reflectance': {
             'type': 'rgb',
-            'value': [0.3, 0.5, 0.7]
+            'value': [0.4, 0.2, 0.8]
         }
     })
 
@@ -29,14 +29,19 @@ def diffuse_dispersion(args, n = 400):
 
     wo = sph_to_dir(theta_o, 0.0)
 
+    print(bsdf.coherence_transform(mi.BSDFContext(), si, wo))
+    val, pdf = bsdf.wbsdf_eval_pdf(mi.BSDFContext(), si, wo)
     # Evaluate the whole array at once
-    return theta_o, bsdf.wbsdf_eval(mi.BSDFContext(), si, mi.PLTInteraction3f(), wo)
+    print(pdf)
+    return theta_o, val
 
 def grating_dispersion(args):
     pass
 
 def plot_dispersion(angles, values):
-    values_np = np.array(values.L)
+    values_np = np.array(mi.unpolarized_spectrum(values.L))
+
+    print(values.L)
     angles_np = np.array(angles)
 
     # Extract channels of BRDF values
@@ -44,7 +49,8 @@ def plot_dispersion(angles, values):
     values_g = values_np[1]
     values_b = values_np[2]
 
-    print(values_np.shape, angles_np)
+    print(values_r[:5], values_g[:5], values_b[:5])
+
     # Plot values for spherical coordinates (upper hemisphere)
     fig, ax = plt.subplots(figsize=(8, 4), subplot_kw={'projection': 'polar'})
     ax.set_thetamin(-90)

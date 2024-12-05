@@ -21,7 +21,6 @@ MI_VARIANT std::pair<typename BSDF<Float, Spectrum>::BSDFSample3f, GeneralizedRa
 BSDF<Float, Spectrum>::wbsdf_sample( 
     const BSDFContext &ctx,
     const SurfaceInteraction3f &si,
-    const PLTInteraction3f& pit,
     Float sample1,
     const Point2f &sample2,
     Mask active) const
@@ -36,7 +35,6 @@ BSDF<Float, Spectrum>::wbsdf_sample(
 MI_VARIANT GeneralizedRadiance<Float, Spectrum> 
 BSDF<Float, Spectrum>::wbsdf_eval(const BSDFContext &ctx,
     const SurfaceInteraction3f &si,
-    const PLTInteraction3f& pit,
     const Vector3f &wo,
     Mask active) const 
 {
@@ -48,7 +46,6 @@ BSDF<Float, Spectrum>::wbsdf_eval(const BSDFContext &ctx,
 MI_VARIANT Float 
 BSDF<Float, Spectrum>::wbsdf_pdf(const BSDFContext &ctx,
     const SurfaceInteraction3f &si,
-    const PLTInteraction3f& pit,
     const Vector3f &wo,
     Mask active) const
 {
@@ -78,22 +75,20 @@ BSDF<Float, Spectrum>::eval_pdf_sample(const BSDFContext &ctx,
 MI_VARIANT std::pair<GeneralizedRadiance<Float, Spectrum> , Float>
 BSDF<Float, Spectrum>::wbsdf_eval_pdf(const BSDFContext &ctx,
                                 const SurfaceInteraction3f &si,
-                                const PLTInteraction3f& pit,
                                 const Vector3f &wo,
                                 Mask active) const {
-    return { wbsdf_eval(ctx, si, pit, wo, active), wbsdf_pdf(ctx, si, pit, wo, active) };
+    return { wbsdf_eval(ctx, si, wo, active), wbsdf_pdf(ctx, si, wo, active) };
 }
 
 MI_VARIANT std::tuple<GeneralizedRadiance<Float, Spectrum> , Float, typename BSDF<Float, Spectrum>::BSDFSample3f, GeneralizedRadiance<Float, Spectrum>>
 BSDF<Float, Spectrum>::wbsdf_eval_pdf_sample(const BSDFContext &ctx,
                                        const SurfaceInteraction3f &si,
-                                       const PLTInteraction3f& pit,
                                        const Vector3f &wo,
                                        Float sample1,
                                        const Point2f &sample2,
                                        Mask active) const {
-        auto [e_val, pdf_val] = wbsdf_eval_pdf(ctx, si, pit, wo, active);
-        auto [bs, bsdf_weight] = wbsdf_sample(ctx, si, pit, sample1, sample2, active);
+        auto [e_val, pdf_val] = wbsdf_eval_pdf(ctx, si, wo, active);
+        auto [bs, bsdf_weight] = wbsdf_sample(ctx, si, sample1, sample2, active);
         return { e_val, pdf_val, bs, bsdf_weight };
 }
 

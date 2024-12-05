@@ -118,6 +118,13 @@ public:
     // Distance travelled from source in meters
     Float opl;
 
+    /// Return a human-readable representation of the coherence structure
+    std::string to_string() const {
+        std::stringstream ss;
+        ss << *this;
+        return ss.str();
+    };
+
     DRJIT_STRUCT(Coherence, dmat, opl)
 };
 
@@ -157,8 +164,8 @@ MI_IMPORT_CORE_TYPES()
      */
     Coherence<Float, Spectrum> coherence;
 
-    GeneralizedRadiance(const Spectrum L_) 
-        : L(L_), L1(0.f), L2(0.f), L3(0.f) {}
+    GeneralizedRadiance(const Spectrum& L_) 
+        : L(L_), L1(0.f), L2(0.f), L3(0.f), coherence(Float(1e-3f), Float(0.0f)) {}
 
     DRJIT_STRUCT(GeneralizedRadiance, L, L1, L2, L3, coherence)
 };

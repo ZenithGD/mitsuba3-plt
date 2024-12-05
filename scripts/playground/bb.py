@@ -8,7 +8,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 # initialize variant
-mi.set_variant("cuda_ad_rgb")
+mi.set_variant("cuda_ad_spectral_polarized")
 
 @dr.syntax
 def task(max_depth):

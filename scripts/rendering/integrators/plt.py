@@ -268,7 +268,10 @@ class PLTIntegrator(ADIntegrator):
 
         # no need to recompute UV coordinates again, just get the bsdf
         bsdf = si.bsdf()
-        bsdf_val, bsdf_pdf = bsdf.eval_pdf(bsdf_ctx, si, wo, bounce.active)
+        #bsdf_val, bsdf_pdf = bsdf.wbsdf_eval_pdf(bsdf_ctx, si, wo, bounce.active)
+        bsdf_val = bsdf.wbsdf_eval(bsdf_ctx, si, wo, bounce.active)
+        bsdf_pdf = bsdf.wbsdf_pdf(bsdf_ctx, si, wo, bounce.active)
+        bsdf_val = bsdf_val.L
 
         mis_em = dr.select(ds.delta, 1.0, mis_weight(ds.pdf, bsdf_pdf))
 
