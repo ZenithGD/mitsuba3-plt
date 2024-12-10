@@ -168,14 +168,14 @@ class PLTIntegrator(ADIntegrator):
                 state_in, active, 
                 bounce_buffer, wavelength, i))
             
-            # # perform NEE for this bounce
-            # L = spec_add(L, self.solve_replay_NEE(mode, 
-            #     scene, 
-            #     sampler, 
-            #     depth, 
-            #     δL, δaovs, 
-            #     state_in, active, 
-            #     bounce_buffer, wavelength, i))
+            # perform NEE for this bounce
+            L = spec_add(L, self.solve_replay_NEE(mode, 
+                scene, 
+                sampler, 
+                depth, 
+                δL, δaovs, 
+                state_in, active, 
+                bounce_buffer, wavelength, i))
 
             # next bounce
             i += 1
@@ -414,8 +414,8 @@ class PLTIntegrator(ADIntegrator):
 
             # Propagate beam and evolve distribution (TODO)
             bsdf = bounce.interaction.bsdf()
-            # α[bounce.active] *= bounce.bsdf_weight
-            α[bounce.active] *= bsdf.wbsdf_eval(bsdf_ctx, bounce.interaction, mi.Vector3f(0, 0, 1)).L
+            α[bounce.active] *= bounce.bsdf_weight
+            #α[bounce.active] *= bsdf.wbsdf_eval(bsdf_ctx, bounce.interaction, mi.Vector3f(0, 0, 1)).L
             # next bounce in forward path
             i -= 1
 

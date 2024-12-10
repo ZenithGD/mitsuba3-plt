@@ -189,7 +189,7 @@ public:
             cos_theta_o = Frame3f::cos_theta(wo);
 
         UnpolarizedSpectrum value =
-            m_reflectance->eval(si, active) * dr::InvPi<Float>;
+            m_reflectance->eval(si, active);
 
         return GeneralizedRadiance3f(unpolarized_spectrum<Spectrum>(value) & active);
     }
