@@ -316,6 +316,61 @@ public:
         return 0.f;
     }
 
+    GeneralizedRadiance3f wbsdf_eval(const BSDFContext &ctx,
+                          const SurfaceInteraction3f &si,
+                          const Vector3f &wo,
+                          Mask active = true) const override {
+        
+        Float cos_theta_i = Frame3f::cos_theta(si.wi);
+        active &= cos_theta_i > 0.f;
+
+        Spectrum value(0.f);
+        // if (unlikely(dr::none_or<false>(active) || !ctx.is_enabled(BSDFFlags::DeltaReflection)))
+        //     return { value };
+
+        dr::Complex<UnpolarizedSpectrum> eta(m_eta->eval(si, active),
+                                             m_k->eval(si, active));
+        UnpolarizedSpectrum reflectance = m_specular_reflectance->eval(si, active);
+
+        if constexpr (is_polarized_v<Spectrum>) {
+            /* Due to the coordinate system rotations for polarization-aware
+               pBSDFs below we need to know the propagation direction of light.
+               In the following, light arrives along `-wo_hat` and leaves along
+               `+wi_hat`. */
+            Vector3f wo_hat = ctx.mode == TransportMode::Radiance ? wo : si.wi,
+                     wi_hat = ctx.mode == TransportMode::Radiance ? si.wi : wo;
+
+            // Mueller matrix for specular reflection.
+            value = mueller::specular_reflection(UnpolarizedSpectrum(Frame3f::cos_theta(wo_hat)), eta);
+            
+                /* The Stokes reference frame vector of this matrix lies
+                   perpendicular to the plane of reflection. */
+                Vector3f n(0, 0, 1);
+            Vector3f s_axis_in  = dr::cross(n, -wo_hat);
+            Vector3f s_axis_out = dr::cross(n, wi_hat);
+
+            // Singularity when the input & output are collinear with the normal
+            Mask collinear = dr::all(s_axis_in == Vector3f(0));
+            s_axis_in  = dr::select(collinear, Vector3f(1, 0, 0),
+                                               dr::normalize(s_axis_in));
+            s_axis_out = dr::select(collinear, Vector3f(1, 0, 0),
+                                               dr::normalize(s_axis_out));
+
+            /* Rotate in/out reference vector of `value` s.t. it aligns with the
+               implicit Stokes bases of -wo_hat & wi_hat. */
+            value = mueller::rotate_mueller_basis(value,
+                                                  -wo_hat, s_axis_in, mueller::stokes_basis(-wo_hat),
+                                                   wi_hat, s_axis_out, mueller::stokes_basis(wi_hat));
+
+            value *= mueller::absorber(reflectance);
+
+        } else {
+            value = reflectance * fresnel_conductor(UnpolarizedSpectrum(cos_theta_i), eta);
+        }
+
+        return GeneralizedRadiance3f(value);
+    }
+
     std::string to_string() const override {
         std::ostringstream oss;
         oss << "SmoothConductor[" << std::endl

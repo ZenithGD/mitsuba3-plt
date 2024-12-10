@@ -12,9 +12,33 @@ def diffuse_dispersion(args, n = 400):
     bsdf = mi.load_dict({
         'type': 'diffuse',
         'reflectance': {
-            'type': 'rgb',
-            'value': [0.4, 0.2, 0.8]
+            'type': 'srgb',
+            'color': [0.4, 0.5, 0.1]
         }
+    })
+
+    # Create a (dummy) surface interaction to use for the evaluation of the BSDF
+    si = dr.zeros(mi.SurfaceInteraction3f)
+
+    # Specify an incident direction with 0 degrees elevation (normal incidence)
+    si.wi = sph_to_dir(dr.deg2rad(45.0), 0.0)
+    si.t = 0.5
+
+    # Create grid in spherical coordinates and map it onto the sphere
+    res = n
+    theta_o = dr.linspace(mi.Float, 0, 2 * dr.pi, 2 * res)
+
+    wo = sph_to_dir(theta_o, 0.0)
+    
+    ctx = mi.BSDFContext(mi.TransportMode.Radiance)
+    val = bsdf.wbsdf_eval(ctx, si, wo)
+    # Evaluate the whole array at once
+    return theta_o, val
+
+def conductor_dispersion(args, n = 400):
+    bsdf = mi.load_dict({
+        'type': 'conductor',
+        'material' : "Ag"
     })
 
     # Create a (dummy) surface interaction to use for the evaluation of the BSDF
@@ -29,10 +53,9 @@ def diffuse_dispersion(args, n = 400):
 
     wo = sph_to_dir(theta_o, 0.0)
 
-    print(bsdf.coherence_transform(mi.BSDFContext(), si, wo))
-    val, pdf = bsdf.wbsdf_eval_pdf(mi.BSDFContext(), si, wo)
-    # Evaluate the whole array at once
-    print(pdf)
+    ctx = mi.BSDFContext(mi.TransportMode.Radiance)
+    val = bsdf.wbsdf_eval(ctx, si, wo)
+
     return theta_o, val
 
 def grating_dispersion(args):
@@ -41,15 +64,12 @@ def grating_dispersion(args):
 def plot_dispersion(angles, values):
     values_np = np.array(mi.unpolarized_spectrum(values.L))
 
-    print(values.L)
     angles_np = np.array(angles)
 
     # Extract channels of BRDF values
     values_r = values_np[0]
     values_g = values_np[1]
     values_b = values_np[2]
-
-    print(values_r[:5], values_g[:5], values_b[:5])
 
     # Plot values for spherical coordinates (upper hemisphere)
     fig, ax = plt.subplots(figsize=(8, 4), subplot_kw={'projection': 'polar'})

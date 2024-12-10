@@ -168,14 +168,14 @@ class PLTIntegrator(ADIntegrator):
                 state_in, active, 
                 bounce_buffer, wavelength, i))
             
-            # perform NEE for this bounce
-            L = spec_add(L, self.solve_replay_NEE(mode, 
-                scene, 
-                sampler, 
-                depth, 
-                δL, δaovs, 
-                state_in, active, 
-                bounce_buffer, wavelength, i))
+            # # perform NEE for this bounce
+            # L = spec_add(L, self.solve_replay_NEE(mode, 
+            #     scene, 
+            #     sampler, 
+            #     depth, 
+            #     δL, δaovs, 
+            #     state_in, active, 
+            #     bounce_buffer, wavelength, i))
 
             # next bounce
             i += 1
@@ -268,9 +268,7 @@ class PLTIntegrator(ADIntegrator):
 
         # no need to recompute UV coordinates again, just get the bsdf
         bsdf = si.bsdf()
-        #bsdf_val, bsdf_pdf = bsdf.wbsdf_eval_pdf(bsdf_ctx, si, wo, bounce.active)
-        bsdf_val = bsdf.wbsdf_eval(bsdf_ctx, si, wo, bounce.active)
-        bsdf_pdf = bsdf.wbsdf_pdf(bsdf_ctx, si, wo, bounce.active)
+        bsdf_val, bsdf_pdf = bsdf.wbsdf_eval_pdf(bsdf_ctx, si, wo, bounce.active)
         bsdf_val = bsdf_val.L
 
         mis_em = dr.select(ds.delta, 1.0, mis_weight(ds.pdf, bsdf_pdf))
@@ -403,7 +401,7 @@ class PLTIntegrator(ADIntegrator):
         Returns:
             mi.Spectrum: The weight of this light path
         """
-        bsdf_ctx = mi.BSDFContext()
+        bsdf_ctx = mi.BSDFContext(mi.TransportMode.Radiance)
         i = mi.Int32(bounce_idx - 1) 
         α = mi.Spectrum(1.0)
 
@@ -415,12 +413,9 @@ class PLTIntegrator(ADIntegrator):
             bounce = bounce_buffer[bidx]
 
             # Propagate beam and evolve distribution (TODO)
-            
             bsdf = bounce.interaction.bsdf()
-            α = dr.select(bounce.active, 
-                           α * bounce.bsdf_weight, #bsdf.wbsdf_eval(bsdf_ctx, bounce.interaction, bounce.wo, bounce.active & evaluate_bounce), 
-                           α)
-
+            # α[bounce.active] *= bounce.bsdf_weight
+            α[bounce.active] *= bsdf.wbsdf_eval(bsdf_ctx, bounce.interaction, mi.Vector3f(0, 0, 1)).L
             # next bounce in forward path
             i -= 1
 
