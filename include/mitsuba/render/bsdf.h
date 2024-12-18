@@ -470,6 +470,36 @@ public:
                       Mask active = true) const = 0;
 
     /**
+     * \brief Compute the weight of an interaction f(x, wi, wo) * cos(wo) / pdf(x, wi, wo)
+     *
+     * This method provides access to the importance weight that would result
+     * when supplying the same BSDF context and surface interaction data
+     * structures to the \ref sample() method. It correctly handles changes in
+     * probability when only a subset of the components is chosen for sampling
+     * (this can be done using the \ref BSDFContext::component and \ref
+     * BSDFContext::type_mask fields).
+     *
+     * Note that the incident direction does not need to be explicitly
+     * specified. It is obtained from the field <tt>si.wi</tt>.
+     *
+     * \param ctx
+     *     A context data structure describing which lobes to evaluate,
+     *     and whether radiance or importance are being transported.
+     *
+     * \param si
+     *     A surface interaction data structure describing the underlying
+     *     surface position. The incident direction is obtained from
+     *     the field <tt>si.wi</tt>.
+     *
+     * \param wo
+     *     The outgoing direction
+     */
+    virtual GeneralizedRadiance<Float, Spectrum> wbsdf_weight(const BSDFContext &ctx,
+                      const SurfaceInteraction3f &si,
+                      const Vector3f &wo,
+                      Mask active = true) const;
+
+    /**
      * \brief Compute the probability per unit solid angle of sampling a
      * given direction
      *
@@ -874,6 +904,7 @@ DRJIT_CALL_TEMPLATE_BEGIN(mitsuba::BSDF)
     DRJIT_CALL_METHOD(wbsdf_pdf)
     DRJIT_CALL_METHOD(wbsdf_eval_pdf)
     DRJIT_CALL_METHOD(wbsdf_eval_pdf_sample)
+    DRJIT_CALL_METHOD(wbsdf_weight)
     DRJIT_CALL_METHOD(eval_diffuse_reflectance)
     DRJIT_CALL_METHOD(has_attribute)
     DRJIT_CALL_METHOD(eval_attribute)

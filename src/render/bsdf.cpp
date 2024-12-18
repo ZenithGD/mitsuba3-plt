@@ -52,6 +52,19 @@ BSDF<Float, Spectrum>::wbsdf_pdf(const BSDFContext &ctx,
     return pdf(ctx, si, wo, active);
 }
 
+MI_VARIANT GeneralizedRadiance<Float, Spectrum> 
+BSDF<Float, Spectrum>::wbsdf_weight(const BSDFContext &ctx,
+    const SurfaceInteraction3f &si,
+    const Vector3f &wo,
+    Mask active) const
+{
+    auto [e_val, pdf_val] = eval_pdf(ctx, si, wo, active);
+    GeneralizedRadiance<Float, Spectrum> gr(dr::select(pdf_val > 0.0f, e_val / pdf_val, 0.0f));
+
+    return gr;
+}
+
+
 MI_VARIANT std::pair<Spectrum, Float>
 BSDF<Float, Spectrum>::eval_pdf(const BSDFContext &ctx,
                                 const SurfaceInteraction3f &si,

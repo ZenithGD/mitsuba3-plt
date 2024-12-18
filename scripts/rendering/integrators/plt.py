@@ -150,15 +150,6 @@ class PLTIntegrator(ADIntegrator):
 
         while i < self.max_depth:
 
-            # TODO: account for environment lights (distant sources)
-            # L = L + self.solve_replay_miss(mode, 
-            #     scene, 
-            #     sampler, 
-            #     depth, 
-            #     δL, δaovs, 
-            #     state_in, active, 
-            #     bounce_buffer, wavelength, i)
-
             # account for emissive geometry
             L = spec_add(L, self.solve_replay_emissive(mode, 
                 scene, 
@@ -414,8 +405,9 @@ class PLTIntegrator(ADIntegrator):
 
             # Propagate beam and evolve distribution (TODO)
             bsdf = bounce.interaction.bsdf()
-            α[bounce.active] *= bounce.bsdf_weight
-            #α[bounce.active] *= bsdf.wbsdf_eval(bsdf_ctx, bounce.interaction, mi.Vector3f(0, 0, 1)).L
+            #α[bounce.active] *= bounce.bsdf_weight
+            α[bounce.active] *= bsdf.wbsdf_weight(bsdf_ctx, bounce.interaction, bounce.wo).L
+            #α[bounce.active] *= bsdf.eval_diffuse_reflectance(bounce.interaction)
             # next bounce in forward path
             i -= 1
 
