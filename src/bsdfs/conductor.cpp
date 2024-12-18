@@ -316,7 +316,7 @@ public:
         return 0.f;
     }
 
-    GeneralizedRadiance3f wbsdf_eval(const BSDFContext &ctx,
+    GeneralizedRadiance3f wbsdf_weight(const BSDFContext &ctx,
                           const SurfaceInteraction3f &si,
                           const Vector3f &wo,
                           Mask active = true) const override {
@@ -325,8 +325,8 @@ public:
         active &= cos_theta_i > 0.f;
 
         Spectrum value(0.f);
-        // if (unlikely(dr::none_or<false>(active) || !ctx.is_enabled(BSDFFlags::DeltaReflection)))
-        //     return { value };
+        if (unlikely(dr::none_or<false>(active) || !ctx.is_enabled(BSDFFlags::DeltaReflection)))
+            return { value };
 
         dr::Complex<UnpolarizedSpectrum> eta(m_eta->eval(si, active),
                                              m_k->eval(si, active));

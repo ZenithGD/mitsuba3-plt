@@ -2,7 +2,7 @@
 
 <!-- Defaults, these can be set via the command line: -Darg=value -->
 
-	<default name="spp" value="64"/>
+	<default name="spp" value="128"/>
 	<default name="resx" value="500"/>
 	<default name="resy" value="500"/>
 
@@ -35,20 +35,27 @@
 
 <!-- Materials -->
 
-    <bsdf type="diffuse" id="default-bsdf" name="default-bsdf"/>
-
+	<bsdf type="twosided" id="default-bsdf" name="default-bsdf">
+		<bsdf type="diffuse" name="bsdf"/>
+	</bsdf>
 	<bsdf type="diffuse" id="empty-emitter-bsdf" name="empty-emitter-bsdf">
 		<rgb value="0.000000" name="reflectance"/>
 	</bsdf>
-    <bsdf type="diffuse" id="mat-Material" name="mat-Material">
-        <rgb value="0.800000 0.800000 0.800000" name="reflectance"/>
-    </bsdf>
-    <bsdf type="diffuse" id="mat-red" name="mat-red">
-        <rgb value="0.800474 0.049934 0.051623" name="reflectance"/>
-    </bsdf>
-    <bsdf type="diffuse" id="mat-green" name="mat-green">
-        <rgb value="0.077992 0.587736 0.073049" name="reflectance"/>
-    </bsdf>
+	<bsdf type="twosided" id="mat-Material" name="mat-Material">
+		<bsdf type="diffuse" name="bsdf">
+			<rgb value="0.800000 0.800000 0.800000" name="reflectance"/>
+		</bsdf>
+	</bsdf>
+	<bsdf type="twosided" id="mat-red" name="mat-red">
+		<bsdf type="diffuse" name="bsdf">
+			<rgb value="0.800474 0.049934 0.051623" name="reflectance"/>
+		</bsdf>
+	</bsdf>
+	<bsdf type="twosided" id="mat-green" name="mat-green">
+		<bsdf type="diffuse" name="bsdf">
+			<rgb value="0.077992 0.587736 0.073049" name="reflectance"/>
+		</bsdf>
+	</bsdf>
 
 <!-- Emitters -->
 
