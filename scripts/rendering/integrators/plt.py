@@ -14,8 +14,34 @@ class PLTIntegrator(ADIntegrator):
 
     
     def __init__(self, arg : mi.Properties):
+        """Initialize the PLT integrator. Performs a sample-solve approach to solve
+        wave transport sampling rays from the detector and then evolving
+        the distribution from the light source to the sensor.
+
+        Args:
+            arg (mi.Properties): The properties passed into the integrator.
+            It accepts the following properties:
+
+            - `max_depth` (default: 16): The maximum number of bounces.
+            - `rr_depth` (default: 4): The depth at which to start performing
+                Russian Roulette path termination.
+            - `emissive_sourcing_area` (default: 1E-4): The solid angle of the 
+                generalized ray sourced by emissive geometry (area sources)
+            - `distant_sourcing_area` (default: 1E-7): The solid angle of the 
+                generalized ray sourced by a distant source (environment maps or
+                directional sources)
+            - `max_angular_spread` (default: 1E-7): The max solid angle of the propagated
+                generalized ray.
+        """
+        # path tracing props
         self.max_depth = arg.get("max_depth", def_value=16)
         self.rr_depth = arg.get("rr_depth", def_value=4)
+
+        # light coherence properties
+        self.emissive_sourcing_area = arg.get("emissive_sourcing_area", def_value=1E-4)
+        self.distant_sourcing_area = arg.get("distant_sourcing_area", def_value=1E-7)
+        self.max_angular_spread = arg.get("max_angular_spread", def_value=1E-7)
+
         super().__init__(arg)
 
     @dr.syntax
@@ -174,39 +200,7 @@ class PLTIntegrator(ADIntegrator):
             L = mi.Spectrum(L)
 
         return (L, active, [], [])
-    
-    @dr.syntax
-    def solve_replay_miss(self, 
-                           mode : dr.ADMode, 
-                           scene : mi.Scene, 
-                           sampler : mi.Sampler,
-                           depth : mi.UInt32,
-                           δL : mi.Spectrum,
-                           δaovs : List[mi.Float],
-                           state_in : any,
-                           active : mi.Bool,
-                           bounce_buffer : dr.Local[mi.BounceData3f],
-                           wavelength : mi.Float,
-                           bounce_idx : mi.UInt32) -> mi.Spectrum:
-        """Solve forward transport with PLT, accounting for subpaths that miss an
-        emissive area light source.
-
-        Args:
-            mode (dr.ADMode): The differentiation mode
-            scene (mi.Scene): The scene to render
-            sampler (mi.Sampler): The sampler
-            depth (mi.UInt32): The initial depth of the path (usually 0)
-            state_in (any): Input state
-            active (mi.Bool): Active paths for SIMD modes
-            bounce_buffer (dr.Local[mi.BounceData3f]): List of bounces from a backwards
-            sampled path.
-            wavelength (mi.Float): The hero wavelength of the path
-
-        Returns:
-            mi.Spectrum: The contribution of this light path
-        """
         
-        return mi.Spectrum(0.0)
     
     @dr.syntax
     def solve_replay_NEE(self, 
@@ -278,6 +272,20 @@ class PLTIntegrator(ADIntegrator):
 
         return α * bsdf_val * em_weight * mis_em
     
+    @dr.syntax
+    def source_PLT_beam(self,  
+                        mode : dr.ADMode, 
+                        scene : mi.Scene, 
+                        Le : mi.Spectrum,
+                        dir : mi.Vector3f,
+                        is_environment : mi.Bool,
+                        active : mi.Bool):
+        
+        #solid_angle = dr.minimum(solid_angle, )
+
+        beam = dr.select()
+
+    
     @dr.syntax    
     def solve_replay_emissive(self, 
                                 mode : dr.ADMode, 
@@ -309,6 +317,7 @@ class PLTIntegrator(ADIntegrator):
             mi.Spectrum: The contribution of this light path
         """
 
+        # 1. Read bounce and prepare light source info
         # Read bounce
         bounce = bounce_buffer.read(bounce_idx)
         prev_bounce = bounce_buffer.read(bounce_idx - 1, bounce_idx > 0)
@@ -332,6 +341,11 @@ class PLTIntegrator(ADIntegrator):
         # Emitted intensity with MIS weight
         Lem = ds.emitter.eval(bounce.interaction) * mis_bsdf
 
+        # 2. Source ray based on hit type (env/area)
+        is_environment = ds.emitter.is_environment()
+
+
+        # 3. Replay path and evolve light distribution 
         α = self.replay_path(mode, 
             scene, 
             sampler, 
@@ -345,6 +359,8 @@ class PLTIntegrator(ADIntegrator):
             bounce_idx)
             
         Li = Lem * α
+
+        # 4. Measure beam at sensor
 
         # return self.__measure(
         #     mode,

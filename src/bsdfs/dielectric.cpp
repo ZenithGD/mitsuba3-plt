@@ -395,7 +395,7 @@ public:
         Float t_i = 1.f - r_i;
 
         // Detect transmission or reflection based on angle
-        Mask selected_r = cos_theta_o < 0;
+        Mask selected_r = cos_theta_o > 0;
         Float pdf       = 1.0f;
         if (likely(has_reflection && has_transmission)) {
             pdf = dr::detach(dr::select(selected_r, r_i, t_i));
@@ -404,9 +404,9 @@ public:
 
         UnpolarizedSpectrum reflectance = 1.f, transmittance = 1.f;
         if (m_specular_reflectance)
-            reflectance = m_specular_reflectance->eval(si, selected_r);
+            dr::masked(reflectance, selected_r) = m_specular_reflectance->eval(si, selected_r);
         if (m_specular_transmittance)
-            transmittance = m_specular_transmittance->eval(si, selected_t);
+            dr::masked(transmittance, selected_t) = m_specular_transmittance->eval(si, selected_t);
 
         Spectrum weight(0.f);
         if constexpr (is_polarized_v<Spectrum>) {
@@ -443,7 +443,7 @@ public:
 
             /* Rotate in/out reference vector of `weight` s.t. it aligns with the
                implicit Stokes bases of -wo_hat & wi_hat. */
-            weight = mueller::rotate_mueller_basis(weight,
+            weight = mueller::rotate_mueller_basis(weight, 
                                                    -wo_hat, s_axis_in, mueller::stokes_basis(-wo_hat),
                                                     wi_hat, s_axis_out, mueller::stokes_basis(wi_hat));
 
