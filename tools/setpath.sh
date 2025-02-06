@@ -1,3 +1,3 @@
-cd build/Release
+cd build
 source ./setpath.sh
 cd ../..

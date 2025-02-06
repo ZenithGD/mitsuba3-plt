@@ -273,7 +273,7 @@ inline dr::int_array_t<T> fact_small(const dr::int_array_t<T>& n)
  */
 template <typename T> T gamma(T x)
 {
-    return dr::sqrt(dr::Pi<T> * (2.0 * x + 1.0 / 3.0));
+    return dr::sqrt(dr::Pi<T> * (2.0f * x + 1.0f / 3.0f));
 }
 
 template <typename T> dr::int_array_t<T> fact(const dr::int_array_t<T>& n)
@@ -294,15 +294,15 @@ template <typename T> dr::int_array_t<T> fact(const dr::int_array_t<T>& n)
  */
 template <typename T> T bessel_j_asymp(const T& x, const dr::int_array_t<T>& nu)
 {
-    const T sign = dr::select((x >= 0) || (nu % 2 != 0), 1.0, -1.0);
+    const T sign = dr::select((x >= 0) || (nu % 2 != 0), 1.0f, -1.0f);
     const T x_abs = dr::abs(x);
 
     // cover edge cases
     return dr::select(
         x_abs > 10 * dr::Epsilon<T>, 
         sign * dr::sqrt(2.0f / (dr::Pi<T> * x_abs)) *
-           dr::cos(x_abs - dr::Pi<T> * nu / 2.0 - dr::Pi<T> / 4.0), 
-        dr::select(nu == 0, 1.0, 0.0));
+           dr::cos(x_abs - dr::Pi<T> * nu / 2.0f - dr::Pi<T> / 4.0f), 
+        dr::select(nu == 0, 1.0f, 0.0f));
 }
 
 /**
@@ -341,9 +341,9 @@ template <typename T> T bessel_j(const T& x, const dr::int_array_t<T>& nu, const
     // interpolate between polynomial and asymptotic approximations with a smooth weighting function
     T center = c + nu_abs;
     T falloff = f;
-    T weight_fn = 1.0 / (1.0 + dr::exp(-falloff * (dr::abs(x) - center)));
+    T weight_fn = 1.0f / (1.0f + dr::exp(-falloff * (dr::abs(x) - center)));
 
-    return nsign * ((1 - weight_fn) * bessel_j_small(x, nu_abs, points) + weight_fn * bessel_j_asymp(x, nu_abs));
+    return nsign * ((1.0f - weight_fn) * bessel_j_small(x, nu_abs, points) + weight_fn * bessel_j_asymp(x, nu_abs));
 }
 
 /**
