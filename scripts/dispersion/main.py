@@ -13,7 +13,7 @@ from dispersion import *
 def main(args):
 
     # create diffuse dispersion diagram
-    angles, disp = roughconductor_dispersion(args)
+    angles, disp = diffuse_dispersion(args)
 
     plot_dispersion(angles, disp)
 

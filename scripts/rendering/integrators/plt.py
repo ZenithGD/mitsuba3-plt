@@ -414,8 +414,11 @@ class PLTIntegrator(ADIntegrator):
 
             # Propagate beam and evolve distribution (TODO)
             bsdf = bounce.interaction.bsdf()
-            α[bounce.active] *= bounce.bsdf_weight
-            #α[bounce.active] *= bsdf.wbsdf_eval(bsdf_ctx, bounce.interaction, mi.Vector3f(0, 0, 1)).L
+            #α[bounce.active] *= bounce.bsdf_weight
+            ctwo = mi.Frame3f.cos_theta(bounce.wo)
+            importance = bsdf.wbsdf_eval(bsdf_ctx, bounce.interaction, bounce.wo)
+            α[bounce.active] *= importance
+
             # next bounce in forward path
             i -= 1
 
