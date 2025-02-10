@@ -12607,6 +12607,19 @@ static const char *__doc_mitsuba_PLTBeam_create_local_frame = R"doc()doc";
 
 static const char *__doc_mitsuba_PLTBeam_propagate = R"doc()doc";
 
+static const char *__doc_mitsuba_BSDF_wbsdf_eval = R"doc()doc";
+
+static const char *__doc_mitsuba_BSDF_wbsdf_sample = R"doc()doc";
+
+static const char *__doc_mitsuba_BSDF_wbsdf_pdf = R"doc()doc";
+
+static const char *__doc_mitsuba_BSDF_wbsdf_weight = R"doc()doc";
+
+static const char *__doc_mitsuba_BSDF_wbsdf_eval_pdf = R"doc()doc";
+
+static const char *__doc_mitsuba_BSDF_wbsdf_eval_pdf_sample = R"doc()doc";
+
+
 #if defined(__GNUG__)
 #pragma GCC diagnostic pop
 #endif

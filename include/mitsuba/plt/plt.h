@@ -254,6 +254,7 @@ struct GeneralizedRay : Ray<Point_, Spectrum_> {
      * \param d The propagation distance.
      */
     GeneralizedRay propagate(const Float d) {
+        DRJIT_MARK_USED(d);
         throw std::runtime_error("not implemented");
     }
 

@@ -86,6 +86,7 @@ class SmoothDiffuse final : public BSDF<Float, Spectrum> {
 public:
     MI_IMPORT_BASE(BSDF, m_flags, m_components)
     MI_IMPORT_TYPES(Texture)
+    MI_IMPORT_PLT_BASIC_TYPES() 
 
     SmoothDiffuse(const Properties &props) : Base(props) {
         m_reflectance = props.texture<Texture>("reflectance", .5f);
@@ -178,12 +179,12 @@ public:
         return { depolarizer<Spectrum>(value) & active, dr::select(active, pdf, 0.f) };
     }
 
-    GeneralizedRadiance3f wbsdf_eval(const BSDFContext &ctx, const SurfaceInteraction3f &si,
+    GeneralizedRadiance3f wbsdf_weight(const BSDFContext &ctx, const SurfaceInteraction3f &si,
                   const Vector3f &wo, Mask active) const override {
         MI_MASKED_FUNCTION(ProfilerPhase::BSDFEvaluate, active);
 
         if (!ctx.is_enabled(BSDFFlags::DiffuseReflection))
-            return 0.f;
+            return GeneralizedRadiance3f(0.0f);
 
         Float cos_theta_i = Frame3f::cos_theta(si.wi),
             cos_theta_o = Frame3f::cos_theta(wo);
@@ -193,7 +194,6 @@ public:
 
         return GeneralizedRadiance3f(unpolarized_spectrum<Spectrum>(value) & active);
     }
-
 
     Spectrum eval_diffuse_reflectance(const SurfaceInteraction3f &si,
                                       Mask active) const override {
