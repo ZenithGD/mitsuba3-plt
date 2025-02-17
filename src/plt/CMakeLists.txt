@@ -9,7 +9,7 @@ add_library(mitsuba-plt OBJECT
 
   plt.cpp                       ${INC_DIR}/plt.h
   bouncebuffer.cpp              ${INC_DIR}/bouncebuffer.h
-#   diffractiongrating.cpp        ${INC_DIR}/diffractiongrating.h
+  diffractiongrating.cpp        ${INC_DIR}/diffractiongrating.h
   beam.cpp                      ${INC_DIR}/beam.h
 )
 

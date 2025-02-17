@@ -96,7 +96,7 @@ def viz(x, jn, approx):
 
 def main(args):
     # set environment
-    mi.set_variant("cuda_ad_rgb")
+    mi.set_variant("cuda_ad_rgb_polarized")
 
     # compute different approaches
     x, jn, approx = compute_jn(

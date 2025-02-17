@@ -176,7 +176,7 @@ NB_MODULE(mitsuba_ext, m) {
     MI_PY_IMPORT(DiscontinuityFlags);
 
     //plt
-    MI_PY_DECLARE(DiffractionGratingType);
+    MI_PY_IMPORT(DiffractionGratingType);
 
     /* Register a cleanup callback function to wait for pending tasks (this is
      * called before all Python variables are cleaned up */
