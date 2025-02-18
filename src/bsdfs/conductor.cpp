@@ -220,6 +220,7 @@ class SmoothConductor final : public BSDF<Float, Spectrum> {
 public:
     MI_IMPORT_BASE(BSDF, m_flags, m_components)
     MI_IMPORT_TYPES(Texture)
+    MI_IMPORT_PLT_BASIC_TYPES() 
 
     SmoothConductor(const Properties &props) : Base(props) {
         m_flags = BSDFFlags::DeltaReflection | BSDFFlags::FrontSide;

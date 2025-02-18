@@ -69,6 +69,7 @@ template <typename Float, typename Spectrum>
 class TwoSidedBRDF final : public BSDF<Float, Spectrum> {
 public:
     MI_IMPORT_BASE(BSDF, m_flags, m_components)
+    MI_IMPORT_PLT_BASIC_TYPES() 
     MI_IMPORT_TYPES()
 
     TwoSidedBRDF(const Properties &props) : Base(props) {
@@ -256,12 +257,11 @@ public:
         return { value, pdf };
     }
 
-    std::pair<typename BSDFSample3f,
-                         GeneralizedRadiance3f>
+    std::pair<BSDFSample3f, GeneralizedRadiance3f>
     wbsdf_sample(const BSDFContext &ctx_,
                                         const SurfaceInteraction3f &si_,
                                         Float sample1, const Point2f &sample2,
-                                        Mask active) const {
+                                        Mask active) const override {
 
         MI_MASKED_FUNCTION(ProfilerPhase::BSDFSample, active);
 
@@ -300,13 +300,13 @@ public:
     GeneralizedRadiance3f
     wbsdf_eval(const BSDFContext &ctx_,
                                       const SurfaceInteraction3f &si_,
-                                      const Vector3f &wo_, Mask active) const {
+                                      const Vector3f &wo_, Mask active) const override {
         MI_MASKED_FUNCTION(ProfilerPhase::BSDFEvaluate, active);
 
         SurfaceInteraction3f si(si_);
         BSDFContext ctx(ctx_);
         Vector3f wo(wo_);
-        GeneralizedRadiance3f result = 0.f;
+        GeneralizedRadiance3f result(0.0f);
 
         if (m_brdf[0] == m_brdf[1]) {
             wo.z() = dr::mulsign(wo.z(), si.wi.z());
@@ -336,7 +336,7 @@ public:
 
     Float wbsdf_pdf(
         const BSDFContext &ctx_, const SurfaceInteraction3f &si_,
-        const Vector3f &wo_, Mask active) const {
+        const Vector3f &wo_, Mask active) const override {
 
         MI_MASKED_FUNCTION(ProfilerPhase::BSDFEvaluate, active);
 
@@ -379,7 +379,7 @@ public:
         SurfaceInteraction3f si(si_);
         BSDFContext ctx(ctx_);
         Vector3f wo(wo_);
-        GeneralizedRadiance3f result = 0.f;
+        GeneralizedRadiance3f result(0.f);
 
         if (m_brdf[0] == m_brdf[1]) {
             wo.z() = dr::mulsign(wo.z(), si.wi.z());

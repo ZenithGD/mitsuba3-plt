@@ -33,9 +33,11 @@ def diffuse_dispersion(args, n = 400):
     ctx = mi.BSDFContext(mi.TransportMode.Radiance)
 
     val, pdf = bsdf.wbsdf_eval_pdf(ctx, si, wo)
-    val = val.L * pdf
+    val = val.L # * pdf
 
     # val = bsdf.eval(ctx, si, wo)
+
+    print(val)
 
     # Evaluate the whole array at once
     return theta_o, val

@@ -86,6 +86,7 @@ class SmoothDiffuse final : public BSDF<Float, Spectrum> {
 public:
     MI_IMPORT_BASE(BSDF, m_flags, m_components)
     MI_IMPORT_TYPES(Texture)
+    MI_IMPORT_PLT_BASIC_TYPES() 
 
     SmoothDiffuse(const Properties &props) : Base(props) {
         m_reflectance = props.texture<Texture>("reflectance", .5f);
@@ -183,7 +184,7 @@ public:
         MI_MASKED_FUNCTION(ProfilerPhase::BSDFEvaluate, active);
 
         if (!ctx.is_enabled(BSDFFlags::DiffuseReflection))
-            return 0.f;
+            return GeneralizedRadiance3f(0.0f);
 
         Float cos_theta_i = Frame3f::cos_theta(si.wi),
             cos_theta_o = Frame3f::cos_theta(wo);

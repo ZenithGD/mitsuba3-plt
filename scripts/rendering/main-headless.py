@@ -29,8 +29,8 @@ def main(args):
         scene_params = mi.traverse(scene)
         print(scene_params)
 
-    # render scene using the desired integrator
-    plt_integrator = mi.load_dict({
+    #render scene using the desired integrator
+    integrator = mi.load_dict({
         "type": "stokes",
         "nested" : {
             "type" : args.integrator,
@@ -38,10 +38,25 @@ def main(args):
             "rr_depth": 50
         }
     })
+    # if args.integrator == "plt":
+    #     integrator = mi.load_dict({
+    #         "type" : args.integrator,
+    #         "max_depth": 12,
+    #         "rr_depth": 50
+    #     })
+    # else:
+    #     integrator = mi.load_dict({
+    #         "type": "stokes",
+    #         "nested" : {
+    #             "type" : args.integrator,
+    #             "max_depth": 12,
+    #             "rr_depth": 50
+    #         }
+    #     })
 
     print("Rendering...")
     start = time.perf_counter_ns()
-    result = plt_integrator.render(scene)
+    result = integrator.render(scene)
     bmp = mi.Bitmap(result).convert()
     el = time.perf_counter_ns() - start
     print(f"...done. ({el / 1e6} ms)")

@@ -192,7 +192,7 @@ struct PLTBeam {
     {
         // compute squared dist factor in millimeters
         const Float r2      = dr::square(dist * 1e+3f);
-        const Matrix2f A    = dr::minimum(A, max_beam_omega * r2);
+        const Matrix2f A    = dr::minimum(area, max_beam_omega * r2);
         const Matrix2f diff = dr::select(force_fully_coherent, 
             1e-7f * dr::identity<Matrix2f>(),
             A * dr::identity<Matrix2f>());

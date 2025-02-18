@@ -227,7 +227,7 @@ NB_MODULE(MI_VARIANT_NAME, m) {
     MI_PY_IMPORT(Coherence);
     MI_PY_IMPORT(GeneralizedRadiance);
     MI_PY_IMPORT(PLTInteraction);
-    // MI_PY_IMPORT(DiffractionGrating);
+    MI_PY_IMPORT(DiffractionGrating);
     MI_PY_IMPORT(BounceData);
     MI_PY_IMPORT(PLTBeam);
 
