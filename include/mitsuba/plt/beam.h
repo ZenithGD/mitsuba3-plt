@@ -49,8 +49,8 @@ struct PLTBeam {
         const Mask& active_ = true)
 
         : sp(sp_), origin(origin_), dir(dir_), tangent(tangent_), 
-          distant(distant_), active(active_),
-          coherence(diff_, dr::select(distant_, 0.001f, 0.0f)) {}
+          distant(distant_),
+          coherence(diff_, dr::select(distant_, 0.001f, 0.0f)), active(active_) {}
 
     void scale_sp(Float s) { sp *= s; }
 

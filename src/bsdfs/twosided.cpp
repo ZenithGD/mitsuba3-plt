@@ -373,7 +373,7 @@ public:
     GeneralizedRadiance3f
     wbsdf_weight(const BSDFContext &ctx_,
                                       const SurfaceInteraction3f &si_,
-                                      const Vector3f &wo_, Mask active) const {
+                                      const Vector3f &wo_, Mask active) const override {
         MI_MASKED_FUNCTION(ProfilerPhase::BSDFEvaluate, active);
 
         SurfaceInteraction3f si(si_);
