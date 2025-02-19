@@ -1,4 +1,5 @@
 #include <drjit/python.h>
+#include <nanobind/stl/pair.h>
 #include <mitsuba/python/python.h>
 #include <mitsuba/plt/fwd.h>
 #include <mitsuba/plt/diffractiongrating.h>

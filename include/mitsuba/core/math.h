@@ -219,7 +219,7 @@ template <typename T> T integrate_simpson(std::function<T(T)>& fn, const T& a, c
     }
 
     // return simpson rule composite quadrature
-    return (h / 3.0) * (fn(a) + 4.0 * I_odd + 2.0 * I_even + fn(b));
+    return (h / 3.0f) * (fn(a) + 4.0f * I_odd + 2.0f * I_even + fn(b));
 }
 
 //! @}

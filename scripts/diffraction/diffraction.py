@@ -16,31 +16,6 @@ nlobesx = 9
 nlobesy = 9
 wi = sph_to_dir(dr.deg2rad(45), 0.0)
 
-def diffract_manual(wi: mi.Vector3f, lobe: mi.Vector2i, wl: mi.Float, inv_period: mi.Vector2f):
-    p = dr.sqrt(dr.sqr(wi.xy) + dr.sqr(wi.zz))
-
-    sin_i = mi.Vector2f(
-        dr.select(p.x > dr.epsilon(mi.Float), wi.x / p.x, 0.0),
-        dr.select(p.y > dr.epsilon(mi.Float), wi.y / p.y, 0.0)
-    )
-
-    # diffraction equation for angle
-    sin_o = wl * lobe * inv_period - sin_i
-    a = sin_o.x
-    b = sin_o.y
-    m = (dr.sqr(a) - 1) / (dr.sqr(a * b) - 1)
-    q = 1 - dr.sqr(b) * m
-
-    return dr.select(
-        dr.all(dr.abs(sin_o) <= 1.0),
-        mi.Vector3f(
-            a * dr.sqrt(dr.maximum(0.0, q)),
-            b * dr.sqrt(m),
-            dr.sqrt(dr.maximum(0.0, 1 - dr.sqr(a) * q - dr.sqr(b) * m))
-        ),
-        mi.Vector3f(0.0)
-    )
-
 def compute_metrics(periodx, periody, angle, h, wi, wl):
 
     grtype = mi.DiffractionGratingType.Sinusoidal

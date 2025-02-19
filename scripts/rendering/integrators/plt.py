@@ -423,7 +423,6 @@ class PLTIntegrator(ADIntegrator):
             bsdf = bounce.interaction.bsdf()
             #α[bounce.active] *= bounce.bsdf_weight
             α[bounce.active] *= bsdf.wbsdf_weight(bsdf_ctx, bounce.interaction, bounce.wo).L
-            #α[bounce.active] *= bsdf.eval_diffuse_reflectance(bounce.interaction)
             # next bounce in forward path
             i -= 1
 

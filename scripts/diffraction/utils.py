@@ -65,7 +65,7 @@ def visualize_lobe_intensity(intensities, ax=None, normalize=False):
     # Loop over data dimensions and create text annotations.
     for i in range(len(lx)):
         for j in range(len(ly)):
-            text = ax.text(j, i, f"{it[i, j]:.2f}",
+            text = ax.text(j, i, f"{it[i, j]:.3f}",
                         ha="center", va="center", color="w")
 
     return ax
