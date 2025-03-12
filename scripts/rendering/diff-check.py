@@ -33,9 +33,9 @@ def main(args):
     axes[1].set_title("Image 2")
     axes[2].set_title("Difference (clamped)")
 
-    im0 = axes[0].imshow(np.mean(img1, axis=2), vmin=0, vmax=1)
-    im1 = axes[1].imshow(np.mean(img2, axis=2), vmin=0, vmax=1)
-    im2 = axes[2].imshow(np.mean(img1 - img2, axis=2), vmin=-1, vmax=1, cmap='seismic')
+    im0 = axes[0].imshow(np.mean(img1, axis=2), )#vmin=0, vmax=1)
+    im1 = axes[1].imshow(np.mean(img2, axis=2), )#vmin=0, vmax=1)
+    im2 = axes[2].imshow(np.mean(img1 - img2, axis=2), cmap='seismic')
 
     fig.suptitle(f"RMSE = {np.sqrt(np.mean(np.square(np.mean(img1 - img2, axis=2))))}")
 
