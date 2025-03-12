@@ -23,6 +23,12 @@ struct PLTBeam {
     /// @brief Stokes parameters (only in polarized modes!)
     Spectrum sp;
 
+    /**
+     * \brief Cumulative phase shift of the emitted beam. Represents the mean 
+     * phase shift of the wave packet. 
+     */
+    Float phase;
+
     /// @brief The origin of the ray
     Vector3f origin;
 
