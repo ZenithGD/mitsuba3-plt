@@ -32,7 +32,6 @@ def compute_intensity_grid(grating, wi, wl, lobes):
 
 def compute_samples(grating, wi, wl, samples, lobes) -> tuple:
 
-    print(grating.is_1D_grating())
     freqs = np.zeros((lobes, lobes))
     avg_pdf = np.zeros((lobes, lobes))
 
@@ -46,7 +45,9 @@ def compute_samples(grating, wi, wl, samples, lobes) -> tuple:
     for i in range(r.shape[0]):
         avg_pdf[r[i, 0] - lobes//2 - 1, r[i, 1] - lobes//2 - 1] += p[i, 0] * p[i, 1]
 
-    return avg_pdf / np.sum(avg_pdf), freqs
+    avg_pdf = np.where(freqs != 0, avg_pdf / freqs, 0)
+    
+    return avg_pdf, freqs
 
 def compare_samples(grating, wi, wl, samples, lobes):
     fig, (ax1, ax2, ax3) = plt.subplots(1, 3)

@@ -102,7 +102,7 @@ struct PLTBeam {
     {
         // All computations are done in the local frame of the transverse wave.
 
-        // measure how separated these directions are in the transverse plane
+        // measure how "separated" these directions are in the transverse plane
         Vector2f d1xy(d1.x(), d1.y());
         Vector2f d2xy(d2.x(), d2.y());
 

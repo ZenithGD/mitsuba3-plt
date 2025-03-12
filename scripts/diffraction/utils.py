@@ -53,6 +53,7 @@ def visualize_lobe_intensity(intensities, ax=None, normalize=False):
 
     it = intensities
     if normalize:
+        print(f"Normalizing grid by 1/{np.sum(it):2f}")
         it = it / np.sum(it)
 
     # show diffraction efficiencies

@@ -66,7 +66,11 @@ public:
         }
     }
 
+    /**
+     * Return whether the grating is only 1 dimensional or has gratings in both U and V dimensions.
+     */
     Mask is_1D_grating() { return m_inv_period.y() < dr::Epsilon<Float>; }
+
 
     Spectrum alpha(const Vector3f& wi, const Spectrum k)
     {
@@ -80,10 +84,10 @@ public:
      * \brief Given a 2D uniform sample, an inciding direction and wavelength,
      * sample a lobe and its pdf.
      * 
-     * \param sample2 
-     * \param wi 
-     * \param wl 
-     * \return std::pair<Vector2i, Vector2f> 
+     * \param sample2 The random sample to compute a lobe
+     * \param wi The incident direction
+     * \param wl The sampling wavelength (normally the hero wavelength of the beam)
+     * \return std::pair<Vector2i, Vector2f> The integer lobe index in both dimensions and its PDF
      */
     std::pair<Vector2i, Vector2f> sample_lobe(const Vector2f& sample2, const Vector3f& wi, const Float wl)
     {
@@ -99,7 +103,10 @@ public:
             }
             total += li;
             intensities[l] = li;
+
+            //std::cout << intensities[l] << std::endl;
         }
+        //std::cout << "total: " << total << std::endl;
 
         // choose lobe based on its probability
         // TODO: Study if these loops can be vectorized more with drjit.
@@ -116,14 +123,16 @@ public:
             Mask s2 = dr::abs(rn.y()) > cdf;
 
             pdf = Vector2f(
-                dr::select(s1, p, pdf.x()),
-                dr::select(s2, p, pdf.y())
+                dr::select(s1, dr::select(l == 0, p, p / 2.0f), pdf.x()),
+                dr::select(s2, dr::select(l == 0, p, p / 2.0f), pdf.y())
             );
 
             lobe = Vector2f(
                 dr::select(s1, l, lobe.x()),
                 dr::select(s2, l, lobe.y())
             );
+
+            //std::cout << pdf << "(" << pdf.x() * pdf.y() << ")" << "," << lobe << std::endl;
 
             cdf += p;
         }
@@ -132,8 +141,6 @@ public:
         //    dr::select(lobe.y() != 0, pdf.y() / 2.0f, pdf.y())
         //);
 
-        pdf /= 2.0f;
-
         lobe *= rnd_sign;
 
         return std::make_pair<Vector2i, Vector2f>(std::move(lobe), std::move(pdf));
@@ -141,8 +148,7 @@ public:
 
     /**
      * \brief Compute the outwards diffracted direction for a specific diffraction lobe
-     * 
-     * 
+     *
      * \param wi 
      * \param lobe 
      * \param wl 
