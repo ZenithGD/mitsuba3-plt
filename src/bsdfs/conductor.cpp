@@ -369,7 +369,7 @@ public:
             value = reflectance * fresnel_conductor(UnpolarizedSpectrum(cos_theta_i), eta);
         }
 
-        return GeneralizedRadiance3f(value);
+        return GeneralizedRadiance3f(value & active);
     }
 
     std::string to_string() const override {

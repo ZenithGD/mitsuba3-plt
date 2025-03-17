@@ -62,7 +62,7 @@ public:
             const Vector2f radial = dr::normalize(uv - Vector2f(0.5f, 0.5f));
             m_grating_dir = Matrix2f(
                  cos(grating_angle), sin(grating_angle),
-                -sin(grating_angle), sin(grating_angle)) * Vector2f(radial.x(),-radial.y());
+                -sin(grating_angle), cos(grating_angle)) * Vector2f(radial.x(),-radial.y());
         }
     }
 

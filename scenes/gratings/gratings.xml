@@ -45,15 +45,20 @@
 		<bsdf type="diffuse" name="bsdf"/>
 	</bsdf>
     <bsdf type="twosided" id="mat-Material.001" name="mat-Material.001">
-        <!-- <string name="type" value="rectangular" />
-        <float name="q" value="5" />
-        <float name="pitch" value="5" />
-        <integer name="lobes" value="8" />
-        <float name="gratingDirection" value="0" />
-        <float name="amplify" value="5" />
+        <bsdf type="roughgrating" name="bsdf">
+			<string name="lobe_type" value="sinusoidal" />
+			<float name="height" value="0.5" />
+			<float name="inv_period_x" value="0.4" />
+			<float name="inv_period_y" value="0.4" />
+			<float name="radial" value="0.4" />
+			<integer name="lobes" value="8" />
+			<float name="grating_angle" value="0" />
+			<!-- <float name="multiplier" value="5" /> -->
 
-        <string name="material" value="Al" /> -->
-        <bsdf type="conductor" name="bsdf"/>
+			<float name="alpha" value="0.1"/>
+		</bsdf>
+		
+        <!-- <bsdf type="conductor" name="bsdf"/> -->
     </bsdf>
 
 <!-- Emitters -->

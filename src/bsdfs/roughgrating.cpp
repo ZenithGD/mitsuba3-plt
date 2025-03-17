@@ -162,7 +162,7 @@ public:
     MI_IMPORT_BASE(BSDF, m_flags, m_components)
     MI_IMPORT_TYPES(Texture, MicrofacetDistribution)
 
-    RoughConductor(const Properties &props) : Base(props) {
+    RoughGrating(const Properties &props) : Base(props) {
         std::string material = props.string("material", "none");
         if (props.has_property("eta") || material == "none") {
             m_eta = props.texture<Texture>("eta", 0.f);
@@ -209,32 +209,41 @@ public:
             m_flags = m_flags | BSDFFlags::Anisotropic;
 
         //grating properties
-        float grating_angle = props.get<ScalarFloat>("grating_angle", 0.0);
-        Vector2f inv_period = props.get<ScalarVector2f>("inv_period", ScalarVector2f(0.45, 0.45));
-        float q = props.get<ScalarFloat>("height", 0.3);
-        uint32_t lobes = props.get<uint32_t>("lobes", 5); 
-        std::string lobe_type = props.get("lobe_type", "rectangular");
+        float m_grating_angle = props.get<ScalarFloat>("grating_angle", 0.0);
+        
+        if (props.has_property("inv_period_x") || props.has_property("inv_period_x")) {
+            if (!props.has_property("inv_period_x") || !props.has_property("inv_period_x"))
+                Throw("Grating inv inv_period: both 'inv_period_x' and 'inv_period_x' must be specified.");
+            if (props.has_property("inv_period"))
+                Throw("Grating inv inv_period: please specify"
+                      "either 'inv_period' or 'inv_period_x'/'inv_period_x'.");
+            m_inv_period_x = props.get<ScalarFloat>("inv_period_x");
+            m_inv_period_y = props.get<ScalarFloat>("inv_period_y");
+        } else {
+            m_inv_period_x = m_inv_period_y = props.get<ScalarFloat>("inv_period", 0.1f);
+        }
+        float m_height = props.get<ScalarFloat>("height", 0.3);
+        uint32_t m_lobes = props.get<uint32_t>("lobes", 5); 
+        std::string lobe_type = props.get<std::string>("lobe_type", "rectangular");
 
-        DiffractionGratingType type;
+        DiffractionGratingType m_lobe_type;
         if ( lobe_type == "rectangular" )
         {
-            type = DiffractionGratingType.Rectangular;
+            m_lobe_type = DiffractionGratingType::Rectangular;
         }
         else if ( lobe_type == "linear" )
         {
-            type = DiffractionGratingType.Linear;
+            m_lobe_type = DiffractionGratingType::Linear;
         }
         else if ( lobe_type == "sinusoidal" )
         {
-            type = DiffractionGratingType.Sinusoidal;
+            m_lobe_type = DiffractionGratingType::Sinusoidal;
         }
         else {
             Throw("Grating surface type %s not supported!", lobe_type);
         }
 
-        float multiplier = props.get("multiplier", 1.0);
-
-        m_grating = new DiffractionGrating(grating_angle, inv_period, q, lobes, type, multiplier);
+        m_multiplier = props.get("multiplier", 1.0);
 
         m_components.clear();
         m_components.push_back(m_flags);
@@ -576,10 +585,25 @@ private:
     /// Specular reflectance component
     ref<Texture> m_specular_reflectance;
 
-    /// Physical grating model for the grated microfacets
-    ref<DiffractionGrating> grating;
+    /// Physical grating model parameters
+
+    /// @brief Period of the grating in um.
+    float m_inv_period_x, m_inv_period_y;
+
+    /// @brief Height of the grating in um.
+    float height;
+
+    /// @brief Angle of the grating.
+    float grating_angle;
+
+    /// @brief Type of grating phase function.
+    DiffractionGratingType m_lobe_type;
+
+    /// @brief Whether the grating rotates w.r.t the UV center (0.5, 0.5).
+    bool radial;
+
 };
 
-MI_IMPLEMENT_CLASS_VARIANT(RoughConductor, BSDF)
-MI_EXPORT_PLUGIN(RoughConductor, "Rough grating")
+MI_IMPLEMENT_CLASS_VARIANT(RoughGrating, BSDF)
+MI_EXPORT_PLUGIN(RoughGrating, "Rough grating")
 NAMESPACE_END(mitsuba)

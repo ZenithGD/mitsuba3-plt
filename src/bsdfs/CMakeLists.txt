@@ -22,6 +22,9 @@ add_plugin(circular             circular.cpp)
 add_plugin(measured_polarized   measured_polarized.cpp)
 add_plugin(pplastic             pplastic.cpp)
 add_plugin(principled           principled.cpp)
-add_plugin(principledthin       principledthin.cpp)
+add_plugin(principledthin       principledthin.cpp) 
+
+# new plugins
+add_plugin(roughgrating         roughgrating.cpp)
 
 set(MI_PLUGIN_TARGETS "${MI_PLUGIN_TARGETS}" PARENT_SCOPE)
