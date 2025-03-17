@@ -416,17 +416,17 @@ public:
         Float t_i = 1.f - r_i;
 
         // Lobe selection
-        Mask selected_r;
+        Mask selected_r = true;
         Float wpdf = 1.f;
         if (likely(has_reflection && has_transmission)) {
-            selected_r = dr::dot(si.n, wo) < 0.0f;
+            selected_r = Frame3f::cos_theta(wo) > 0.0f;
             wpdf = dr::detach(dr::select(selected_r, r_i, t_i));
         } else {
             if (has_reflection || has_transmission) {
                 selected_r = Mask(has_reflection) && active;
                 wpdf     = 1.f;
             } else {
-                return GeneralizedRadiance3f(1.0f);
+                return GeneralizedRadiance3f(0.0f);
             }
         }
         Mask selected_t = !selected_r && active;
@@ -437,16 +437,90 @@ public:
         if (m_specular_transmittance)
             transmittance = m_specular_transmittance->eval(si, selected_t);
 
-        Spectrum weight(0.f);
-        if constexpr (is_polarized_v<Spectrum>) {
-            /* Due to the coordinate system rotations for polarization-aware
-            pBSDFs below we need to know the propagation direction of light.
-            In the following, light arrives along `-wo_hat` and leaves along
-            `+wi_hat`. */
+        Spectrum weight(1.f);
+        // if constexpr (is_polarized_v<Spectrum>) {
+        //     /* Due to the coordinate system rotations for polarization-aware
+        //     pBSDFs below we need to know the propagation direction of light.
+        //     In the following, light arrives along `-wo_hat` and leaves along
+        //     `+wi_hat`. */
+        //     Vector3f wo_hat =
+        //                  ctx.mode == TransportMode::Radiance ? wo : si.wi,
+        //              wi_hat =
+        //                  ctx.mode == TransportMode::Radiance ? si.wi : wo;
+
+        //     /* BSDF weights are Mueller matrices now. */
+        //     Float cos_theta_o_hat = Frame3f::cos_theta(wo_hat);
+        //     Spectrum R            = mueller::specular_reflection(
+        //                  UnpolarizedSpectrum(cos_theta_o_hat),
+        //                  UnpolarizedSpectrum(m_eta)),
+        //              T = mueller::specular_transmission(
+        //                  UnpolarizedSpectrum(cos_theta_o_hat),
+        //                  UnpolarizedSpectrum(m_eta));
+
+        //     if (likely(has_reflection && has_transmission)) {
+        //         weight = dr::select(selected_r, R, T) / wpdf;
+        //     } else if (has_reflection || has_transmission) {
+        //         weight = has_reflection ? R : T;
+        //         wpdf = 1.f;
+        //     }
+
+        //     /* The Stokes reference frame vector of this matrix lies
+        //     perpendicular to the plane of reflection. */
+        //     Vector3f n(0, 0, 1);
+        //     Vector3f s_axis_in  = dr::cross(n, -wo_hat);
+        //     Vector3f s_axis_out = dr::cross(n, wi_hat);
+
+        //     // Singularity when the input & output are collinear with the normal
+        //     Mask collinear = dr::all(s_axis_in == Vector3f(0));
+        //     s_axis_in      = dr::select(collinear, Vector3f(1, 0, 0),
+        //                                 dr::normalize(s_axis_in));
+        //     s_axis_out     = dr::select(collinear, Vector3f(1, 0, 0),
+        //                                 dr::normalize(s_axis_out));
+
+        //     /* Rotate in/out reference vector of `weight` s.t. it aligns with
+        //     the implicit Stokes bases of -wo_hat & wi_hat. */
+        //     weight = mueller::rotate_mueller_basis(
+        //         weight, -wo_hat, s_axis_in, mueller::stokes_basis(-wo_hat),
+        //         wi_hat, s_axis_out, mueller::stokes_basis(wi_hat));
+
+        //     if (dr::any_or<true>(selected_r))
+        //         weight[selected_r] *= mueller::absorber(reflectance);
+
+        //     if (dr::any_or<true>(selected_t))
+        //         weight[selected_t] *= mueller::absorber(transmittance);
+
+        // } else {
+        //     if (likely(has_reflection && has_transmission)) {
+        //         weight = 1.f;
+        //         /* For differentiable variants, lobe choice has to be detached
+        //         to avoid bias. Sampling weights should be computed accordingly.
+        //       */
+        //         if constexpr (dr::is_diff_v<Float>) {
+        //             if (dr::grad_enabled(r_i)) {
+        //                 Float r_diff =
+        //                     dr::replace_grad(Float(1.f), r_i / dr::detach(r_i));
+        //                 Float t_diff =
+        //                     dr::replace_grad(Float(1.f), t_i / dr::detach(t_i));
+        //                 weight = dr::select(selected_r, r_diff, t_diff);
+        //             }
+        //         }
+        //     } else if (has_reflection || has_transmission) {
+        //         weight = has_reflection ? r_i : t_i;
+        //     }
+
+        //     if (dr::any_or<true>(selected_r))
+        //         weight[selected_r] *= reflectance;
+
+        //     if (dr::any_or<true>(selected_t))
+        //         weight[selected_t] *= transmittance;
+        // }
+
+        if constexpr ( is_polarized_v<Spectrum> )
+        {
             Vector3f wo_hat =
-                         ctx.mode == TransportMode::Radiance ? wo : si.wi,
+                         ctx.mode == TransportMode::Radiance ? si.wi : wo,
                      wi_hat =
-                         ctx.mode == TransportMode::Radiance ? si.wi : wo;
+                         ctx.mode == TransportMode::Radiance ? wo : si.wi;
 
             /* BSDF weights are Mueller matrices now. */
             Float cos_theta_o_hat = Frame3f::cos_theta(wo_hat);
@@ -459,55 +533,38 @@ public:
 
             if (likely(has_reflection && has_transmission)) {
                 weight = dr::select(selected_r, R, T) / wpdf;
+
+                // hacky nan check and fix
+                weight = dr::select(weight > 1.0f, weight, 1.0);
             } else if (has_reflection || has_transmission) {
                 weight = has_reflection ? R : T;
                 wpdf = 1.f;
             }
 
-            /* The Stokes reference frame vector of this matrix lies
-            perpendicular to the plane of reflection. */
-            Vector3f n(0, 0, 1);
-            Vector3f s_axis_in  = dr::cross(n, -wo_hat);
-            Vector3f s_axis_out = dr::cross(n, wi_hat);
-
-            // Singularity when the input & output are collinear with the normal
-            Mask collinear = dr::all(s_axis_in == Vector3f(0));
-            s_axis_in      = dr::select(collinear, Vector3f(1, 0, 0),
-                                        dr::normalize(s_axis_in));
-            s_axis_out     = dr::select(collinear, Vector3f(1, 0, 0),
-                                        dr::normalize(s_axis_out));
-
-            /* Rotate in/out reference vector of `weight` s.t. it aligns with
-            the implicit Stokes bases of -wo_hat & wi_hat. */
-            weight = mueller::rotate_mueller_basis(
-                weight, -wo_hat, s_axis_in, mueller::stokes_basis(-wo_hat),
-                wi_hat, s_axis_out, mueller::stokes_basis(wi_hat));
+                /* The Stokes reference frame vector of this matrix lies
+                perpendicular to the plane of reflection. */
+                Vector3f n(0, 0, 1);
+                Vector3f s_axis_in  = dr::cross(n, -wo_hat);
+                Vector3f s_axis_out = dr::cross(n, wi_hat);
+                // Singularity when the input & output are collinear with the normal
+                Mask collinear = dr::all(s_axis_in == Vector3f(0));
+                s_axis_in      = dr::select(collinear, Vector3f(1, 0, 0),
+                                            dr::normalize(s_axis_in));
+                s_axis_out     = dr::select(collinear, Vector3f(1, 0, 0),
+                                            dr::normalize(s_axis_out));
+                /* Rotate in/out reference vector of `weight` s.t. it aligns with
+                the implicit Stokes bases of -wo_hat & wi_hat. */
+                weight = mueller::rotate_mueller_basis(
+                    weight, -wo_hat, s_axis_in, mueller::stokes_basis(-wo_hat),
+                    wi_hat, s_axis_out, mueller::stokes_basis(wi_hat));
 
             if (dr::any_or<true>(selected_r))
                 weight[selected_r] *= mueller::absorber(reflectance);
 
             if (dr::any_or<true>(selected_t))
                 weight[selected_t] *= mueller::absorber(transmittance);
-
-        } else {
-            if (likely(has_reflection && has_transmission)) {
-                weight = 1.f;
-                /* For differentiable variants, lobe choice has to be detached
-                to avoid bias. Sampling weights should be computed accordingly.
-              */
-                if constexpr (dr::is_diff_v<Float>) {
-                    if (dr::grad_enabled(r_i)) {
-                        Float r_diff =
-                            dr::replace_grad(Float(1.f), r_i / dr::detach(r_i));
-                        Float t_diff =
-                            dr::replace_grad(Float(1.f), t_i / dr::detach(t_i));
-                        weight = dr::select(selected_r, r_diff, t_diff);
-                    }
-                }
-            } else if (has_reflection || has_transmission) {
-                weight = has_reflection ? r_i : t_i;
-            }
-
+        }
+        else {
             if (dr::any_or<true>(selected_r))
                 weight[selected_r] *= reflectance;
 
@@ -515,15 +572,15 @@ public:
                 weight[selected_t] *= transmittance;
         }
 
-        if (dr::any_or<true>(selected_t)) {
-            /* For transmission, radiance must be scaled to account for the
-            solid angle compression that occurs when crossing the interface. */
-            Float factor =
-                (ctx.mode == TransportMode::Radiance) ? eta_ti : Float(1.f);
-            weight[selected_t] *= dr::square(factor);
-        }
+        // if (dr::any_or<true>(selected_t)) {
+        //     /* For transmission, radiance must be scaled to account for the
+        //     solid angle compression that occurs when crossing the interface. */
+        //     Float factor =
+        //         (ctx.mode == TransportMode::Radiance) ? eta_ti : Float(1.f);
+        //     weight[selected_t] *= dr::square(factor);
+        // }
 
-        return GeneralizedRadiance3f(weight & active);
+        return GeneralizedRadiance3f(weight);
     }
 
     Spectrum eval(const BSDFContext & /* ctx */,

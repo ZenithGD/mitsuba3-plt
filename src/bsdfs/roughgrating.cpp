@@ -6,6 +6,8 @@
 #include <mitsuba/render/microfacet.h>
 #include <mitsuba/render/texture.h>
 
+#include <mitsuba/plt/diffractiongrating.h>
+
 NAMESPACE_BEGIN(mitsuba)
 
 /**!
@@ -155,7 +157,7 @@ implementation of the underlying Fresnel equations.
  */
 
 template <typename Float, typename Spectrum>
-class RoughConductor final : public BSDF<Float, Spectrum> {
+class RoughGrating final : public BSDF<Float, Spectrum> {
 public:
     MI_IMPORT_BASE(BSDF, m_flags, m_components)
     MI_IMPORT_TYPES(Texture, MicrofacetDistribution)
@@ -201,9 +203,38 @@ public:
         if (props.has_property("specular_reflectance"))
             m_specular_reflectance = props.texture<Texture>("specular_reflectance", 1.f);
 
+        
         m_flags = BSDFFlags::GlossyReflection | BSDFFlags::FrontSide;
         if (m_alpha_u != m_alpha_v)
             m_flags = m_flags | BSDFFlags::Anisotropic;
+
+        //grating properties
+        float grating_angle = props.get<ScalarFloat>("grating_angle", 0.0);
+        Vector2f inv_period = props.get<ScalarVector2f>("inv_period", ScalarVector2f(0.45, 0.45));
+        float q = props.get<ScalarFloat>("height", 0.3);
+        uint32_t lobes = props.get<uint32_t>("lobes", 5); 
+        std::string lobe_type = props.get("lobe_type", "rectangular");
+
+        DiffractionGratingType type;
+        if ( lobe_type == "rectangular" )
+        {
+            type = DiffractionGratingType.Rectangular;
+        }
+        else if ( lobe_type == "linear" )
+        {
+            type = DiffractionGratingType.Linear;
+        }
+        else if ( lobe_type == "sinusoidal" )
+        {
+            type = DiffractionGratingType.Sinusoidal;
+        }
+        else {
+            Throw("Grating surface type %s not supported!", lobe_type);
+        }
+
+        float multiplier = props.get("multiplier", 1.0);
+
+        m_grating = new DiffractionGrating(grating_angle, inv_period, q, lobes, type, multiplier);
 
         m_components.clear();
         m_components.push_back(m_flags);
@@ -247,7 +278,7 @@ public:
         Normal3f m;
         std::tie(m, bs.pdf) = distr.sample(si.wi, sample2);
 
-        // Perfect specular reflection based on the microfacet normal
+        // Diffract along the normal
         bs.wo = reflect(si.wi, m);
         bs.eta = 1.f;
         bs.sampled_component = 0;
@@ -517,7 +548,7 @@ public:
 
     std::string to_string() const override {
         std::ostringstream oss;
-        oss << "RoughConductor[" << std::endl
+        oss << "RoughGrating[" << std::endl
             << "  distribution = " << m_type << "," << std::endl
             << "  sample_visible = " << m_sample_visible << "," << std::endl
             << "  alpha_u = " << string::indent(m_alpha_u) << "," << std::endl
@@ -544,8 +575,11 @@ private:
     ref<Texture> m_k;
     /// Specular reflectance component
     ref<Texture> m_specular_reflectance;
+
+    /// Physical grating model for the grated microfacets
+    ref<DiffractionGrating> grating;
 };
 
 MI_IMPLEMENT_CLASS_VARIANT(RoughConductor, BSDF)
-MI_EXPORT_PLUGIN(RoughConductor, "Rough conductor")
+MI_EXPORT_PLUGIN(RoughConductor, "Rough grating")
 NAMESPACE_END(mitsuba)

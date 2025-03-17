@@ -15,10 +15,22 @@ def main(args):
     # create diffuse dispersion diagram
     angles, disp = diffuse_dispersion(args)
 
-    plot_dispersion(angles, disp)
+    plot_dispersion(angles, disp, show_sp=mi.is_polarized, title="Diffuse importance")
+
+     # create conductor dispersion diagram
+    angles, disp = conductor_dispersion(args)
+
+    plot_dispersion(angles, disp, show_sp=mi.is_polarized, title="Conductor importance")
+
+    # create conductor dispersion diagram
+    angles, disp = dielectric_dispersion(args)
+
+    plot_dispersion(angles, disp, show_sp=mi.is_polarized, show_360=True, title="Dielectric importance")
 
     # create grating dispersion diagram
     grating_dispersion(args)
+
+    plt.show()
 
 if __name__ == '__main__':
     # initialize variant
