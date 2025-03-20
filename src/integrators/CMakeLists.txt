@@ -7,6 +7,7 @@ add_plugin(moment     moment.cpp)
 add_plugin(path       path.cpp)
 add_plugin(ptracer    ptracer.cpp)
 add_plugin(stokes     stokes.cpp)
+add_plugin(stokes_fw  stokes_fw.cpp)
 add_plugin(volpath    volpath.cpp)
 add_plugin(volpathmis volpathmis.cpp)
 

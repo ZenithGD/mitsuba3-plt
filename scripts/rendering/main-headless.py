@@ -31,7 +31,7 @@ def main(args):
 
     #render scene using the desired integrator
     integrator = mi.load_dict({
-        "type": "stokes",
+        "type": "stokes_fw",
         "nested" : {
             "type" : args.integrator,
             "max_depth": 12,

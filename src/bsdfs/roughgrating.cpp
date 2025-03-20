@@ -6,6 +6,7 @@
 #include <mitsuba/render/microfacet.h>
 #include <mitsuba/render/texture.h>
 
+#include <mitsuba/plt/fwd.h>
 #include <mitsuba/plt/diffractiongrating.h>
 
 NAMESPACE_BEGIN(mitsuba)
@@ -161,6 +162,7 @@ class RoughGrating final : public BSDF<Float, Spectrum> {
 public:
     MI_IMPORT_BASE(BSDF, m_flags, m_components)
     MI_IMPORT_TYPES(Texture, MicrofacetDistribution)
+    MI_IMPORT_PLT_BASIC_TYPES() 
 
     RoughGrating(const Properties &props) : Base(props) {
         std::string material = props.string("material", "none");
@@ -209,7 +211,7 @@ public:
             m_flags = m_flags | BSDFFlags::Anisotropic;
 
         //grating properties
-        float m_grating_angle = props.get<ScalarFloat>("grating_angle", 0.0);
+        m_grating_angle = props.get<ScalarFloat>("grating_angle", 0.0);
         
         if (props.has_property("inv_period_x") || props.has_property("inv_period_x")) {
             if (!props.has_property("inv_period_x") || !props.has_property("inv_period_x"))
@@ -222,11 +224,11 @@ public:
         } else {
             m_inv_period_x = m_inv_period_y = props.get<ScalarFloat>("inv_period", 0.1f);
         }
-        float m_height = props.get<ScalarFloat>("height", 0.3);
-        uint32_t m_lobes = props.get<uint32_t>("lobes", 5); 
+        m_height = props.get<ScalarFloat>("height", 0.3);
+        m_lobes = props.get<uint32_t>("lobes", 5); 
         std::string lobe_type = props.get<std::string>("lobe_type", "rectangular");
 
-        DiffractionGratingType m_lobe_type;
+        DiffractionGratingType m_lobe_type = DiffractionGratingType::Rectangular;
         if ( lobe_type == "rectangular" )
         {
             m_lobe_type = DiffractionGratingType::Rectangular;
@@ -243,6 +245,7 @@ public:
             Throw("Grating surface type %s not supported!", lobe_type);
         }
 
+        m_radial = props.get<bool>("radial", false);
         m_multiplier = props.get("multiplier", 1.0);
 
         m_components.clear();
@@ -260,6 +263,39 @@ public:
         }
         callback->put_object("eta", m_eta.get(), ParamFlags::Differentiable | ParamFlags::Discontinuous);
         callback->put_object("k",   m_k.get(),   ParamFlags::Differentiable | ParamFlags::Discontinuous);
+    }
+
+    std::tuple<Vector3f, Float, Mask> sample_diffract(
+        const Vector2f& sample2,
+        const Vector2f& uv, 
+        const Vector3f& wi, 
+        const Vector3f& n,
+        const Float& wl) const
+    {
+        // new frame along normal to compute diffracted direction
+        // in that frame
+        Frame3f normalFrame(n);
+        Vector3f wi_local = normalFrame.to_local(wi);
+        std::cout << wi << ";" << wi_local << std::endl;
+
+        // sample lobe and diffract in local frame
+        DiffractionGrating3f grating(
+            m_grating_angle,
+            Vector2f(m_inv_period_x, m_inv_period_y),
+            m_height,
+            m_lobes,
+            m_lobe_type,
+            m_multiplier, 
+            uv);
+
+        auto [lobe, pdf_xy] = grating.sample_lobe(sample2, wi_local, wl * 1e-3f);
+        std::cout << lobe << std::endl;
+
+        auto [wo_local, active] = grating.diffract(wi_local, lobe, wl * 1e-3f);
+        std::cout << wo_local << std::endl;
+        
+        Vector3f wo = normalFrame.to_world(wo_local);
+        return { wo, pdf_xy.x() * pdf_xy.y(), active };
     }
 
     std::pair<BSDFSample3f, Spectrum> sample(const BSDFContext &ctx,
@@ -288,7 +324,18 @@ public:
         std::tie(m, bs.pdf) = distr.sample(si.wi, sample2);
 
         // Diffract along the normal
-        bs.wo = reflect(si.wi, m);
+        // The sampled lobe pdf must be provided as well
+        Float grating_pdf;
+        Mask active_diffracted;
+        Vector3f reflection_dir = reflect(si.wi, m);
+        // TODO: loop for each wavelength
+        std::tie(bs.wo, grating_pdf, active_diffracted) = sample_diffract(
+            sample2, 
+            si.uv, 
+            si.wi, 
+            m,
+            // temporary wavelength value for now
+            400.0f);
         bs.eta = 1.f;
         bs.sampled_component = 0;
         bs.sampled_type = +BSDFFlags::GlossyReflection;
@@ -296,15 +343,17 @@ public:
         // Ensure that this is a valid sample
         active &= (bs.pdf != 0.f) && Frame3f::cos_theta(bs.wo) > 0.f;
 
+        bs.pdf *= grating_pdf;
+
         UnpolarizedSpectrum weight;
         if (likely(m_sample_visible))
-            weight = distr.smith_g1(bs.wo, m);
+            weight = distr.smith_g1(reflection_dir, m);
         else
-            weight = distr.G(si.wi, bs.wo, m) * dr::dot(si.wi, m) /
+            weight = distr.G(si.wi, reflection_dir, m) * dr::dot(si.wi, m) /
                      (cos_theta_i * Frame3f::cos_theta(m));
 
         // Jacobian of the half-direction mapping
-        bs.pdf /= 4.f * dr::dot(bs.wo, m);
+        bs.pdf /= 4.f * dr::dot(reflection_dir, m);
 
         // Evaluate the Fresnel factor
         dr::Complex<UnpolarizedSpectrum> eta_c(m_eta->eval(si, active),
@@ -316,8 +365,8 @@ public:
                pBSDFs below we need to know the propagation direction of light.
                In the following, light arrives along `-wo_hat` and leaves along
                `+wi_hat`. */
-            Vector3f wo_hat = ctx.mode == TransportMode::Radiance ? bs.wo : si.wi,
-                     wi_hat = ctx.mode == TransportMode::Radiance ? si.wi : bs.wo;
+            Vector3f wo_hat = ctx.mode == TransportMode::Radiance ? reflection_dir: si.wi,
+                     wi_hat = ctx.mode == TransportMode::Radiance ? si.wi : reflection_dir;
 
             // Mueller matrix for specular reflection.
             F = mueller::specular_reflection(UnpolarizedSpectrum(dot(wo_hat, m)), eta_c);
@@ -347,7 +396,7 @@ public:
         if (m_specular_reflectance)
             weight *= m_specular_reflectance->eval(si, active);
 
-        return { bs, (F * weight) & active };
+        return { bs, (F * weight * m_multiplier) & active };
     }
 
     Spectrum eval(const BSDFContext &ctx, const SurfaceInteraction3f &si,
@@ -591,16 +640,22 @@ private:
     float m_inv_period_x, m_inv_period_y;
 
     /// @brief Height of the grating in um.
-    float height;
+    float m_height;
 
     /// @brief Angle of the grating.
-    float grating_angle;
+    float m_grating_angle;
 
     /// @brief Type of grating phase function.
     DiffractionGratingType m_lobe_type;
 
+    /// @brief Total number of diffraction lobes. Should be an odd number.
+    uint32_t m_lobes;
+
     /// @brief Whether the grating rotates w.r.t the UV center (0.5, 0.5).
-    bool radial;
+    bool m_radial;
+
+    /// @brief Scaling factor for outgoing radiance.
+    float m_multiplier;
 
 };
 

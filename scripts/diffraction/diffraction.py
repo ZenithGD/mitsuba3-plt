@@ -41,10 +41,12 @@ def compute_metrics(periodx, periody, angle, h, wi, wl):
     print(lobes_xv, lobes_yv)
         
     start = time.perf_counter_ns()
-    ddiff = grating.diffract(
+    ddiff, active = grating.diffract(
         wi, 
         lobevec, 
         wl)
+    
+    ddiff[~active] = mi.Vector3f(0.0)
 
     print(np.array(ddiff))
     # print(np.array(lobevec))

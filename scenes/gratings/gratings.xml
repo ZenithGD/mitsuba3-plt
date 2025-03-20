@@ -2,7 +2,7 @@
 
 <!-- Defaults, these can be set via the command line: -Darg=value -->
 
-	<default name="spp" value="512"/>
+	<default name="spp" value="64"/>
 	<default name="resx" value="500"/>
 	<default name="resy" value="500"/>
 
@@ -47,15 +47,15 @@
     <bsdf type="twosided" id="mat-Material.001" name="mat-Material.001">
         <bsdf type="roughgrating" name="bsdf">
 			<string name="lobe_type" value="sinusoidal" />
-			<float name="height" value="0.5" />
+			<float name="height" value="0.05" />
 			<float name="inv_period_x" value="0.4" />
 			<float name="inv_period_y" value="0.4" />
-			<float name="radial" value="0.4" />
-			<integer name="lobes" value="8" />
+			<boolean name="radial" value="true" />
+			<integer name="lobes" value="9" />
 			<float name="grating_angle" value="0" />
-			<!-- <float name="multiplier" value="5" /> -->
+			<float name="multiplier" value="0.1" />
 
-			<float name="alpha" value="0.1"/>
+			<float name="alpha" value="0.02"/>
 		</bsdf>
 		
         <!-- <bsdf type="conductor" name="bsdf"/> -->

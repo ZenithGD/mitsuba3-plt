@@ -136,10 +136,6 @@ public:
 
             cdf += p;
         }
-        //pdf = Vector2f(
-        //    dr::select(lobe.x() != 0, pdf.x() / 2.0f, pdf.x()),
-        //    dr::select(lobe.y() != 0, pdf.y() / 2.0f, pdf.y())
-        //);
 
         lobe *= rnd_sign;
 
@@ -154,7 +150,7 @@ public:
      * \param wl 
      * \return Vector3f 
      */
-    Vector3f diffract(const Vector3f& wi, const Vector2i& lobe, const Float wl) {
+    std::pair<Vector3f, Mask> diffract(const Vector3f& wi, const Vector2i& lobe, const Float wl) {
         Vector2f wi_xy = Vector2f(wi.x(), wi.y()), wi_zz(wi.z(), wi.z());
         const Vector2f p = dr::sqrt(dr::square(wi_xy) + dr::square(wi_zz));
         const Vector2f sin_i(
@@ -166,18 +162,16 @@ public:
         const Float m = (dr::square(a) - 1) / (dr::square(a * b) - 1);
         const Float q = 1 - dr::square(b) * m;
 
-        return dr::select(
-            // condition
-            dr::all(dr::abs(sin_o) <= 1.0f),
-            // if true
+        return {
+            // diffracted directions
             Vector3f(       
                 a * dr::sqrt(dr::maximum(0.0f, q)), 
                 b * dr::sqrt(m),
                 dr::sqrt(dr::maximum(0.0f, 1 - dr::square(a) * q - dr::square(b) * m))
             ),
-            // if false
-            Vector3f(0.0f)
-        );
+            // active mask
+            dr::all(dr::abs(sin_o) <= 1.0f)
+        };
     }
 
     Float lobe_intensity(const Vector2i& lobe, const Vector3f& wi, const Float wl)

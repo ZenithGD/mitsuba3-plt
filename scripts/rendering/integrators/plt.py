@@ -101,14 +101,14 @@ class PLTIntegrator(ADIntegrator):
             sample_1 = sampler.next_1d()
             sample_2 = sampler.next_2d()
 
-            bsdf_sample, bsdf_weight = bsdf.sample(
+            bsdf_sample, bsdf_weight = bsdf.wbsdf_sample(
                 bsdf_ctx, si, sample_1, sample_2)
              
             # get information of the sampled interaction and update ray
             ray = si.spawn_ray(si.to_world(bsdf_sample.wo))
             pdf = bsdf_sample.pdf
             path_pdf *= pdf
-            α[active_next] *= bsdf_weight
+            α[active_next] = bsdf_weight.L * α[active_next]
             η[active_next] = bsdf_sample.eta
             
             # 4.4 update current vertex information for next iteration
@@ -139,7 +139,7 @@ class PLTIntegrator(ADIntegrator):
                 bsdf_flags=bsdf_sample.sampled_type,
                 rr_thp=rcp_thp,
                 throughput=α,
-                bsdf_weight=bsdf_weight,
+                bsdf_weight=bsdf_weight.L,
                 is_emitter=is_emitter,
                 last_nd_pdf=last_nd_pdf,
                 active=active
@@ -270,7 +270,7 @@ class PLTIntegrator(ADIntegrator):
             wavelength, 
             bounce_idx)
 
-        return α * bsdf_val * em_weight * mis_em
+        return em_weight * mis_em * bsdf_val * α
     
     @dr.syntax
     def source_PLT_beam(self,  
@@ -280,8 +280,6 @@ class PLTIntegrator(ADIntegrator):
                         dir : mi.Vector3f,
                         is_environment : mi.Bool,
                         active : mi.Bool):
-        
-        #solid_angle = dr.minimum(solid_angle, )
 
         beam = dr.select()
 
@@ -339,7 +337,7 @@ class PLTIntegrator(ADIntegrator):
         )
 
         # Emitted intensity with MIS weight
-        Lem = ds.emitter.eval(bounce.interaction) * mis_bsdf
+        Lem = mis_bsdf * ds.emitter.eval(bounce.interaction)
 
         # 2. Source ray based on hit type (env/area)
         is_environment = ds.emitter.is_environment()
@@ -358,7 +356,7 @@ class PLTIntegrator(ADIntegrator):
             wavelength, 
             bounce_idx)
             
-        Li = Lem * α
+        Li = α * Lem
 
         # 4. Measure beam at sensor
 
@@ -421,8 +419,8 @@ class PLTIntegrator(ADIntegrator):
 
             # Propagate beam and evolve distribution (TODO)
             bsdf = bounce.interaction.bsdf()
-            #α[bounce.active] *= bounce.bsdf_weight
-            α[bounce.active] *= bsdf.wbsdf_weight(bsdf_ctx, bounce.interaction, bounce.wo).L
+            α[bounce.active] = bsdf.wbsdf_weight(bsdf_ctx, bounce.interaction, bounce.wo).L * α[bounce.active]
+            
             # next bounce in forward path
             i -= 1
 
