@@ -424,7 +424,7 @@ class PLTIntegrator(ADIntegrator):
             # next bounce in forward path
             i -= 1
 
-        return α 
+        return α
 
     @dr.syntax
     def __measure(self,

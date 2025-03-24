@@ -108,7 +108,7 @@ def roughconductor_dispersion(args, n = 400):
 
     wo = sph_to_dir(theta_o, 0.0)
 
-    ctx = mi.BSDFContext(mi.TransportMode.Impotance)
+    ctx = mi.BSDFContext(mi.TransportMode.Importance)
     val, pdf = bsdf.eval_pdf(ctx, si, wo)
     val = val
 

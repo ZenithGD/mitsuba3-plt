@@ -100,12 +100,13 @@ public:
                with the implicit Stokes frame used for the ray direction. Apply
                one last rotation here s.t. it aligns with the sensor's x-axis. */
             auto sensor = scene->sensors()[0];
-            Vector3f current_basis = mueller::stokes_basis(-ray.d);
+            Vector3f current_basis = mueller::stokes_basis(ray.d);
             Vector3f vertical = sensor->world_transform() * Vector3f(0.f, 1.f, 0.f);
             Vector3f target_basis = dr::cross(ray.d, vertical);
-            spec = mueller::rotate_stokes_basis(-ray.d,
-                                                 current_basis,
-                                                 target_basis) * spec;
+            spec = mueller::rotate_stokes_basis(ray.d,
+                                                current_basis,
+                                                target_basis) * spec;
+
 
             for (int i = 0; i < 4; ++i) {
                 Color3f rgb;
@@ -147,5 +148,5 @@ private:
 };
 
 MI_IMPLEMENT_CLASS_VARIANT(StokesForwardIntegrator, SamplingIntegrator)
-MI_EXPORT_PLUGIN(StokesForwardIntegrator, "Stokes integrator");
+MI_EXPORT_PLUGIN(StokesForwardIntegrator, "Stokes Forward Integrator");
 NAMESPACE_END(mitsuba)

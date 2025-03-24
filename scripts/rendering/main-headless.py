@@ -31,11 +31,11 @@ def main(args):
 
     #render scene using the desired integrator
     integrator = mi.load_dict({
-        "type": "stokes_fw",
+        "type": "stokes_fw" if args.integrator == "plt" else "stokes",
         "nested" : {
             "type" : args.integrator,
-            "max_depth": 12,
-            "rr_depth": 50
+            "max_depth": 7,
+            "rr_depth": 25
         }
     })
     # if args.integrator == "plt":
@@ -53,6 +53,7 @@ def main(args):
     #             "rr_depth": 50
     #         }
     #     })
+    print(integrator)
 
     print("Rendering...")
     start = time.perf_counter_ns()
