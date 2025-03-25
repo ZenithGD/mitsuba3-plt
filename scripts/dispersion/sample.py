@@ -7,8 +7,8 @@ from utils import *
 
 def sample_wbsdf(bsdf : mi.BSDF, sample_context):
     
-    sample = np.random.rand(sample_context["nsamples"])
-    sample2 = np.random.rand(2, sample_context["nsamples"])
+    sample = np.random.rand()
+    sample2 = np.random.rand(2)
 
     ctx = mi.BSDFContext(mi.TransportMode.Importance)
     si = mi.SurfaceInteraction3f()
@@ -17,9 +17,12 @@ def sample_wbsdf(bsdf : mi.BSDF, sample_context):
     si.wi = sample_context["wi"]
     si.sh_frame = mi.Frame3f(si.n)
 
-    samples, gr = bsdf.wbsdf_sample(ctx, si, sample, sample2)
+    L = []
+    for i in range(sample_context["nsamples"]):
+        samples, gr = bsdf.wbsdf_sample(ctx, si, sample, sample2)
+        L.append(np.array(gr.L))
 
-    return samples, mi.unpolarized_spectrum(gr.L)
+    return samples, mi.unpolarized_spectrum(np.array(L))
 
 def plot_samples(samples : mi.BSDFSample3f, weights : mi.UnpolarizedSpectrum, sample_context):
     

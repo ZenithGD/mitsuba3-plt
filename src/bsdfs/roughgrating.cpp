@@ -5,6 +5,7 @@
 #include <mitsuba/render/ior.h>
 #include <mitsuba/render/microfacet.h>
 #include <mitsuba/render/texture.h>
+#include <mitsuba/render/sampler.h>
 
 #include <mitsuba/plt/fwd.h>
 #include <mitsuba/plt/diffractiongrating.h>
@@ -161,7 +162,7 @@ template <typename Float, typename Spectrum>
 class RoughGrating final : public BSDF<Float, Spectrum> {
 public:
     MI_IMPORT_BASE(BSDF, m_flags, m_components)
-    MI_IMPORT_TYPES(Texture, MicrofacetDistribution)
+    MI_IMPORT_TYPES(Texture, MicrofacetDistribution, Sampler)
     MI_IMPORT_PLT_BASIC_TYPES() 
 
     RoughGrating(const Properties &props) : Base(props) {
@@ -248,6 +249,23 @@ public:
         m_radial = props.get<bool>("radial", false);
         m_multiplier = props.get("multiplier", 1.0);
 
+        // read sampler
+        for (auto &[name, obj] : props.objects(false)) {
+            auto *sampler = dynamic_cast<Sampler *>(obj.get());
+    
+            if (sampler) {
+                if (m_lobe_sampler)
+                    Throw("Only one sampler can be specified per grating.");
+                m_lobe_sampler = sampler;
+                props.mark_queried(name);
+            }
+        }
+
+        if ( !m_lobe_sampler )
+        {
+            Throw("Invalid sampler!");
+        }
+
         m_components.clear();
         m_components.push_back(m_flags);
     }
@@ -276,7 +294,7 @@ public:
         // in that frame
         Frame3f normalFrame(n);
         Vector3f wi_local = normalFrame.to_local(wi);
-        std::cout << wi << ";" << wi_local << std::endl;
+        // std::cout << wi << ";" << wi_local << std::endl;
 
         // sample lobe and diffract in local frame
         DiffractionGrating3f grating(
@@ -288,11 +306,13 @@ public:
             m_multiplier, 
             uv);
 
-        auto [lobe, pdf_xy] = grating.sample_lobe(sample2, wi_local, wl * 1e-3f);
-        std::cout << lobe << std::endl;
+        Point2f lobe_sample = m_lobe_sampler->next_2d();
+        std::cout << lobe_sample << std::endl;
+        auto [lobe, pdf_xy] = grating.sample_lobe(lobe_sample, wi_local, wl * 1e-3f);
+        // std::cout << lobe << std::endl;
 
         auto [wo_local, active] = grating.diffract(wi_local, lobe, wl * 1e-3f);
-        std::cout << wo_local << std::endl;
+        // std::cout << wo_local << std::endl;
         
         Vector3f wo = normalFrame.to_world(wo_local);
         return { wo, pdf_xy.x() * pdf_xy.y(), active };
@@ -657,6 +677,8 @@ private:
     /// @brief Scaling factor for outgoing radiance.
     float m_multiplier;
 
+    /// @brief Sampler object for the lobes
+    mutable ref<Sampler> m_lobe_sampler;
 };
 
 MI_IMPLEMENT_CLASS_VARIANT(RoughGrating, BSDF)
