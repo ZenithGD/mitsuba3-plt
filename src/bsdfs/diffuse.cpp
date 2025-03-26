@@ -183,10 +183,10 @@ public:
                   const Vector3f &wo, Mask active) const override {
         MI_MASKED_FUNCTION(ProfilerPhase::BSDFEvaluate, active);
 
+        DRJIT_MARK_USED(wo);
+
         if (!ctx.is_enabled(BSDFFlags::DiffuseReflection))
             return GeneralizedRadiance3f(0.0f);
-
-        Float cos_theta_i = Frame3f::cos_theta(si.wi);
 
         UnpolarizedSpectrum value =
             m_reflectance->eval(si, active);

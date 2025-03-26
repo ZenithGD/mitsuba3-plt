@@ -340,6 +340,9 @@ public:
      * When sampling a continuous/non-delta component, this method also
      * multiplies by the cosine foreshortening factor with respect to the
      * sampled direction.
+     * 
+     * This method includes an additional sample, which can be useful for sampling
+     * additional information (e.g. lobes on a diffraction grating)
      *
      * \param ctx
      *     A context data structure describing which lobes to sample,
@@ -376,6 +379,7 @@ public:
            const SurfaceInteraction3f &si,
            Float sample1,
            const Point2f &sample2,
+           const Point2f &lobe_sample2,
            Mask active = true) const;
 
     /**
@@ -682,6 +686,7 @@ public:
                     const Vector3f &wo,
                     Float sample1,
                     const Point2f &sample2,
+                    const Point2f &lobe_sample2,
                     Mask active = true) const;
 
     /**

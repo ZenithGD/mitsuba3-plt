@@ -23,8 +23,11 @@ BSDF<Float, Spectrum>::wbsdf_sample(
     const SurfaceInteraction3f &si,
     Float sample1,
     const Point2f &sample2,
+    const Point2f &lobe_sample2,
     Mask active) const
+
 {
+    DRJIT_MARK_USED(lobe_sample2);
     auto [ sp, weight ] = sample(ctx, si, sample1, sample2, active);
 
     GeneralizedRadiance<Float, Spectrum> gr(weight);
@@ -99,9 +102,10 @@ BSDF<Float, Spectrum>::wbsdf_eval_pdf_sample(const BSDFContext &ctx,
                                        const Vector3f &wo,
                                        Float sample1,
                                        const Point2f &sample2,
+                                       const Point2f &lobe_sample2,
                                        Mask active) const {
         auto [e_val, pdf_val] = wbsdf_eval_pdf(ctx, si, wo, active);
-        auto [bs, bsdf_weight] = wbsdf_sample(ctx, si, sample1, sample2, active);
+        auto [bs, bsdf_weight] = wbsdf_sample(ctx, si, sample1, sample2, lobe_sample2, active);
         return { e_val, pdf_val, bs, bsdf_weight };
 }
 

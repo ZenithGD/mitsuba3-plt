@@ -9,6 +9,7 @@ def sample_wbsdf(bsdf : mi.BSDF, sample_context):
     
     sample = np.random.rand(sample_context["nsamples"])
     sample2 = np.random.rand(2, sample_context["nsamples"])
+    lobe_sample2 = np.random.rand(2, sample_context["nsamples"])
 
     ctx = mi.BSDFContext(mi.TransportMode.Importance)
     si = mi.SurfaceInteraction3f()
@@ -17,7 +18,7 @@ def sample_wbsdf(bsdf : mi.BSDF, sample_context):
     si.wi = sample_context["wi"]
     si.sh_frame = mi.Frame3f(si.n)
 
-    samples, gr = bsdf.wbsdf_sample(ctx, si, sample, sample2)
+    samples, gr = bsdf.wbsdf_sample(ctx, si, sample, sample2, lobe_sample2)
 
     return samples, mi.unpolarized_spectrum(gr.L)
 

@@ -51,9 +51,11 @@ public:
     // sample wbsdf python definition
     std::pair<BSDFSample3f, GeneralizedRadiance<Float, Spectrum>>
     wbsdf_sample(const BSDFContext &ctx, const SurfaceInteraction3f &si,
-           Float sample1, const Point2f &sample2,
+           Float sample1, 
+           const Point2f &sample2,
+           const Point2f &lobe_sample2,
            Mask active) const override {
-        NB_OVERRIDE(wbsdf_sample, ctx, si, sample1, sample2, active);
+        NB_OVERRIDE(wbsdf_sample, ctx, si, sample1, sample2, lobe_sample2, active);
     }
 
     Spectrum eval(const BSDFContext &ctx,
@@ -111,8 +113,9 @@ public:
     wbsdf_eval_pdf_sample(const BSDFContext &ctx, const SurfaceInteraction3f &si,
            const Vector3f &wo,
            Float sample1, const Point2f &sample2,
+           const Point2f &lobe_sample2,
            Mask active) const override {
-        NB_OVERRIDE(wbsdf_eval_pdf_sample, ctx, si, wo, sample1, sample2, active);
+        NB_OVERRIDE(wbsdf_eval_pdf_sample, ctx, si, wo, sample1, sample2, lobe_sample2, active);
     }
 
     Spectrum eval_diffuse_reflectance(const SurfaceInteraction3f &si,
@@ -179,9 +182,9 @@ template <typename Ptr, typename Cls> void bind_bsdf_generic(Cls &cls) {
             "active"_a = true, D(BSDF, sample))
         .def("wbsdf_sample",
             [](Ptr bsdf, const BSDFContext &ctx, const SurfaceInteraction3f &si,
-               Float sample1, const Point2f &sample2, Mask active) {
-                return bsdf->wbsdf_sample(ctx, si, sample1, sample2, active);
-            }, "ctx"_a, "si"_a, "sample1"_a, "sample2"_a,
+               Float sample1, const Point2f &sample2, const Point2f &lobe_sample2, Mask active) {
+                return bsdf->wbsdf_sample(ctx, si, sample1, sample2, lobe_sample2, active);
+            }, "ctx"_a, "si"_a, "sample1"_a, "sample2"_a, "lobe_sample2"_a,
             "active"_a = true, D(BSDF, wbsdf_sample))
         .def("eval",
              [](Ptr bsdf, const BSDFContext &ctx, const SurfaceInteraction3f &si,
@@ -227,10 +230,10 @@ template <typename Ptr, typename Cls> void bind_bsdf_generic(Cls &cls) {
                 D(BSDF, eval_pdf))
         .def("wbsdf_eval_pdf_sample",
              [](Ptr bsdf, const BSDFContext &ctx, const SurfaceInteraction3f &si,
-                const Vector3f &wo, Float sample1, const Point2f &sample2,
+                const Vector3f &wo, Float sample1, const Point2f &sample2, const Point2f &lobe_sample2,
                 Mask active) {
-                    return bsdf->wbsdf_eval_pdf_sample(ctx, si, wo, sample1, sample2, active);
-                }, "ctx"_a, "si"_a, "wo"_a, "sample1"_a, "sample2"_a, "active"_a = true,
+                    return bsdf->wbsdf_eval_pdf_sample(ctx, si, wo, sample1, sample2, lobe_sample2, active);
+                }, "ctx"_a, "si"_a, "wo"_a, "sample1"_a, "sample2"_a, "lobe_sample"_a, "active"_a = true,
                 D(BSDF, eval_pdf))
         .def("eval_null_transmission",
              [](Ptr bsdf, const SurfaceInteraction3f &si, Mask active) {

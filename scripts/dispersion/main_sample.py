@@ -22,8 +22,8 @@ def main(args):
         'height' : 0.05,
         'inv_period_x' : 0.4,
         'inv_period_y' : 0.4,
-        'radial' : True,
-        'lobes' : 9,
+        'radial' : False,
+        'lobes' : 7,
         'grating_angle' : 0,
     })
 

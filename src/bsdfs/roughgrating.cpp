@@ -1,13 +1,14 @@
-#include <mitsuba/core/string.h>
 #include <mitsuba/core/fwd.h>
 #include <mitsuba/core/plugin.h>
+#include <mitsuba/core/string.h>
 #include <mitsuba/render/bsdf.h>
 #include <mitsuba/render/ior.h>
 #include <mitsuba/render/microfacet.h>
+#include <mitsuba/render/sampler.h>
 #include <mitsuba/render/texture.h>
 
-#include <mitsuba/plt/fwd.h>
 #include <mitsuba/plt/diffractiongrating.h>
+#include <mitsuba/plt/fwd.h>
 
 NAMESPACE_BEGIN(mitsuba)
 
@@ -25,50 +26,61 @@ Rough conductor material (:monosp:`roughconductor`)
 
  * - eta, k
    - |spectrum| or |texture|
-   - Real and imaginary components of the material's index of refraction. (Default: based on the value of :monosp:`material`)
+   - Real and imaginary components of the material's index of refraction.
+(Default: based on the value of :monosp:`material`)
    - |exposed|, |differentiable|, |discontinuous|
 
  * - specular_reflectance
    - |spectrum| or |texture|
-   - Optional factor that can be used to modulate the specular reflection component.
-     Note that for physical realism, this parameter should never be touched. (Default: 1.0)
+   - Optional factor that can be used to modulate the specular reflection
+component. Note that for physical realism, this parameter should never be
+touched. (Default: 1.0)
    - |exposed|, |differentiable|
 
  * - distribution
    - |string|
-   - Specifies the type of microfacet normal distribution used to model the surface roughness.
+   - Specifies the type of microfacet normal distribution used to model the
+surface roughness.
 
-     - :monosp:`beckmann`: Physically-based distribution derived from Gaussian random surfaces.
-       This is the default.
-     - :monosp:`ggx`: The GGX :cite:`Walter07Microfacet` distribution (also known as Trowbridge-Reitz
-       :cite:`Trowbridge19975Average` distribution) was designed to better approximate the long
-       tails observed in measurements of ground surfaces, which are not modeled by the Beckmann
-       distribution.
+     - :monosp:`beckmann`: Physically-based distribution derived from Gaussian
+random surfaces. This is the default.
+     - :monosp:`ggx`: The GGX :cite:`Walter07Microfacet` distribution (also
+known as Trowbridge-Reitz :cite:`Trowbridge19975Average` distribution) was
+designed to better approximate the long tails observed in measurements of ground
+surfaces, which are not modeled by the Beckmann distribution.
 
  * - alpha, alpha_u, alpha_v
    - |texture| or |float|
-   - Specifies the roughness of the unresolved surface micro-geometry along the tangent and
-     bitangent directions. When the Beckmann distribution is used, this parameter is equal to the
-     **root mean square** (RMS) slope of the microfacets. :monosp:`alpha` is a convenience
-     parameter to initialize both :monosp:`alpha_u` and :monosp:`alpha_v` to the same value. (Default: 0.1)
+   - Specifies the roughness of the unresolved surface micro-geometry along the
+tangent and bitangent directions. When the Beckmann distribution is used, this
+parameter is equal to the
+     **root mean square** (RMS) slope of the microfacets. :monosp:`alpha` is a
+convenience parameter to initialize both :monosp:`alpha_u` and :monosp:`alpha_v`
+to the same value. (Default: 0.1)
    - |exposed|, |differentiable|, |discontinuous|
 
  * - sample_visible
    - |bool|
-   - Enables a sampling technique proposed by Heitz and D'Eon :cite:`Heitz1014Importance`, which
-     focuses computation on the visible parts of the microfacet normal distribution, considerably
-     reducing variance in some cases. (Default: |true|, i.e. use visible normal sampling)
+   - Enables a sampling technique proposed by Heitz and D'Eon
+:cite:`Heitz1014Importance`, which focuses computation on the visible parts of
+the microfacet normal distribution, considerably reducing variance in some
+cases. (Default: |true|, i.e. use visible normal sampling)
 
 This plugin implements a realistic microfacet scattering model for rendering
 rough conducting materials, such as metals.
 
 .. subfigstart::
-.. subfigure:: ../../resources/data/docs/images/render/bsdf_roughconductor_copper.jpg
-   :caption: Rough copper (Beckmann, :math:`\alpha=0.1`)
-.. subfigure:: ../../resources/data/docs/images/render/bsdf_roughconductor_anisotropic_aluminium.jpg
-   :caption: Vertically brushed aluminium (Anisotropic Beckmann, :math:`\alpha_u=0.05,\ \alpha_v=0.3`)
-.. subfigure:: ../../resources/data/docs/images/render/bsdf_roughconductor_textured_carbon.jpg
-   :caption: Carbon fiber using two inverted checkerboard textures for ``alpha_u`` and ``alpha_v``
+.. subfigure::
+../../resources/data/docs/images/render/bsdf_roughconductor_copper.jpg :caption:
+Rough copper (Beckmann, :math:`\alpha=0.1`)
+.. subfigure::
+../../resources/data/docs/images/render/bsdf_roughconductor_anisotropic_aluminium.jpg
+   :caption: Vertically brushed aluminium (Anisotropic Beckmann,
+:math:`\alpha_u=0.05,\ \alpha_v=0.3`)
+.. subfigure::
+../../resources/data/docs/images/render/bsdf_roughconductor_textured_carbon.jpg
+   :caption: Carbon fiber using two inverted checkerboard textures for
+``alpha_u`` and ``alpha_v``
 .. subfigend::
     :label: fig-bsdf-roughconductor
 
@@ -81,9 +93,9 @@ important off-specular reflections peaks observed in real-world measurements
 of such materials.
 
 This plugin is essentially the *roughened* equivalent of the (smooth) plugin
-:ref:`conductor <bsdf-conductor>`. For very low values of :math:`\alpha`, the two will
-be identical, though scenes using this plugin will take longer to render
-due to the additional computational burden of tracking surface roughness.
+:ref:`conductor <bsdf-conductor>`. For very low values of :math:`\alpha`, the
+two will be identical, though scenes using this plugin will take longer to
+render due to the additional computational burden of tracking surface roughness.
 
 The implementation is based on the paper *Microfacet Models
 for Refraction through Rough Surfaces* by Walter et al.
@@ -93,11 +105,12 @@ distributions.
 To facilitate the tedious task of specifying spectrally-varying index of
 refraction information, this plugin can access a set of measured materials
 for which visible-spectrum information was publicly available
-(see the corresponding table in the :ref:`conductor <bsdf-conductor>` reference).
+(see the corresponding table in the :ref:`conductor <bsdf-conductor>`
+reference).
 
 When no parameters are given, the plugin activates the default settings,
-which describe a 100% reflective mirror with a medium amount of roughness modeled
-using a Beckmann distribution.
+which describe a 100% reflective mirror with a medium amount of roughness
+modeled using a Beckmann distribution.
 
 To get an intuition about the effect of the surface roughness parameter
 :math:`\alpha`, consider the following approximate classification: a value of
@@ -152,8 +165,8 @@ Also note that this material is one-sided---that is, observed from the
 back side, it will be completely black. If this is undesirable,
 consider using the :ref:`twosided <bsdf-twosided>` BRDF adapter.
 
-In *polarized* rendering modes, the material automatically switches to a polarized
-implementation of the underlying Fresnel equations.
+In *polarized* rendering modes, the material automatically switches to a
+polarized implementation of the underlying Fresnel equations.
 
  */
 
@@ -161,18 +174,19 @@ template <typename Float, typename Spectrum>
 class RoughGrating final : public BSDF<Float, Spectrum> {
 public:
     MI_IMPORT_BASE(BSDF, m_flags, m_components)
-    MI_IMPORT_TYPES(Texture, MicrofacetDistribution)
-    MI_IMPORT_PLT_BASIC_TYPES() 
+    MI_IMPORT_TYPES(Texture, MicrofacetDistribution, Sampler)
+    MI_IMPORT_PLT_BASIC_TYPES()
 
     RoughGrating(const Properties &props) : Base(props) {
         std::string material = props.string("material", "none");
         if (props.has_property("eta") || material == "none") {
             m_eta = props.texture<Texture>("eta", 0.f);
-            m_k   = props.texture<Texture>("k",   1.f);
+            m_k   = props.texture<Texture>("k", 1.f);
             if (material != "none")
                 Throw("Should specify either (eta, k) or material, not both.");
         } else {
-            std::tie(m_eta, m_k) = complex_ior_from_file<Spectrum, Texture>(props.string("material", "Cu"));
+            std::tie(m_eta, m_k) = complex_ior_from_file<Spectrum, Texture>(
+                props.string("material", "Cu"));
         }
 
         if (props.has_property("distribution")) {
@@ -183,7 +197,8 @@ public:
                 m_type = MicrofacetType::GGX;
             else
                 Throw("Specified an invalid distribution \"%s\", must be "
-                      "\"beckmann\" or \"ggx\"!", distr.c_str());
+                      "\"beckmann\" or \"ggx\"!",
+                      distr.c_str());
         } else {
             m_type = MicrofacetType::Beckmann;
         }
@@ -191,8 +206,10 @@ public:
         m_sample_visible = props.get<bool>("sample_visible", true);
 
         if (props.has_property("alpha_u") || props.has_property("alpha_v")) {
-            if (!props.has_property("alpha_u") || !props.has_property("alpha_v"))
-                Throw("Microfacet model: both 'alpha_u' and 'alpha_v' must be specified.");
+            if (!props.has_property("alpha_u") ||
+                !props.has_property("alpha_v"))
+                Throw("Microfacet model: both 'alpha_u' and 'alpha_v' must be "
+                      "specified.");
             if (props.has_property("alpha"))
                 Throw("Microfacet model: please specify"
                       "either 'alpha' or 'alpha_u'/'alpha_v'.");
@@ -203,49 +220,47 @@ public:
         }
 
         if (props.has_property("specular_reflectance"))
-            m_specular_reflectance = props.texture<Texture>("specular_reflectance", 1.f);
+            m_specular_reflectance =
+                props.texture<Texture>("specular_reflectance", 1.f);
 
-        
         m_flags = BSDFFlags::GlossyReflection | BSDFFlags::FrontSide;
         if (m_alpha_u != m_alpha_v)
             m_flags = m_flags | BSDFFlags::Anisotropic;
 
-        //grating properties
+        // grating properties
         m_grating_angle = props.get<ScalarFloat>("grating_angle", 0.0);
-        
-        if (props.has_property("inv_period_x") || props.has_property("inv_period_x")) {
-            if (!props.has_property("inv_period_x") || !props.has_property("inv_period_x"))
-                Throw("Grating inv inv_period: both 'inv_period_x' and 'inv_period_x' must be specified.");
+
+        if (props.has_property("inv_period_x") ||
+            props.has_property("inv_period_x")) {
+            if (!props.has_property("inv_period_x") ||
+                !props.has_property("inv_period_x"))
+                Throw("Grating inv inv_period: both 'inv_period_x' and "
+                      "'inv_period_x' must be specified.");
             if (props.has_property("inv_period"))
                 Throw("Grating inv inv_period: please specify"
                       "either 'inv_period' or 'inv_period_x'/'inv_period_x'.");
             m_inv_period_x = props.get<ScalarFloat>("inv_period_x");
             m_inv_period_y = props.get<ScalarFloat>("inv_period_y");
         } else {
-            m_inv_period_x = m_inv_period_y = props.get<ScalarFloat>("inv_period", 0.1f);
+            m_inv_period_x = m_inv_period_y =
+                props.get<ScalarFloat>("inv_period", 0.1f);
         }
         m_height = props.get<ScalarFloat>("height", 0.3);
-        m_lobes = props.get<uint32_t>("lobes", 5); 
-        std::string lobe_type = props.get<std::string>("lobe_type", "rectangular");
+        m_lobes  = props.get<uint32_t>("lobes", 5);
+        std::string lobe_type =
+            props.get<std::string>("lobe_type", "rectangular");
 
-        DiffractionGratingType m_lobe_type = DiffractionGratingType::Rectangular;
-        if ( lobe_type == "rectangular" )
-        {
+        if (lobe_type == "rectangular") {
             m_lobe_type = DiffractionGratingType::Rectangular;
-        }
-        else if ( lobe_type == "linear" )
-        {
+        } else if (lobe_type == "linear") {
             m_lobe_type = DiffractionGratingType::Linear;
-        }
-        else if ( lobe_type == "sinusoidal" )
-        {
+        } else if (lobe_type == "sinusoidal") {
             m_lobe_type = DiffractionGratingType::Sinusoidal;
-        }
-        else {
+        } else {
             Throw("Grating surface type %s not supported!", lobe_type);
         }
 
-        m_radial = props.get<bool>("radial", false);
+        m_radial     = props.get<bool>("radial", false);
         m_multiplier = props.get("multiplier", 1.0);
 
         m_components.clear();
@@ -254,50 +269,33 @@ public:
 
     void traverse(TraversalCallback *callback) override {
         if (m_specular_reflectance)
-            callback->put_object("specular_reflectance", m_specular_reflectance.get(), +ParamFlags::Differentiable);
+            callback->put_object("specular_reflectance",
+                                 m_specular_reflectance.get(),
+                                 +ParamFlags::Differentiable);
         if (!has_flag(m_flags, BSDFFlags::Anisotropic))
-            callback->put_object("alpha",                m_alpha_u.get(),              ParamFlags::Differentiable | ParamFlags::Discontinuous);
+            callback->put_object("alpha", m_alpha_u.get(),
+                                 ParamFlags::Differentiable |
+                                     ParamFlags::Discontinuous);
         else {
-            callback->put_object("alpha_u",              m_alpha_u.get(),              ParamFlags::Differentiable | ParamFlags::Discontinuous);
-            callback->put_object("alpha_v",              m_alpha_v.get(),              ParamFlags::Differentiable | ParamFlags::Discontinuous);
+            callback->put_object("alpha_u", m_alpha_u.get(),
+                                 ParamFlags::Differentiable |
+                                     ParamFlags::Discontinuous);
+            callback->put_object("alpha_v", m_alpha_v.get(),
+                                 ParamFlags::Differentiable |
+                                     ParamFlags::Discontinuous);
         }
-        callback->put_object("eta", m_eta.get(), ParamFlags::Differentiable | ParamFlags::Discontinuous);
-        callback->put_object("k",   m_k.get(),   ParamFlags::Differentiable | ParamFlags::Discontinuous);
+        callback->put_object("eta", m_eta.get(),
+                             ParamFlags::Differentiable |
+                                 ParamFlags::Discontinuous);
+        callback->put_object("k", m_k.get(),
+                             ParamFlags::Differentiable |
+                                 ParamFlags::Discontinuous);
     }
 
-    std::tuple<Vector3f, Float, Mask> sample_diffract(
-        const Vector2f& sample2,
-        const Vector2f& uv, 
-        const Vector3f& wi, 
-        const Vector3f& n,
-        const Float& wl) const
-    {
-        // new frame along normal to compute diffracted direction
-        // in that frame
-        Frame3f normalFrame(n);
-        Vector3f wi_local = normalFrame.to_local(wi);
-        std::cout << wi << ";" << wi_local << std::endl;
-
-        // sample lobe and diffract in local frame
-        DiffractionGrating3f grating(
-            m_grating_angle,
-            Vector2f(m_inv_period_x, m_inv_period_y),
-            m_height,
-            m_lobes,
-            m_lobe_type,
-            m_multiplier, 
-            uv);
-
-        auto [lobe, pdf_xy] = grating.sample_lobe(sample2, wi_local, wl * 1e-3f);
-        std::cout << lobe << std::endl;
-
-        auto [wo_local, active] = grating.diffract(wi_local, lobe, wl * 1e-3f);
-        std::cout << wo_local << std::endl;
-        
-        Vector3f wo = normalFrame.to_world(wo_local);
-        return { wo, pdf_xy.x() * pdf_xy.y(), active };
-    }
-
+    /**
+     * Note: Apart from PLT Integrator, this sampling routine will behave 
+     * as a conventional rough conductor.
+     */
     std::pair<BSDFSample3f, Spectrum> sample(const BSDFContext &ctx,
                                              const SurfaceInteraction3f &si,
                                              Float /* sample1 */,
@@ -305,17 +303,137 @@ public:
                                              Mask active) const override {
         MI_MASKED_FUNCTION(ProfilerPhase::BSDFSample, active);
 
-        BSDFSample3f bs = dr::zeros<BSDFSample3f>();
+        BSDFSample3f bs   = dr::zeros<BSDFSample3f>();
         Float cos_theta_i = Frame3f::cos_theta(si.wi);
         active &= cos_theta_i > 0.f;
 
-        if (unlikely(!ctx.is_enabled(BSDFFlags::GlossyReflection) || dr::none_or<false>(active)))
+        if (unlikely(!ctx.is_enabled(BSDFFlags::GlossyReflection) ||
+                     dr::none_or<false>(active)))
             return { bs, 0.f };
 
         /* Construct a microfacet distribution matching the
+        roughness values at the current surface position. */
+        MicrofacetDistribution distr(m_type, m_alpha_u->eval_1(si, active),
+                                     m_alpha_v->eval_1(si, active),
+                                     m_sample_visible);
+
+        // Sample M, the microfacet normal
+        Normal3f m;
+        std::tie(m, bs.pdf) = distr.sample(si.wi, sample2);
+
+        // Perfect specular reflection based on the microfacet normal
+        bs.wo                = reflect(si.wi, m);
+        bs.eta               = 1.f;
+        bs.sampled_component = 0;
+        bs.sampled_type      = +BSDFFlags::GlossyReflection;
+
+        // Ensure that this is a valid sample
+        active &= (bs.pdf != 0.f) && Frame3f::cos_theta(bs.wo) > 0.f;
+
+        UnpolarizedSpectrum weight;
+        if (likely(m_sample_visible))
+            weight = distr.smith_g1(bs.wo, m);
+        else
+            weight = distr.G(si.wi, bs.wo, m) * dr::dot(si.wi, m) /
+                     (cos_theta_i * Frame3f::cos_theta(m));
+
+        // Jacobian of the half-direction mapping
+        bs.pdf /= 4.f * dr::dot(bs.wo, m);
+
+        // Evaluate the Fresnel factor
+        dr::Complex<UnpolarizedSpectrum> eta_c(m_eta->eval(si, active),
+                                               m_k->eval(si, active));
+
+        Spectrum F;
+        if constexpr (is_polarized_v<Spectrum>) {
+            /* Due to the coordinate system rotations for polarization-aware
+            pBSDFs below we need to know the propagation direction of light.
+            In the following, light arrives along `-wo_hat` and leaves along
+            `+wi_hat`. */
+            Vector3f wo_hat =
+                         ctx.mode == TransportMode::Radiance ? bs.wo : si.wi,
+                     wi_hat =
+                         ctx.mode == TransportMode::Radiance ? si.wi : bs.wo;
+
+            // Mueller matrix for specular reflection.
+            F = mueller::specular_reflection(
+                UnpolarizedSpectrum(dot(wo_hat, m)), eta_c);
+
+            /* The Stokes reference frame vector of this matrix lies
+            perpendicular to the plane of reflection. */
+            Vector3f s_axis_in  = dr::cross(m, -wo_hat);
+            Vector3f s_axis_out = dr::cross(m, wi_hat);
+
+            // Singularity when the input & output are collinear with the normal
+            Mask collinear = dr::all(s_axis_in == Vector3f(0));
+            s_axis_in      = dr::select(collinear, Vector3f(1, 0, 0),
+                                        dr::normalize(s_axis_in));
+            s_axis_out     = dr::select(collinear, Vector3f(1, 0, 0),
+                                        dr::normalize(s_axis_out));
+
+            /* Rotate in/out reference vector of F s.t. it aligns with the
+            implicit Stokes bases of -wo_hat & wi_hat. */
+            F = mueller::rotate_mueller_basis(
+                F, -wo_hat, s_axis_in, mueller::stokes_basis(-wo_hat), wi_hat,
+                s_axis_out, mueller::stokes_basis(wi_hat));
+        } else {
+            F = fresnel_conductor(UnpolarizedSpectrum(dr::dot(si.wi, m)),
+                                  eta_c);
+        }
+
+        /* If requested, include the specular reflectance component */
+        if (m_specular_reflectance)
+            weight *= m_specular_reflectance->eval(si, active);
+
+        return { bs, (F * weight) & active };
+    }
+
+    std::tuple<Vector3f, Float, Mask> sample_diffract(const Vector2f &sample2,
+        const Vector2f &uv,
+        const Vector3f &wi,
+        const Vector3f &n,
+        const Float &wl) const {
+        // new frame along normal to compute diffracted direction
+        // in that frame
+        Frame3f normalFrame(n);
+        Vector3f wi_local = normalFrame.to_local(wi);
+        // std::cout << wi << ";" << wi_local << std::endl;
+
+        // sample lobe and diffract in local frame
+        DiffractionGrating3f grating(
+        m_grating_angle, Vector2f(m_inv_period_x, m_inv_period_y), m_height,
+        m_lobes, m_lobe_type, m_multiplier, uv);
+
+        auto [lobe, pdf_xy] =
+        grating.sample_lobe(sample2, wi_local, wl * 1e-3f);
+        // std::cout << lobe << std::endl;
+
+        auto [wo_local, active] = grating.diffract(wi_local, lobe, wl * 1e-3f);
+        // std::cout << wo_local << std::endl;
+
+        Vector3f wo = normalFrame.to_world(wo_local);
+        return { wo, pdf_xy.x() * pdf_xy.y(), active };
+    }
+
+
+    std::pair<BSDFSample3f, GeneralizedRadiance3f>
+    wbsdf_sample(const BSDFContext &ctx, const SurfaceInteraction3f &si,
+                 Float /* sample1 */, const Point2f &sample2,
+                 const Point2f &lobe_sample2,
+                 Mask active) const override {
+        MI_MASKED_FUNCTION(ProfilerPhase::BSDFSample, active);
+
+        BSDFSample3f bs   = dr::zeros<BSDFSample3f>();
+        Float cos_theta_i = Frame3f::cos_theta(si.wi);
+        active &= cos_theta_i > 0.f;
+
+        if (unlikely(!ctx.is_enabled(BSDFFlags::GlossyReflection) ||
+                     dr::none_or<false>(active)))
+            return { bs, GeneralizedRadiance3f(0.0f) };
+
+        /* Construct a microfacet distribution matching the
            roughness values at the current surface position. */
-        MicrofacetDistribution distr(m_type,
-                                     m_alpha_u->eval_1(si, active),
+        MicrofacetDistribution distr(m_type, m_alpha_u->eval_1(si, active),
                                      m_alpha_v->eval_1(si, active),
                                      m_sample_visible);
 
@@ -329,16 +447,17 @@ public:
         Mask active_diffracted;
         Vector3f reflection_dir = reflect(si.wi, m);
         // TODO: loop for each wavelength
-        std::tie(bs.wo, grating_pdf, active_diffracted) = sample_diffract(
-            sample2, 
-            si.uv, 
-            si.wi, 
-            m,
-            // temporary wavelength value for now
-            400.0f);
-        bs.eta = 1.f;
+        std::tie(bs.wo, grating_pdf, active_diffracted) =
+            sample_diffract(
+                lobe_sample2, 
+                si.uv, 
+                si.wi, 
+                m,
+                // temporary wavelength value for now
+                400.0f);
+        bs.eta               = 1.f;
         bs.sampled_component = 0;
-        bs.sampled_type = +BSDFFlags::GlossyReflection;
+        bs.sampled_type      = +BSDFFlags::GlossyReflection;
 
         // Ensure that this is a valid sample
         active &= (bs.pdf != 0.f) && Frame3f::cos_theta(bs.wo) > 0.f;
@@ -357,7 +476,7 @@ public:
 
         // Evaluate the Fresnel factor
         dr::Complex<UnpolarizedSpectrum> eta_c(m_eta->eval(si, active),
-                                           m_k->eval(si, active));
+                                               m_k->eval(si, active));
 
         Spectrum F;
         if constexpr (is_polarized_v<Spectrum>) {
@@ -365,31 +484,37 @@ public:
                pBSDFs below we need to know the propagation direction of light.
                In the following, light arrives along `-wo_hat` and leaves along
                `+wi_hat`. */
-            Vector3f wo_hat = ctx.mode == TransportMode::Radiance ? reflection_dir: si.wi,
-                     wi_hat = ctx.mode == TransportMode::Radiance ? si.wi : reflection_dir;
+            Vector3f wo_hat = ctx.mode == TransportMode::Radiance
+                                  ? reflection_dir
+                                  : si.wi,
+                     wi_hat = ctx.mode == TransportMode::Radiance
+                                  ? si.wi
+                                  : reflection_dir;
 
             // Mueller matrix for specular reflection.
-            F = mueller::specular_reflection(UnpolarizedSpectrum(dot(wo_hat, m)), eta_c);
+            F = mueller::specular_reflection(
+                UnpolarizedSpectrum(dot(wo_hat, m)), eta_c);
 
-            /* The Stokes reference frame vector of this matrix lies perpendicular
-               to the plane of reflection. */
+            /* The Stokes reference frame vector of this matrix lies
+               perpendicular to the plane of reflection. */
             Vector3f s_axis_in  = dr::cross(m, -wo_hat);
             Vector3f s_axis_out = dr::cross(m, wi_hat);
 
             // Singularity when the input & output are collinear with the normal
-            Mask collinear = dr::all(s_axis_in ==  Vector3f(0));
-            s_axis_in  = dr::select(collinear, Vector3f(1, 0, 0),
-                                               dr::normalize(s_axis_in));
-            s_axis_out = dr::select(collinear, Vector3f(1, 0, 0),
-                                               dr::normalize(s_axis_out));
+            Mask collinear = dr::all(s_axis_in == Vector3f(0));
+            s_axis_in      = dr::select(collinear, Vector3f(1, 0, 0),
+                                        dr::normalize(s_axis_in));
+            s_axis_out     = dr::select(collinear, Vector3f(1, 0, 0),
+                                        dr::normalize(s_axis_out));
 
-            /* Rotate in/out reference vector of F s.t. it aligns with the implicit
-               Stokes bases of -wo_hat & wi_hat. */
-            F = mueller::rotate_mueller_basis(F,
-                                              -wo_hat, s_axis_in, mueller::stokes_basis(-wo_hat),
-                                               wi_hat, s_axis_out, mueller::stokes_basis(wi_hat));
+            /* Rotate in/out reference vector of F s.t. it aligns with the
+               implicit Stokes bases of -wo_hat & wi_hat. */
+            F = mueller::rotate_mueller_basis(
+                F, -wo_hat, s_axis_in, mueller::stokes_basis(-wo_hat), wi_hat,
+                s_axis_out, mueller::stokes_basis(wi_hat));
         } else {
-            F = fresnel_conductor(UnpolarizedSpectrum(dr::dot(si.wi, m)), eta_c);
+            F = fresnel_conductor(UnpolarizedSpectrum(dr::dot(si.wi, m)),
+                                  eta_c);
         }
 
         /* If requested, include the specular reflectance component */
@@ -408,7 +533,8 @@ public:
 
         active &= cos_theta_i > 0.f && cos_theta_o > 0.f;
 
-        if (unlikely(!ctx.is_enabled(BSDFFlags::GlossyReflection) || dr::none_or<false>(active)))
+        if (unlikely(!ctx.is_enabled(BSDFFlags::GlossyReflection) ||
+                     dr::none_or<false>(active)))
             return 0.f;
 
         // Calculate the half-direction vector
@@ -416,8 +542,7 @@ public:
 
         /* Construct a microfacet distribution matching the
            roughness values at the current surface position. */
-        MicrofacetDistribution distr(m_type,
-                                     m_alpha_u->eval_1(si, active),
+        MicrofacetDistribution distr(m_type, m_alpha_u->eval_1(si, active),
                                      m_alpha_v->eval_1(si, active),
                                      m_sample_visible);
 
@@ -434,7 +559,7 @@ public:
 
         // Evaluate the Fresnel factor
         dr::Complex<UnpolarizedSpectrum> eta_c(m_eta->eval(si, active),
-                                           m_k->eval(si, active));
+                                               m_k->eval(si, active));
 
         Spectrum F;
         if constexpr (is_polarized_v<Spectrum>) {
@@ -446,27 +571,29 @@ public:
                      wi_hat = ctx.mode == TransportMode::Radiance ? si.wi : wo;
 
             // Mueller matrix for specular reflection.
-            F = mueller::specular_reflection(UnpolarizedSpectrum(dot(wo_hat, H)), eta_c);
+            F = mueller::specular_reflection(
+                UnpolarizedSpectrum(dot(wo_hat, H)), eta_c);
 
-            /* The Stokes reference frame vector of this matrix lies perpendicular
-               to the plane of reflection. */
+            /* The Stokes reference frame vector of this matrix lies
+               perpendicular to the plane of reflection. */
             Vector3f s_axis_in  = dr::cross(H, -wo_hat);
             Vector3f s_axis_out = dr::cross(H, wi_hat);
 
             // Singularity when the input & output are collinear with the normal
             Mask collinear = dr::all(s_axis_in == Vector3f(0));
-            s_axis_in  = dr::select(collinear, Vector3f(1, 0, 0),
-                                               dr::normalize(s_axis_in));
-            s_axis_out = dr::select(collinear, Vector3f(1, 0, 0),
-                                               dr::normalize(s_axis_out));
+            s_axis_in      = dr::select(collinear, Vector3f(1, 0, 0),
+                                        dr::normalize(s_axis_in));
+            s_axis_out     = dr::select(collinear, Vector3f(1, 0, 0),
+                                        dr::normalize(s_axis_out));
 
-            /* Rotate in/out reference vector of F s.t. it aligns with the implicit
-               Stokes bases of -wo_hat & wi_hat. */
-            F = mueller::rotate_mueller_basis(F,
-                                              -wo_hat, s_axis_in, mueller::stokes_basis(-wo_hat),
-                                               wi_hat, s_axis_out, mueller::stokes_basis(wi_hat));
+            /* Rotate in/out reference vector of F s.t. it aligns with the
+               implicit Stokes bases of -wo_hat & wi_hat. */
+            F = mueller::rotate_mueller_basis(
+                F, -wo_hat, s_axis_in, mueller::stokes_basis(-wo_hat), wi_hat,
+                s_axis_out, mueller::stokes_basis(wi_hat));
         } else {
-            F = fresnel_conductor(UnpolarizedSpectrum(dr::dot(si.wi, H)), eta_c);
+            F = fresnel_conductor(UnpolarizedSpectrum(dr::dot(si.wi, H)),
+                                  eta_c);
         }
 
         /* If requested, include the specular reflectance component */
@@ -493,20 +620,20 @@ public:
         active &= cos_theta_i > 0.f && cos_theta_o > 0.f &&
                   dr::dot(si.wi, m) > 0.f && dr::dot(wo, m) > 0.f;
 
-        if (unlikely(!ctx.is_enabled(BSDFFlags::GlossyReflection) || dr::none_or<false>(active)))
+        if (unlikely(!ctx.is_enabled(BSDFFlags::GlossyReflection) ||
+                     dr::none_or<false>(active)))
             return 0.f;
 
         /* Construct a microfacet distribution matching the
            roughness values at the current surface position. */
-        MicrofacetDistribution distr(m_type,
-                                     m_alpha_u->eval_1(si, active),
+        MicrofacetDistribution distr(m_type, m_alpha_u->eval_1(si, active),
                                      m_alpha_v->eval_1(si, active),
                                      m_sample_visible);
 
         Float result;
         if (likely(m_sample_visible))
-            result = distr.eval(m) * distr.smith_g1(si.wi, m) /
-                     (4.f * cos_theta_i);
+            result =
+                distr.eval(m) * distr.smith_g1(si.wi, m) / (4.f * cos_theta_i);
         else
             result = distr.pdf(si.wi, m) / (4.f * dr::dot(wo, m));
 
@@ -532,13 +659,13 @@ public:
         active &= cos_theta_i > 0.f && cos_theta_o > 0.f &&
                   dr::dot(si.wi, H) > 0.f && dr::dot(wo, H) > 0.f;
 
-        if (unlikely(!ctx.is_enabled(BSDFFlags::GlossyReflection) || dr::none_or<false>(active)))
+        if (unlikely(!ctx.is_enabled(BSDFFlags::GlossyReflection) ||
+                     dr::none_or<false>(active)))
             return { 0.f, 0.f };
 
         /* Construct a microfacet distribution matching the
            roughness values at the current surface position. */
-        MicrofacetDistribution distr(m_type,
-                                     m_alpha_u->eval_1(si, active),
+        MicrofacetDistribution distr(m_type, m_alpha_u->eval_1(si, active),
                                      m_alpha_v->eval_1(si, active),
                                      m_sample_visible);
 
@@ -549,14 +676,14 @@ public:
 
         // Evaluate Smith's shadow-masking function
         Float smith_g1_wi = distr.smith_g1(si.wi, H);
-        Float G = smith_g1_wi * distr.smith_g1(wo, H);
+        Float G           = smith_g1_wi * distr.smith_g1(wo, H);
 
         // Evaluate the full microfacet model (except Fresnel)
         UnpolarizedSpectrum value = D * G / (4.f * Frame3f::cos_theta(si.wi));
 
         // Evaluate the Fresnel factor
         dr::Complex<UnpolarizedSpectrum> eta_c(m_eta->eval(si, active),
-                                           m_k->eval(si, active));
+                                               m_k->eval(si, active));
 
         Spectrum F;
         if constexpr (is_polarized_v<Spectrum>) {
@@ -568,27 +695,29 @@ public:
                      wi_hat = ctx.mode == TransportMode::Radiance ? si.wi : wo;
 
             // Mueller matrix for specular reflection.
-            F = mueller::specular_reflection(UnpolarizedSpectrum(dot(wo_hat, H)), eta_c);
+            F = mueller::specular_reflection(
+                UnpolarizedSpectrum(dot(wo_hat, H)), eta_c);
 
-            /* The Stokes reference frame vector of this matrix lies perpendicular
-               to the plane of reflection. */
+            /* The Stokes reference frame vector of this matrix lies
+               perpendicular to the plane of reflection. */
             Vector3f s_axis_in  = dr::cross(H, -wo_hat);
             Vector3f s_axis_out = dr::cross(H, wi_hat);
 
             // Singularity when the input & output are collinear with the normal
             Mask collinear = dr::all(s_axis_in == Vector3f(0));
-            s_axis_in  = dr::select(collinear, Vector3f(1, 0, 0),
-                                               dr::normalize(s_axis_in));
-            s_axis_out = dr::select(collinear, Vector3f(1, 0, 0),
-                                               dr::normalize(s_axis_out));
+            s_axis_in      = dr::select(collinear, Vector3f(1, 0, 0),
+                                        dr::normalize(s_axis_in));
+            s_axis_out     = dr::select(collinear, Vector3f(1, 0, 0),
+                                        dr::normalize(s_axis_out));
 
-            /* Rotate in/out reference vector of F s.t. it aligns with the implicit
-               Stokes bases of -wo_hat & wi_hat. */
-            F = mueller::rotate_mueller_basis(F,
-                                              -wo_hat, s_axis_in, mueller::stokes_basis(-wo_hat),
-                                               wi_hat, s_axis_out, mueller::stokes_basis(wi_hat));
+            /* Rotate in/out reference vector of F s.t. it aligns with the
+               implicit Stokes bases of -wo_hat & wi_hat. */
+            F = mueller::rotate_mueller_basis(
+                F, -wo_hat, s_axis_in, mueller::stokes_basis(-wo_hat), wi_hat,
+                s_axis_out, mueller::stokes_basis(wi_hat));
         } else {
-            F = fresnel_conductor(UnpolarizedSpectrum(dr::dot(si.wi, H)), eta_c);
+            F = fresnel_conductor(UnpolarizedSpectrum(dr::dot(si.wi, H)),
+                                  eta_c);
         }
 
         // If requested, include the specular reflectance component
@@ -612,7 +741,8 @@ public:
             << "  alpha_u = " << string::indent(m_alpha_u) << "," << std::endl
             << "  alpha_v = " << string::indent(m_alpha_v) << "," << std::endl;
         if (m_specular_reflectance)
-           oss << "  specular_reflectance = " << string::indent(m_specular_reflectance) << "," << std::endl;
+            oss << "  specular_reflectance = "
+                << string::indent(m_specular_reflectance) << "," << std::endl;
         oss << "  eta = " << string::indent(m_eta) << "," << std::endl
             << "  k = " << string::indent(m_k) << std::endl
             << "]";
@@ -656,7 +786,6 @@ private:
 
     /// @brief Scaling factor for outgoing radiance.
     float m_multiplier;
-
 };
 
 MI_IMPLEMENT_CLASS_VARIANT(RoughGrating, BSDF)

@@ -100,9 +100,10 @@ class PLTIntegrator(ADIntegrator):
             bsdf = si.bsdf(ray)
             sample_1 = sampler.next_1d()
             sample_2 = sampler.next_2d()
+            lobe_sample_2 = sampler.next_2d()
 
             bsdf_sample, bsdf_weight = bsdf.wbsdf_sample(
-                bsdf_ctx, si, sample_1, sample_2)
+                bsdf_ctx, si, sample_1, sample_2, lobe_sample_2)
              
             # get information of the sampled interaction and update ray
             ray = si.spawn_ray(si.to_world(bsdf_sample.wo))
