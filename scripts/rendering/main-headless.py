@@ -31,7 +31,8 @@ def main(args):
 
     #render scene using the desired integrator
     integrator = mi.load_dict({
-        "type": "stokes_fw" if args.integrator == "plt" else "stokes",
+        # "type": "stokes_fw" if args.integrator == "plt" else "stokes",
+        "type" : "stokes",
         "nested" : {
             "type" : args.integrator,
             "max_depth": 7,

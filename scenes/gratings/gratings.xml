@@ -2,7 +2,7 @@
 
 <!-- Defaults, these can be set via the command line: -Darg=value -->
 
-	<default name="spp" value="256"/>
+	<default name="spp" value="128"/>
 	<default name="resx" value="640"/>
 	<default name="resy" value="480"/>
 
@@ -39,27 +39,31 @@
 
 	<bsdf type="twosided" id="mat-grating" name="mat-grating">
 		<bsdf type="roughgrating" name="bsdf">
-			<string name="lobe_type" value="sinusoidal" />
-			<float name="height" value="0.05" />
-			<float name="inv_period_x" value="0.4" />
-			<float name="inv_period_y" value="0.4" />
+			<string name="lobe_type" value="rectangular" />
+			<float name="height" value="0.04" />
+			<float name="inv_period_x" value="0.5" />
+			<float name="inv_period_y" value="0.5" />
 			<boolean name="radial" value="false" />
-			<integer name="lobes" value="7" />
-			<float name="grating_angle" value="0" />
+			<integer name="lobes" value="3" />
+			<float name="grating_angle" value="30" />
 			<float name="multiplier" value="1" />
-
-			<float name="alpha" value="0.05"/>
+			<rgb name="specular_reflectance" value="1.0, 0.02, 0.06"/>
+			<float name="alpha" value="0.02"/>
 		</bsdf>
 	</bsdf>
 
 <!-- Emitters -->
-
 	<emitter type="directional" id="elm__7" name="elm__7">
-		<rgb value="15.000000 15.000000 15.000000" name="irradiance"/>
+		<rgb value="10.000000 10.000000 10.000000" name="irradiance"/>
 		<transform name="to_world">
 			<matrix value="1.000000 0.000000 0.000000 0.000000 0.000000 0.707107 -0.707107 11.921600 0.000000 0.707107 0.707107 0.000000 0.000000 0.000000 0.000000 1.000000"/>
 		</transform>
 	</emitter>
+
+	<!-- <emitter type="envmap">
+		<string name="filename" value="textures/qwantani_noon_2k.exr" />
+		<float name="scale" value="0.1" />
+	</emitter> -->
 
 <!-- Shapes -->
 

@@ -33,7 +33,9 @@ def plot_samples(samples : mi.BSDFSample3f, weights : mi.UnpolarizedSpectrum, sa
 
     wi = sample_context["wi"]
 
-    points = np.array(samples.wo)
+    print(weights)
+
+    points = np.array(samples.wo * weights)
     print(weights.shape, points.shape)
 
     ax1.scatter(points[0], points[1], points[2], 'o')

@@ -37,6 +37,8 @@ class PLTIntegrator(ADIntegrator):
         self.max_depth = arg.get("max_depth", def_value=16)
         self.rr_depth = arg.get("rr_depth", def_value=4)
 
+        self.sample_pass_weight = arg.get("sample_pass_weight", def_value=False)
+
         # light coherence properties
         self.emissive_sourcing_area = arg.get("emissive_sourcing_area", def_value=1E-4)
         self.distant_sourcing_area = arg.get("distant_sourcing_area", def_value=1E-7)
@@ -343,7 +345,6 @@ class PLTIntegrator(ADIntegrator):
         # 2. Source ray based on hit type (env/area)
         is_environment = ds.emitter.is_environment()
 
-
         # 3. Replay path and evolve light distribution 
         α = self.replay_path(mode, 
             scene, 
@@ -420,7 +421,12 @@ class PLTIntegrator(ADIntegrator):
 
             # Propagate beam and evolve distribution (TODO)
             bsdf = bounce.interaction.bsdf()
+
+            # Correct way
             α[bounce.active] = bsdf.wbsdf_weight(bsdf_ctx, bounce.interaction, bounce.wo).L * α[bounce.active]
+
+            # Debug using information from sample pass
+            #α[bounce.active] = bounce.bsdf_weight * α[bounce.active]
             
             # next bounce in forward path
             i -= 1

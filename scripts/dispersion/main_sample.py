@@ -16,15 +16,15 @@ def main(args):
     bsdf = mi.load_dict({
         'type': 'roughgrating',
         'distribution': 'ggx',
-        'alpha' : 0.005,
+        'alpha' : 0.0005,
 
         'lobe_type' : 'sinusoidal',
         'height' : 0.05,
         'inv_period_x' : 0.4,
         'inv_period_y' : 0.4,
         'radial' : False,
-        'lobes' : 7,
-        'grating_angle' : 0,
+        'lobes' : 5,
+        'grating_angle' : 45,
     })
 
     # bsdf = mi.load_dict({

@@ -382,8 +382,8 @@ public:
         }
 
         /* If requested, include the specular reflectance component */
-        if (m_specular_reflectance)
-            weight *= m_specular_reflectance->eval(si, active);
+        // if (m_specular_reflectance)
+        //     weight *= m_specular_reflectance->eval(si, active);
 
         return { bs, (F * weight) & active };
     }
@@ -405,7 +405,8 @@ public:
         m_lobes, m_lobe_type, m_multiplier, uv);
 
         auto [lobe, pdf_xy] =
-        grating.sample_lobe(sample2, wi_local, wl * 1e-3f);
+        grating.sample_lobe(sample2, wi_local, wl * 1e-3f)
+
         // std::cout << lobe << std::endl;
 
         auto [wo_local, active] = grating.diffract(wi_local, lobe, wl * 1e-3f);
@@ -454,7 +455,7 @@ public:
                 si.wi, 
                 m,
                 // temporary wavelength value for now
-                400.0f);
+                500.0f);
         bs.eta               = 1.f;
         bs.sampled_component = 0;
         bs.sampled_type      = +BSDFFlags::GlossyReflection;
@@ -522,6 +523,22 @@ public:
             weight *= m_specular_reflectance->eval(si, active);
 
         return { bs, (F * weight * m_multiplier) & active };
+    }
+
+    GeneralizedRadiance3f wbsdf_weight(const BSDFContext &ctx, const SurfaceInteraction3f &si,
+        const Vector3f &wo, Mask active) const override {
+        MI_MASKED_FUNCTION(ProfilerPhase::BSDFEvaluate, active);
+
+        DRJIT_MARK_USED(wo);
+
+        // Color3f col = mitsuba::xyz_to_srgb(mitsuba::cie1931_xyz(400.0));
+        Spectrum f(1.0);
+
+        /* If requested, include the specular reflectance component */
+        if (m_specular_reflectance)
+            f *= m_specular_reflectance->eval(si, active);
+
+        return GeneralizedRadiance3f(f);
     }
 
     Spectrum eval(const BSDFContext &ctx, const SurfaceInteraction3f &si,
@@ -597,8 +614,8 @@ public:
         }
 
         /* If requested, include the specular reflectance component */
-        if (m_specular_reflectance)
-            result *= m_specular_reflectance->eval(si, active);
+        // if (m_specular_reflectance)
+        //     result *= m_specular_reflectance->eval(si, active);
 
         return (F * result) & active;
     }
@@ -721,8 +738,8 @@ public:
         }
 
         // If requested, include the specular reflectance component
-        if (m_specular_reflectance)
-            value *= m_specular_reflectance->eval(si, active);
+        // if (m_specular_reflectance)
+        //     value *= m_specular_reflectance->eval(si, active);
 
         Float pdf;
         if (likely(m_sample_visible))
