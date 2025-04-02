@@ -53,6 +53,12 @@ struct BounceData {
     /// \brief The PDF of the last non-delta interaction (otherwise would be 0, check the `bsdf_flags` field first!)
     Float last_nd_pdf;
     
+    /**
+     * \brief If a diffractive interaction is involved, this value contains the
+     * sampled diffraction lobe. Otherwise, its value should be ignored.
+     */
+    Vector2i sampled_lobe;
+
     /// \brief Whether this vertex of the path belongs to an active path.
     Mask active;
     

@@ -12619,6 +12619,7 @@ static const char *__doc_mitsuba_BSDF_wbsdf_eval_pdf = R"doc()doc";
 
 static const char *__doc_mitsuba_BSDF_wbsdf_eval_pdf_sample = R"doc()doc";
 
+static const char *__doc_mitsuba_PLTSamplePhaseData3f = R"doc()doc";
 
 #if defined(__GNUG__)
 #pragma GCC diagnostic pop

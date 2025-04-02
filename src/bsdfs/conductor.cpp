@@ -320,8 +320,11 @@ public:
     GeneralizedRadiance3f wbsdf_weight(const BSDFContext &ctx,
                           const SurfaceInteraction3f &si,
                           const Vector3f &wo,
-                          Mask active = true) const override {
-        
+                          const PLTSamplePhaseData3f& sd,
+                          Mask active = true) const override 
+    {
+        DRJIT_MARK_USED(sd);
+
         Float cos_theta_i = Frame3f::cos_theta(si.wi);
         active &= cos_theta_i > 0.f;
 

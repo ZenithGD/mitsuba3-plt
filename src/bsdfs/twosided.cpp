@@ -300,8 +300,9 @@ public:
 
     GeneralizedRadiance3f
     wbsdf_eval(const BSDFContext &ctx_,
-                                      const SurfaceInteraction3f &si_,
-                                      const Vector3f &wo_, Mask active) const override {
+               const SurfaceInteraction3f &si_,
+               const Vector3f &wo_, 
+               const PLTSamplePhaseData3f& sd, Mask active) const override {
         MI_MASKED_FUNCTION(ProfilerPhase::BSDFEvaluate, active);
 
         SurfaceInteraction3f si(si_);
@@ -312,13 +313,13 @@ public:
         if (m_brdf[0] == m_brdf[1]) {
             wo.z() = dr::mulsign(wo.z(), si.wi.z());
             si.wi.z() = dr::abs(si.wi.z());
-            result = m_brdf[0]->wbsdf_eval(ctx, si, wo, active);
+            result = m_brdf[0]->wbsdf_eval(ctx, si, wo, sd, active);
         } else {
             Mask front_side = Frame3f::cos_theta(si.wi) > 0.f && active,
                  back_side  = Frame3f::cos_theta(si.wi) < 0.f && active;
 
             if (dr::any_or<true>(front_side))
-                result = m_brdf[0]->wbsdf_eval(ctx, si, wo, front_side);
+                result = m_brdf[0]->wbsdf_eval(ctx, si, wo, sd, front_side);
 
             if (dr::any_or<true>(back_side)) {
                 if (ctx.component != (uint32_t) -1)
@@ -328,7 +329,7 @@ public:
                 wo.z() *= -1.f;
 
                 dr::masked(result, back_side) =
-                    m_brdf[1]->wbsdf_eval(ctx, si, wo, back_side);
+                    m_brdf[1]->wbsdf_eval(ctx, si, wo, sd, back_side);
             }
         }
 
@@ -337,7 +338,9 @@ public:
 
     Float wbsdf_pdf(
         const BSDFContext &ctx_, const SurfaceInteraction3f &si_,
-        const Vector3f &wo_, Mask active) const override {
+        const Vector3f &wo_, 
+        const PLTSamplePhaseData3f& sd, 
+        Mask active) const override {
 
         MI_MASKED_FUNCTION(ProfilerPhase::BSDFEvaluate, active);
 
@@ -349,13 +352,13 @@ public:
         if (m_brdf[0] == m_brdf[1]) {
             wo.z() = dr::mulsign(wo.z(), si.wi.z());
             si.wi.z() = dr::abs(si.wi.z());
-            result = m_brdf[0]->wbsdf_pdf(ctx, si, wo, active);
+            result = m_brdf[0]->wbsdf_pdf(ctx, si, wo, sd, active);
         } else {
             Mask front_side = Frame3f::cos_theta(si.wi) > 0.f && active,
                  back_side  = Frame3f::cos_theta(si.wi) < 0.f && active;
 
             if (dr::any_or<true>(front_side))
-                result = m_brdf[0]->wbsdf_pdf(ctx, si, wo, front_side);
+                result = m_brdf[0]->wbsdf_pdf(ctx, si, wo, sd, front_side);
 
             if (dr::any_or<true>(back_side)) {
                 if (ctx.component != (uint32_t) -1)
@@ -364,7 +367,7 @@ public:
                 si.wi.z() *= -1.f;
                 wo.z() *= -1.f;
 
-                dr::masked(result, back_side) = m_brdf[1]->wbsdf_pdf(ctx, si, wo, back_side);
+                dr::masked(result, back_side) = m_brdf[1]->wbsdf_pdf(ctx, si, wo, sd, back_side);
             }
         }
 
@@ -373,8 +376,10 @@ public:
 
     GeneralizedRadiance3f
     wbsdf_weight(const BSDFContext &ctx_,
-                                      const SurfaceInteraction3f &si_,
-                                      const Vector3f &wo_, Mask active) const override {
+                 const SurfaceInteraction3f &si_,
+                 const Vector3f &wo_, 
+                 const PLTSamplePhaseData3f& sd, 
+                 Mask active) const override {
         MI_MASKED_FUNCTION(ProfilerPhase::BSDFEvaluate, active);
 
         SurfaceInteraction3f si(si_);
@@ -385,13 +390,13 @@ public:
         if (m_brdf[0] == m_brdf[1]) {
             wo.z() = dr::mulsign(wo.z(), si.wi.z());
             si.wi.z() = dr::abs(si.wi.z());
-            result = m_brdf[0]->wbsdf_weight(ctx, si, wo, active);
+            result = m_brdf[0]->wbsdf_weight(ctx, si, wo, sd, active);
         } else {
             Mask front_side = Frame3f::cos_theta(si.wi) > 0.f && active,
                  back_side  = Frame3f::cos_theta(si.wi) < 0.f && active;
 
             if (dr::any_or<true>(front_side))
-                result = m_brdf[0]->wbsdf_weight(ctx, si, wo, front_side);
+                result = m_brdf[0]->wbsdf_weight(ctx, si, wo, sd, front_side);
 
             if (dr::any_or<true>(back_side)) {
                 if (ctx.component != (uint32_t) -1)
@@ -401,7 +406,7 @@ public:
                 wo.z() *= -1.f;
 
                 dr::masked(result, back_side) =
-                    m_brdf[1]->wbsdf_weight(ctx, si, wo, back_side);
+                    m_brdf[1]->wbsdf_weight(ctx, si, wo, sd, back_side);
             }
         }
 

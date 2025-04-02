@@ -440,6 +440,7 @@ public:
     virtual GeneralizedRadiance<Float, Spectrum> wbsdf_eval(const BSDFContext &ctx,
                           const SurfaceInteraction3f &si,
                           const Vector3f &wo,
+                          const PLTSamplePhaseData3f &sd,
                           Mask active = true) const;
 
     /**
@@ -501,6 +502,7 @@ public:
     virtual GeneralizedRadiance<Float, Spectrum> wbsdf_weight(const BSDFContext &ctx,
                       const SurfaceInteraction3f &si,
                       const Vector3f &wo,
+                      const PLTSamplePhaseData3f &sd,
                       Mask active = true) const;
 
     /**
@@ -532,6 +534,7 @@ public:
     virtual Float wbsdf_pdf(const BSDFContext &ctx,
                       const SurfaceInteraction3f &si,
                       const Vector3f &wo,
+                      const PLTSamplePhaseData3f &sd,
                       Mask active = true) const;
 
     /**
@@ -605,10 +608,12 @@ public:
      * \param wo
      *     The outgoing direction
      */
-    virtual std::pair<GeneralizedRadiance<Float, Spectrum>, Float> wbsdf_eval_pdf(const BSDFContext &ctx,
-                                                const SurfaceInteraction3f &si,
-                                                const Vector3f &wo,
-                                                Mask active = true) const;
+    virtual std::pair<GeneralizedRadiance<Float, Spectrum>, Float> 
+    wbsdf_eval_pdf(const BSDFContext &ctx,
+                   const SurfaceInteraction3f &si,
+                   const Vector3f &wo,
+                   const PLTSamplePhaseData3f &sd,
+                   Mask active = true) const;
 
     /**
      * \brief Jointly evaluate the BSDF (wi, wo), the probability per unit
@@ -647,46 +652,6 @@ public:
                     const Vector3f &wo,
                     Float sample1,
                     const Point2f &sample2,
-                    Mask active = true) const;
-
-    /**
-     * \brief Jointly evaluate the wBSDF K(wi, wo), the probability per unit
-     * solid angle of sampling the given direction \c wo and importance sample
-     * the BSDF model.
-     *
-     * This is simply a wrapper around two separate function calls to eval_pdf()
-     * and sample(). The function exists to perform a smaller number of virtual
-     * function calls, which has some performance benefits on highly vectorized
-     * JIT variants of the renderer. (A ~20% performance improvement for the
-     * basic path tracer on CUDA)
-     *
-     * \param ctx
-     *     A context data structure describing which lobes to evaluate,
-     *     and whether radiance or importance are being transported.
-     *
-     * \param si
-     *     A surface interaction data structure describing the underlying
-     *     surface position. The incident direction is obtained from
-     *     the field <tt>si.wi</tt>.
-     *
-     * \param wo
-     *     The outgoing direction
-     *
-     * \param sample1
-     *     A uniformly distributed sample on \f$[0,1]\f$. It is used
-     *     to select the BSDF lobe in multi-lobe models.
-     *
-     * \param sample2
-     *     A uniformly distributed sample on \f$[0,1]^2\f$. It is
-     *     used to generate the sampled direction.
-     */
-    virtual std::tuple<GeneralizedRadiance<Float, Spectrum>, Float, BSDFSample3f, GeneralizedRadiance<Float, Spectrum>>
-    wbsdf_eval_pdf_sample(const BSDFContext &ctx,
-                    const SurfaceInteraction3f &si,
-                    const Vector3f &wo,
-                    Float sample1,
-                    const Point2f &sample2,
-                    const Point2f &lobe_sample2,
                     Mask active = true) const;
 
     /**
@@ -908,7 +873,6 @@ DRJIT_CALL_TEMPLATE_BEGIN(mitsuba::BSDF)
     DRJIT_CALL_METHOD(eval_pdf_sample)
     DRJIT_CALL_METHOD(wbsdf_pdf)
     DRJIT_CALL_METHOD(wbsdf_eval_pdf)
-    DRJIT_CALL_METHOD(wbsdf_eval_pdf_sample)
     DRJIT_CALL_METHOD(wbsdf_weight)
     DRJIT_CALL_METHOD(eval_diffuse_reflectance)
     DRJIT_CALL_METHOD(has_attribute)

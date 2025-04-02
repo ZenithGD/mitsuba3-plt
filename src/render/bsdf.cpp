@@ -4,6 +4,8 @@
 #include <mitsuba/render/texture.h>
 #include <mitsuba/core/properties.h>
 
+#include <mitsuba/plt/fwd.h>
+
 NAMESPACE_BEGIN(mitsuba)
 
 MI_VARIANT BSDF<Float, Spectrum>::BSDF(const Properties &props)
@@ -28,19 +30,22 @@ BSDF<Float, Spectrum>::wbsdf_sample(
 
 {
     DRJIT_MARK_USED(lobe_sample2);
-    auto [ sp, weight ] = sample(ctx, si, sample1, sample2, active);
+    auto [ sd, weight ] = sample(ctx, si, sample1, sample2, active);
 
     GeneralizedRadiance<Float, Spectrum> gr(weight);
 
-    return { sp, gr };     
+    return { sd, gr };     
 }
 
 MI_VARIANT GeneralizedRadiance<Float, Spectrum> 
 BSDF<Float, Spectrum>::wbsdf_eval(const BSDFContext &ctx,
     const SurfaceInteraction3f &si,
     const Vector3f &wo,
+    const PLTSamplePhaseData3f &sd,
     Mask active) const 
 {
+    DRJIT_MARK_USED(sd);
+    
     GeneralizedRadiance<Float, Spectrum> gr(eval(ctx, si, wo, active));
 
     return gr;
@@ -50,8 +55,11 @@ MI_VARIANT Float
 BSDF<Float, Spectrum>::wbsdf_pdf(const BSDFContext &ctx,
     const SurfaceInteraction3f &si,
     const Vector3f &wo,
+    const PLTSamplePhaseData3f &sd,
     Mask active) const
 {
+    DRJIT_MARK_USED(sd);
+
     return pdf(ctx, si, wo, active);
 }
 
@@ -59,8 +67,10 @@ MI_VARIANT GeneralizedRadiance<Float, Spectrum>
 BSDF<Float, Spectrum>::wbsdf_weight(const BSDFContext &ctx,
     const SurfaceInteraction3f &si,
     const Vector3f &wo,
+    const PLTSamplePhaseData3f &sd,
     Mask active) const
 {
+    DRJIT_MARK_USED(sd);
     auto [e_val, pdf_val] = eval_pdf(ctx, si, wo, active);
     GeneralizedRadiance<Float, Spectrum> gr(dr::select(pdf_val > 0.0f, e_val / pdf_val, 0.0f));
 
@@ -92,21 +102,9 @@ MI_VARIANT std::pair<GeneralizedRadiance<Float, Spectrum> , Float>
 BSDF<Float, Spectrum>::wbsdf_eval_pdf(const BSDFContext &ctx,
                                 const SurfaceInteraction3f &si,
                                 const Vector3f &wo,
+                                const PLTSamplePhaseData3f &sd,
                                 Mask active) const {
-    return { wbsdf_eval(ctx, si, wo, active), wbsdf_pdf(ctx, si, wo, active) };
-}
-
-MI_VARIANT std::tuple<GeneralizedRadiance<Float, Spectrum> , Float, typename BSDF<Float, Spectrum>::BSDFSample3f, GeneralizedRadiance<Float, Spectrum>>
-BSDF<Float, Spectrum>::wbsdf_eval_pdf_sample(const BSDFContext &ctx,
-                                       const SurfaceInteraction3f &si,
-                                       const Vector3f &wo,
-                                       Float sample1,
-                                       const Point2f &sample2,
-                                       const Point2f &lobe_sample2,
-                                       Mask active) const {
-        auto [e_val, pdf_val] = wbsdf_eval_pdf(ctx, si, wo, active);
-        auto [bs, bsdf_weight] = wbsdf_sample(ctx, si, sample1, sample2, lobe_sample2, active);
-        return { e_val, pdf_val, bs, bsdf_weight };
+    return { wbsdf_eval(ctx, si, wo, sd, active), wbsdf_pdf(ctx, si, wo, sd, active) };
 }
 
 MI_VARIANT Spectrum BSDF<Float, Spectrum>::eval_null_transmission(

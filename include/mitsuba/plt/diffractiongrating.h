@@ -72,6 +72,9 @@ public:
     Mask is_1D_grating() { return m_inv_period.y() < dr::Epsilon<Float>; }
 
 
+    /**
+     * Return the far field "roughness" of the material
+     */
     Spectrum alpha(const Vector3f& wi, const Spectrum k)
     {
         Float cos_theta_i = Frame<Float>::cos_theta(wi);
@@ -80,6 +83,15 @@ public:
         return dr::exp(-a);
     }
 
+    /**
+     * Construct a shading frame aligned with the grating direction.
+     */
+    Frame3f shadingFrame(const Vector3f& n) const 
+    {
+        Vector3f bit = dr::cross(n, m_grating_dir);
+
+        return Frame3f(n, m_grating_dir, bit);
+    }
     /**
      * \brief Given a 2D uniform sample, an inciding direction and wavelength,
      * sample a lobe and its pdf.
@@ -103,11 +115,8 @@ public:
             }
             total += li;
             intensities[l] = li;
-
-            //std::cout << intensities[l] << std::endl;
         }
-        //std::cout << "total: " << total << std::endl;
-
+        
         // choose lobe based on its probability
         // TODO: Study if these loops can be vectorized more with drjit.
         Float cdf(0.0f); 

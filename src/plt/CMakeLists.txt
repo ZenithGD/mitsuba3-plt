@@ -11,6 +11,7 @@ add_library(mitsuba-plt OBJECT
   bouncebuffer.cpp              ${INC_DIR}/bouncebuffer.h
   diffractiongrating.cpp        ${INC_DIR}/diffractiongrating.h
   beam.cpp                      ${INC_DIR}/beam.h
+  sample_solve.cpp              ${INC_DIR}/sample_solve.h
 )
 
 target_compile_definitions(mitsuba-plt

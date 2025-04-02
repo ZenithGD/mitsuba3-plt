@@ -10,6 +10,10 @@ def sph_to_dir(theta, phi):
     sp, cp = dr.sincos(phi)
     return mi.Vector3f(cp * st, sp * st, ct)
 
+def dir_to_sph(v):
+    theta = dr.atan2(v.y, v.x)
+    phi = dr.acos(v.z / dr.norm(v))
+    return theta, phi
 
 def plot_dispersion(angles, values, show_360=False, show_sp=False, **kwargs):
     

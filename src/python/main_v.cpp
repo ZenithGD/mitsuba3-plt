@@ -123,6 +123,7 @@ MI_PY_DECLARE(PLTInteraction);
 MI_PY_DECLARE(DiffractionGrating);
 MI_PY_DECLARE(BounceData);
 MI_PY_DECLARE(PLTBeam);
+MI_PY_DECLARE(SampleSolve);
 
 using Caster = nb::object(*)(mitsuba::Object *);
 Caster cast_object = nullptr;
@@ -230,6 +231,7 @@ NB_MODULE(MI_VARIANT_NAME, m) {
     MI_PY_IMPORT(DiffractionGrating);
     MI_PY_IMPORT(BounceData);
     MI_PY_IMPORT(PLTBeam);
+    MI_PY_IMPORT(SampleSolve);
 
     /* Callback function cleanup static variant-specific data structures, this
      * should be called when the interpreter is exiting */

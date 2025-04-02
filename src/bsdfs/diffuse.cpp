@@ -179,11 +179,16 @@ public:
         return { depolarizer<Spectrum>(value) & active, dr::select(active, pdf, 0.f) };
     }
 
-    GeneralizedRadiance3f wbsdf_weight(const BSDFContext &ctx, const SurfaceInteraction3f &si,
-                  const Vector3f &wo, Mask active) const override {
+    GeneralizedRadiance3f wbsdf_weight(const BSDFContext &ctx, 
+        const SurfaceInteraction3f &si,
+        const Vector3f &wo, 
+        const PLTSamplePhaseData3f& sd, 
+        Mask active) const override 
+    {
         MI_MASKED_FUNCTION(ProfilerPhase::BSDFEvaluate, active);
 
         DRJIT_MARK_USED(wo);
+        DRJIT_MARK_USED(sd);
 
         if (!ctx.is_enabled(BSDFFlags::DiffuseReflection))
             return GeneralizedRadiance3f(0.0f);

@@ -9,6 +9,7 @@
 
 #include <mitsuba/plt/diffractiongrating.h>
 #include <mitsuba/plt/fwd.h>
+#include <mitsuba/plt/sample_solve.h>
 
 NAMESPACE_BEGIN(mitsuba)
 
@@ -405,7 +406,7 @@ public:
         m_lobes, m_lobe_type, m_multiplier, uv);
 
         auto [lobe, pdf_xy] =
-        grating.sample_lobe(sample2, wi_local, wl * 1e-3f)
+        grating.sample_lobe(sample2, wi_local, wl * 1e-3f);
 
         // std::cout << lobe << std::endl;
 
@@ -419,7 +420,8 @@ public:
 
     std::pair<BSDFSample3f, GeneralizedRadiance3f>
     wbsdf_sample(const BSDFContext &ctx, const SurfaceInteraction3f &si,
-                 Float /* sample1 */, const Point2f &sample2,
+                 Float /* sample1 */, 
+                 const Point2f &sample2,
                  const Point2f &lobe_sample2,
                  Mask active) const override {
         MI_MASKED_FUNCTION(ProfilerPhase::BSDFSample, active);
@@ -525,8 +527,12 @@ public:
         return { bs, (F * weight * m_multiplier) & active };
     }
 
-    GeneralizedRadiance3f wbsdf_weight(const BSDFContext &ctx, const SurfaceInteraction3f &si,
-        const Vector3f &wo, Mask active) const override {
+    GeneralizedRadiance3f wbsdf_weight(const BSDFContext &ctx, 
+        const SurfaceInteraction3f &si,
+        const Vector3f &wo, 
+        const PLTSamplePhaseData3f& sd, 
+        Mask active) const override 
+    {
         MI_MASKED_FUNCTION(ProfilerPhase::BSDFEvaluate, active);
 
         DRJIT_MARK_USED(wo);

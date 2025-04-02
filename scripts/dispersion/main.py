@@ -28,7 +28,9 @@ def main(args):
     plot_dispersion(angles, disp, show_sp=mi.is_polarized, show_360=True, title="Dielectric importance")
 
     # create grating dispersion diagram
-    grating_dispersion(args)
+    angles, disp = grating_dispersion(args)
+
+    plot_dispersion(angles, disp, show_sp=mi.is_polarized, title="Grating importance")
 
     plt.show()
 
