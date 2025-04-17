@@ -5,6 +5,7 @@
 #include <drjit/call.h>
 #include <mitsuba/plt/fwd.h>
 #include <mitsuba/plt/plt.h>
+#include <mitsuba/plt/sample_solve.h>
 
 NAMESPACE_BEGIN(mitsuba)
 
@@ -374,7 +375,7 @@ public:
      *            It also contains the polarization state and the coherence
      *            information of the wave packet.
      */
-    virtual std::pair<BSDFSample3f, GeneralizedRadiance<Float, Spectrum>>
+    virtual std::pair<PLTSamplePhaseData3f, GeneralizedRadiance<Float, Spectrum>>
     wbsdf_sample( const BSDFContext &ctx,
            const SurfaceInteraction3f &si,
            Float sample1,

@@ -13,7 +13,7 @@ mi.set_variant("cuda_ad_spectral_polarized")
 @dr.syntax
 def task(max_depth):
 
-    buffer : mi.Local[mi.SurfaceInteraction3f] = dr.alloc_local(mi.SurfaceInteraction3f, max_depth)
+    buffer : mi.Local[mi.BounceData3f] = dr.alloc_local(mi.BounceData3f, max_depth)
     
     i = mi.UInt(0)
     while i < 12:
@@ -31,8 +31,9 @@ def task(max_depth):
         #                     mi.Float(0.5),
         #                     mi.Bool(True))
 
-        bd = dr.zeros(mi.SurfaceInteraction3f)
-        bd.t = i
+        bd = dr.zeros(mi.BounceData3f)
+        bd.id = mi.UInt32(i)
+        bd.sample_data = dr.zeros(mi.PLTSamplePhaseData3f)
         
         buffer[i] = bd
         

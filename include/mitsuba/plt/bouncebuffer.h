@@ -59,6 +59,11 @@ struct BounceData {
      */
     Vector2i sampled_lobe;
 
+    /**
+     * @brief The wavelength(s) that drive the sample process.
+     */
+    Wavelength sampling_wavelengths;
+
     /// \brief Whether this vertex of the path belongs to an active path.
     Mask active;
     
@@ -68,7 +73,7 @@ struct BounceData {
         const Vector3f& wi_, const Vector3f& wo_, const UInt32& bf_,
         const Float& rr_thp_, const Spectrum& throughput_, 
         const Spectrum& bsdf_weight_, const Mask& is_emitter_, 
-        const Float& ld_, const Mask& active_)
+        const Float& ld_, const Vector2i& sl_, const Wavelength& swl_, const Mask& active_)
 
         : id(id_),
           interaction(it_), 
@@ -79,12 +84,14 @@ struct BounceData {
           bsdf_weight(bsdf_weight_),
           is_emitter(is_emitter_),
           last_nd_pdf(ld_), 
+          sampled_lobe(sl_),
+          sampling_wavelengths(swl_),
           active(active_) {}
 
     // This macro already defines a suitable copy constructor
     DRJIT_STRUCT(BounceData, id, interaction, wi, wo, 
         bsdf_flags, rr_thp, throughput, bsdf_weight, 
-        is_emitter, last_nd_pdf, active);
+        is_emitter, last_nd_pdf, sampled_lobe, sampling_wavelengths, active);
 };
 
 template <typename Float, typename Spectrum>

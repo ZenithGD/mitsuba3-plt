@@ -50,7 +50,7 @@ public:
     }
 
     // sample wbsdf python definition
-    std::pair<BSDFSample3f, GeneralizedRadiance<Float, Spectrum>>
+    std::pair<PLTSamplePhaseData3f, GeneralizedRadiance<Float, Spectrum>>
     wbsdf_sample(const BSDFContext &ctx, const SurfaceInteraction3f &si,
            Float sample1, 
            const Point2f &sample2,

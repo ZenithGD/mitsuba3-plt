@@ -20,18 +20,20 @@ MI_PY_EXPORT(BounceData) {
             .def_field(BounceData3f, rr_thp, "rr_thp")
             .def_field(BounceData3f, throughput, "throughput")
             .def_field(BounceData3f, bsdf_weight, "bsdf_weight")
-            .def_field(BounceData3f, last_nd_pdf, "last_nd_pdf")
-            .def_field(BounceData3f, active, "active")
             .def_field(BounceData3f, is_emitter, "is_emitter")
+            .def_field(BounceData3f, last_nd_pdf, "last_nd_pdf")
+            .def_field(BounceData3f, sampled_lobe, "sampled_lobe")
+            .def_field(BounceData3f, sampling_wavelengths, "sampling_wavelengths")
+            .def_field(BounceData3f, active, "active")
 
             .def(nb::init<>(), "Blank constructor")
             .def(nb::init<UInt32, SurfaceInteraction3f, Vector3f, Vector3f, UInt32,
-                          Float, Spectrum, Spectrum, Mask, Float, Mask>(),
+                          Float, Spectrum, Spectrum, Mask, Float, Vector2i, Wavelength, Mask>(),
                  "id"_a, "interaction"_a, "wi"_a, "wo"_a, "bsdf_flags"_a,
                  "rr_thp"_a, "throughput"_a, "bsdf_weight"_a, "is_emitter"_a,
-                 "last_nd_pdf"_a, "active"_a, D(BounceData, BounceData));
+                 "last_nd_pdf"_a, "sampled_lobe"_a, "sampling_wavelengths"_a, "active"_a, D(BounceData, BounceData));
             // .def_repr(BounceData3f);
 
     MI_PY_DRJIT_STRUCT(it, BounceData3f, id, interaction, wi, wo, bsdf_flags, 
-        rr_thp, throughput, bsdf_weight, is_emitter, last_nd_pdf, active)
+        rr_thp, throughput, bsdf_weight, is_emitter, last_nd_pdf, sampled_lobe, sampling_wavelengths, active)
 }
