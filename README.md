@@ -104,6 +104,8 @@ for details on this.
 - (optional) For computation on the GPU: `Nvidia driver >= 495.89`
 - (optional) For vectorized / parallel computation on the CPU: `LLVM >= 11.1`
 
+> **Warning** With the release of CMake 4.0, CMake compatibility for less than 3.5 is now deprecated. The latest version compatible with Mitsuba 3's submodules is limited to the last 3.x.x version (3.31.7)
+
 ## Usage
 
 Here is a simple "Hello World" example that shows how simple it is to render a
