@@ -5,7 +5,7 @@ import time
 
 from utils import *
 
-mi.set_variant("cuda_ad_rgb_polarized")
+mi.set_variant("cuda_ad_spectral_polarized")
 
 import numpy as np
 import matplotlib.pyplot as plt

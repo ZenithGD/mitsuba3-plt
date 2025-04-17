@@ -1,3 +1,4 @@
+#pragma once
 #include <mitsuba/render/fwd.h>
 #include <mitsuba/plt/fwd.h>
 #include <mitsuba/plt/plt.h>
@@ -20,9 +21,16 @@ struct PLTSamplePhaseData
 
     /**
      * @brief The diffraction lobe. If the interaction didn't involve a 
-     * diffraction grating, this will contain a 0-vector.w
+     * diffraction grating, this will contain a 0-vector.
      */
     Vector2i diffraction_lobe;
+
+    /**
+     * @brief The direction of the center lobe of a diffractive interaction. 
+     * If the interaction didn't involve a diffraction grating, 
+     * this will contain a 0-vector. This is required for the rough grating.
+     */
+    Vector3f center_lobe;
 
     /**
      * @brief Wavelength(s) driving the sampling process.
@@ -31,6 +39,13 @@ struct PLTSamplePhaseData
     Wavelength sampling_wavelengths;
 
     // add more data here if needed...
+
+    PLTSamplePhaseData(const BSDFSample3f &sp, const Vector2i& lobe, 
+        const Vector3f& clobe, const Wavelength& wl)
+        : bsdf_sample(sp), diffraction_lobe(lobe), center_lobe(clobe), sampling_wavelengths(wl)
+    {}
+
+    DRJIT_STRUCT(PLTSamplePhaseData, bsdf_sample, diffraction_lobe, center_lobe, sampling_wavelengths)
 };
 
 NAMESPACE_END(mitsuba)

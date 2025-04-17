@@ -9,7 +9,6 @@
 
 #include <mitsuba/plt/diffractiongrating.h>
 #include <mitsuba/plt/fwd.h>
-#include <mitsuba/plt/sample_solve.h>
 
 NAMESPACE_BEGIN(mitsuba)
 
@@ -383,13 +382,13 @@ public:
         }
 
         /* If requested, include the specular reflectance component */
-        // if (m_specular_reflectance)
-        //     weight *= m_specular_reflectance->eval(si, active);
+        if (m_specular_reflectance)
+            weight *= m_specular_reflectance->eval(si, active);
 
         return { bs, (F * weight) & active };
     }
 
-    std::tuple<Vector3f, Float, Mask> sample_diffract(const Vector2f &sample2,
+    std::tuple<Vector3f, Float, Vector2i, Mask> sample_diffract(const Vector2f &sample2,
         const Vector2f &uv,
         const Vector3f &wi,
         const Vector3f &n,
@@ -414,11 +413,11 @@ public:
         // std::cout << wo_local << std::endl;
 
         Vector3f wo = normalFrame.to_world(wo_local);
-        return { wo, pdf_xy.x() * pdf_xy.y(), active };
+        return { wo, pdf_xy.x() * pdf_xy.y(), lobe, active };
     }
 
 
-    std::pair<BSDFSample3f, GeneralizedRadiance3f>
+    std::pair<PLTSamplePhaseData3f, GeneralizedRadiance3f>
     wbsdf_sample(const BSDFContext &ctx, const SurfaceInteraction3f &si,
                  Float /* sample1 */, 
                  const Point2f &sample2,
@@ -432,8 +431,13 @@ public:
 
         if (unlikely(!ctx.is_enabled(BSDFFlags::GlossyReflection) ||
                      dr::none_or<false>(active)))
-            return { bs, GeneralizedRadiance3f(0.0f) };
-
+        {
+            PLTSamplePhaseData3f sd(bs, 
+                Vector2i(0, 0), 
+                Vector3f(0, 0, 0), 
+                si.wavelengths);
+            return { sd, GeneralizedRadiance3f(0.0f) };
+        }
         /* Construct a microfacet distribution matching the
            roughness values at the current surface position. */
         MicrofacetDistribution distr(m_type, m_alpha_u->eval_1(si, active),
@@ -447,17 +451,17 @@ public:
         // Diffract along the normal
         // The sampled lobe pdf must be provided as well
         Float grating_pdf;
+        Vector2i lobe;
         Mask active_diffracted;
         Vector3f reflection_dir = reflect(si.wi, m);
         // TODO: loop for each wavelength
-        std::tie(bs.wo, grating_pdf, active_diffracted) =
+        std::tie(bs.wo, grating_pdf, lobe, active_diffracted) =
             sample_diffract(
                 lobe_sample2, 
                 si.uv, 
                 si.wi, 
                 m,
-                // temporary wavelength value for now
-                500.0f);
+                si.wavelengths[0]);
         bs.eta               = 1.f;
         bs.sampled_component = 0;
         bs.sampled_type      = +BSDFFlags::GlossyReflection;
@@ -524,7 +528,9 @@ public:
         if (m_specular_reflectance)
             weight *= m_specular_reflectance->eval(si, active);
 
-        return { bs, (F * weight * m_multiplier) & active };
+        PLTSamplePhaseData3f sd(bs, lobe, reflection_dir, si.wavelengths);
+
+        return { sd, (F * weight * m_multiplier) & active };
     }
 
     GeneralizedRadiance3f wbsdf_weight(const BSDFContext &ctx, 

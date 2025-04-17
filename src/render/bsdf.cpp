@@ -4,8 +4,6 @@
 #include <mitsuba/render/texture.h>
 #include <mitsuba/core/properties.h>
 
-#include <mitsuba/plt/fwd.h>
-
 NAMESPACE_BEGIN(mitsuba)
 
 MI_VARIANT BSDF<Float, Spectrum>::BSDF(const Properties &props)
@@ -19,7 +17,7 @@ MI_VARIANT BSDF<Float, Spectrum>::~BSDF() {
         jit_registry_remove(this);
 }
 
-MI_VARIANT std::pair<typename BSDF<Float, Spectrum>::BSDFSample3f, GeneralizedRadiance<Float, Spectrum>>
+MI_VARIANT std::pair<typename BSDF<Float, Spectrum>::PLTSamplePhaseData3f, GeneralizedRadiance<Float, Spectrum>>
 BSDF<Float, Spectrum>::wbsdf_sample( 
     const BSDFContext &ctx,
     const SurfaceInteraction3f &si,
@@ -30,10 +28,11 @@ BSDF<Float, Spectrum>::wbsdf_sample(
 
 {
     DRJIT_MARK_USED(lobe_sample2);
-    auto [ sd, weight ] = sample(ctx, si, sample1, sample2, active);
+    auto [ sp, weight ] = sample(ctx, si, sample1, sample2, active);
 
     GeneralizedRadiance<Float, Spectrum> gr(weight);
-
+    PLTSamplePhaseData<Float, Spectrum> sd(sp, Vector2i(0, 0), Vector3f(0, 0, 0), si.wavelengths);
+    
     return { sd, gr };     
 }
 
@@ -46,7 +45,7 @@ BSDF<Float, Spectrum>::wbsdf_eval(const BSDFContext &ctx,
 {
     DRJIT_MARK_USED(sd);
     
-    GeneralizedRadiance<Float, Spectrum> gr(eval(ctx, si, wo, active));
+    GeneralizedRadiance3f gr(eval(ctx, si, wo, active));
 
     return gr;
 }
@@ -72,7 +71,7 @@ BSDF<Float, Spectrum>::wbsdf_weight(const BSDFContext &ctx,
 {
     DRJIT_MARK_USED(sd);
     auto [e_val, pdf_val] = eval_pdf(ctx, si, wo, active);
-    GeneralizedRadiance<Float, Spectrum> gr(dr::select(pdf_val > 0.0f, e_val / pdf_val, 0.0f));
+    GeneralizedRadiance3f gr(dr::select(pdf_val > 0.0f, e_val / pdf_val, 0.0f));
 
     return gr;
 }

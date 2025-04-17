@@ -2,6 +2,8 @@
 #include <mitsuba/core/properties.h>
 #include <mitsuba/render/bsdf.h>
 
+#include <mitsuba/plt/fwd.h>
+
 NAMESPACE_BEGIN(mitsuba)
 
 /**!
@@ -69,8 +71,8 @@ template <typename Float, typename Spectrum>
 class TwoSidedBRDF final : public BSDF<Float, Spectrum> {
 public:
     MI_IMPORT_BASE(BSDF, m_flags, m_components)
-    MI_IMPORT_PLT_BASIC_TYPES() 
     MI_IMPORT_TYPES()
+    MI_IMPORT_PLT_BASIC_TYPES() 
 
     TwoSidedBRDF(const Properties &props) : Base(props) {
         auto bsdfs = props.objects();
@@ -257,7 +259,7 @@ public:
         return { value, pdf };
     }
 
-    std::pair<BSDFSample3f, GeneralizedRadiance3f>
+    std::pair<PLTSamplePhaseData3f, GeneralizedRadiance3f>
     wbsdf_sample(const BSDFContext &ctx_,
                                         const SurfaceInteraction3f &si_,
                                         Float sample1, const Point2f &sample2,
@@ -266,7 +268,7 @@ public:
 
         MI_MASKED_FUNCTION(ProfilerPhase::BSDFSample, active);
 
-        using Result = std::pair<BSDFSample3f, GeneralizedRadiance3f>;
+        using Result = std::pair<PLTSamplePhaseData3f, GeneralizedRadiance3f>;
 
         SurfaceInteraction3f si(si_);
         BSDFContext ctx(ctx_);
@@ -275,7 +277,7 @@ public:
         if (m_brdf[0] == m_brdf[1]) {
             si.wi.z() = dr::abs(si.wi.z());
             result = m_brdf[0]->wbsdf_sample(ctx, si, sample1, sample2, lobe_sample2, active);
-            result.first.wo.z() = dr::mulsign(result.first.wo.z(), si_.wi.z());
+            result.first.bsdf_sample.wo.z() = dr::mulsign(result.first.bsdf_sample.wo.z(), si_.wi.z());
         } else {
             Mask front_side = Frame3f::cos_theta(si.wi) > 0.f && active,
                  back_side  = Frame3f::cos_theta(si.wi) < 0.f && active;
@@ -291,7 +293,7 @@ public:
                 si.wi.z() *= -1.f;
                 dr::masked(result, back_side) =
                     m_brdf[1]->wbsdf_sample(ctx, si, sample1, sample2, lobe_sample2, back_side);
-                dr::masked(result.first.wo.z(), back_side) *= -1.f;
+                dr::masked(result.first.bsdf_sample.wo.z(), back_side) *= -1.f;
             }
         }
 
