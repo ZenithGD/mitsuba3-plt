@@ -24,10 +24,12 @@ def eval_wbsdf_image(bsdf, eval_context):
     wo = sph_to_dir(theta_o, phi_o)
 
     # Evaluate the whole array (18000 directions) at once
-    values = bsdf.eval(mi.BSDFContext(), si, wo)
+    ctx = mi.BSDFContext()
+    ctx.mode = mi.TransportMode.Radiance
+    values = bsdf.eval(ctx, si, wo)
 
     if mi.is_spectral:
-        values = mi.spectrum_to_srgb(mi.unpolarized_spectrum(values), eval_context["wavelengths"])
+        values = mi.spectrum_to_srgb(mi.unpolarized_spectrum(values) * eval_context["weights"], eval_context["wavelengths"])
     else:
         values = mi.unpolarized_spectrum(values)
 
