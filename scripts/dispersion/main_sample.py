@@ -90,7 +90,7 @@ def main(args):
         λs, λs, λs, λs
     )
 
-    angle = 0
+    angle = args.angle
     sample_context = {
         "nsamples" : nsamples,
         "angle" : angle,
@@ -114,6 +114,6 @@ if __name__ == "__main__":
     parser.add_argument("--roughness", type=float, help="Roughness of the grating", default=0.01)
     parser.add_argument("--roughnessU", "-ru", type=float, help="Roughness of the grating in UV direction U")
     parser.add_argument("--roughnessV", "-rv", type=float, help="Roughness of the grating in UV direction V")
-    parser.add_argument("--angle", type=float, help="azimuth of incident light", default=0.01)
+    parser.add_argument("--angle", type=float, help="azimuth of incident light", default=0.0)
     args = parser.parse_args() 
     main(args)

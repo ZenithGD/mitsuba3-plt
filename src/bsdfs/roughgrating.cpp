@@ -388,7 +388,7 @@ public:
         return { bs, (F * weight) & active };
     }
 
-    std::tuple<Vector3f, Float, Vector2i, Mask>
+    std::tuple<Vector3f, Float, Float, Vector2i, Mask>
     sample_diffract(const Vector2f &sample2, const Vector2f &uv,
                     const Vector3f &wi, const Vector3f &n,
                     const Float &wl) const {
@@ -406,13 +406,15 @@ public:
         auto [lobe, pdf_xy] =
             grating.sample_lobe(sample2, wi_local, wl * 1e-3f);
 
+        Float intensity = grating.lobe_intensity(lobe, wi_local, wl);
+
         // std::cout << lobe << std::endl;
 
         auto [wo_local, active] = grating.diffract(wi_local, lobe, wl * 1e-3f);
         // std::cout << wo_local << std::endl;
 
         Vector3f wo = normalFrame.to_world(wo_local);
-        return { wo, pdf_xy.x() * pdf_xy.y(), lobe, active };
+        return { wo, pdf_xy.x() * pdf_xy.y(), intensity, lobe, active };
     }
 
     std::pair<PLTSamplePhaseData3f, GeneralizedRadiance3f>
@@ -443,12 +445,12 @@ public:
 
         // Diffract along the normal
         // The sampled lobe pdf must be provided as well
-        Float grating_pdf;
+        Float grating_pdf, intensity;
         Vector2i lobe;
         Mask active_diffracted;
         Vector3f reflection_dir = reflect(si.wi, m);
         // TODO: loop for each wavelength
-        std::tie(bs.wo, grating_pdf, lobe, active_diffracted) =
+        std::tie(bs.wo, grating_pdf, intensity, lobe, active_diffracted) =
             sample_diffract(lobe_sample2, si.uv, si.wi, m, si.wavelengths[0]);
         bs.eta               = 1.f;
         bs.sampled_component = 0;
@@ -518,7 +520,7 @@ public:
 
         PLTSamplePhaseData3f sd(bs, lobe, reflection_dir, si.wavelengths);
 
-        return { sd, (F * weight * m_multiplier) & active };
+        return { sd, (F * weight * intensity * m_multiplier) & active };
     }
 
     GeneralizedRadiance3f wbsdf_weight(const BSDFContext &ctx,
