@@ -178,10 +178,10 @@ def main_2d(args):
         'material': 'Au',
         'lobe_type' : 'sinusoidal',
         'height' : 0.05,
-        'inv_period_x' : 0.5,
-        'inv_period_y' : 0.5,
+        'inv_period_x' : 0.65,
+        'inv_period_y' : 0.65,
         'radial' : False,
-        'lobes' : 7,
+        'lobes' : 5,
         'grating_angle' : 45,
         **alpha
     })

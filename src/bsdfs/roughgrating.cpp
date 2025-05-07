@@ -419,7 +419,7 @@ public:
 
     std::pair<PLTSamplePhaseData3f, GeneralizedRadiance3f>
     wbsdf_sample(const BSDFContext &ctx, const SurfaceInteraction3f &si,
-                 Float /* sample1 */, const Point2f &sample2,
+                 Float sample1, const Point2f &sample2,
                  const Point2f &lobe_sample2, Mask active) const override {
         MI_MASKED_FUNCTION(ProfilerPhase::BSDFSample, active);
 
@@ -450,8 +450,18 @@ public:
         Mask active_diffracted;
         Vector3f reflection_dir = reflect(si.wi, m);
         // TODO: loop for each wavelength
+
+        Float wavelength;
+        if constexpr ( is_spectral_v<Spectrum> ) {
+            wavelength = si.wavelengths[0];
+        }
+        else {
+            // Use sample 1 for random wavelength sample
+            wavelength = sample1 * (MI_CIE_MAX - 150.0 - MI_CIE_MIN) + MI_CIE_MIN;
+        }
+
         std::tie(bs.wo, grating_pdf, intensity, lobe, active_diffracted) =
-            sample_diffract(lobe_sample2, si.uv, si.wi, m, si.wavelengths[0]);
+            sample_diffract(lobe_sample2, si.uv, si.wi, m, wavelength);
         bs.eta               = 1.f;
         bs.sampled_component = 0;
         bs.sampled_type      = +BSDFFlags::GlossyReflection;
@@ -521,25 +531,6 @@ public:
         PLTSamplePhaseData3f sd(bs, lobe, reflection_dir, si.wavelengths);
 
         return { sd, (F * weight * intensity * m_multiplier) & active };
-    }
-
-    GeneralizedRadiance3f wbsdf_weight(const BSDFContext &ctx,
-                                       const SurfaceInteraction3f &si,
-                                       const Vector3f &wo,
-                                       const PLTSamplePhaseData3f &sd,
-                                       Mask active) const override {
-        MI_MASKED_FUNCTION(ProfilerPhase::BSDFEvaluate, active);
-
-        DRJIT_MARK_USED(wo);
-
-        // Color3f col = mitsuba::xyz_to_srgb(mitsuba::cie1931_xyz(400.0));
-        Spectrum f(1.0);
-
-        /* If requested, include the specular reflectance component */
-        if (m_specular_reflectance)
-            f *= m_specular_reflectance->eval(si, active);
-
-        return GeneralizedRadiance3f(f);
     }
 
     Spectrum eval(const BSDFContext &ctx, const SurfaceInteraction3f &si,
@@ -651,15 +642,16 @@ public:
             m_grating_angle, Vector2f(m_inv_period_x, m_inv_period_y), m_height,
             m_lobes, m_lobe_type, m_multiplier, si.uv);
 
-        UnpolarizedSpectrum wavelengths;
-
         // fallback in RGB mode
         if constexpr (!is_spectral_v<Spectrum>) {
+
+            Spectrum result(0.0);
+            dr::Array<Float, 3> wavelengths;
             wavelengths[0] = 465.0f;
             wavelengths[1] = 532.0f;
             wavelengths[2] = 630.0f;
 
-            Spectrum result(0.0);
+            auto a = 2 * dr::sqrt(m_alpha_u->eval_1(si) * m_alpha_v->eval_1(si));
 
             // exhaustive search of the lobes
             for (int lx = -((int) m_lobes) / 2; lx < (int) m_lobes / 2 + 1;
@@ -668,7 +660,7 @@ public:
                      ly++) {
                     Vector2i lobe(lx, ly);
 
-                    for (int i = 0; i < dr::size_v<UnpolarizedSpectrum>; i++) {
+                    for (int i = 0; i < 3; i++) {
                         auto wl = wavelengths[i];
 
                         Float lobe_intensity =
@@ -685,7 +677,7 @@ public:
                         auto colour        = xyz_to_srgb(cie1931_xyz(wl));
                         Float lobes_result = dr::select(
                             lobe_active &
-                                dr::abs(dr::unit_angle(center_dir, wo)) < 0.1,
+                                dr::abs(dr::unit_angle(center_dir, wo)) < a,
                             lobe_intensity, 0.0);
 
                         auto r = lobes_result * colour;
@@ -773,7 +765,11 @@ public:
                 }
             }
 
+            if ( m_specular_reflectance )
+                result *= m_specular_reflectance->eval(si);
+
             return result;
+
         } else {
             return Spectrum(0.0);
         }
@@ -814,6 +810,19 @@ public:
             result = distr.pdf(si.wi, m) / (4.f * dr::dot(wo, m));
 
         return dr::select(active, result, 0.f);
+    }
+
+    Float wbsdf_pdf(
+        const BSDFContext &ctx, 
+        const SurfaceInteraction3f &si,
+        const Vector3f &wo, 
+        const PLTSamplePhaseData3f &sd,
+        Mask active) const override 
+    {
+        MI_MASKED_FUNCTION(ProfilerPhase::BSDFEvaluate, active);
+
+        // perfect conductor pdf for now
+        return 1.0;
     }
 
     std::pair<Spectrum, Float> eval_pdf(const BSDFContext &ctx,

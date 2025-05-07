@@ -61,8 +61,12 @@ class PLTIntegrator(ADIntegrator):
         # define internal state
         bounce_buffer : dr.Local[mi.BounceData3f] = dr.alloc_local(mi.BounceData3f, self.max_depth)
 
-        # hero wavelength
-        wavelength = mi.sample_arbitrary_spectrum(sampler.next_1d(), 360, 830)
+        # sampling wavelengths
+        λs = sampler.next_1d() * (mi.MI_CIE_MAX - 150 - mi.MI_CIE_MIN) + mi.MI_CIE_MIN
+        if mi.is_spectral:
+            wavelengths = mi.UnpolarizedSpectrum(λs)
+        else:
+            wavelengths = mi.Color0f()
 
         # prepare loop state
         i = mi.UInt32(0)
@@ -104,9 +108,11 @@ class PLTIntegrator(ADIntegrator):
             sample_2 = sampler.next_2d()
             lobe_sample_2 = sampler.next_2d()
 
-            bsdf_sample, bsdf_weight = bsdf.wbsdf_sample(
+            sd, bsdf_weight = bsdf.wbsdf_sample(
                 bsdf_ctx, si, sample_1, sample_2, lobe_sample_2)
-             
+
+            bsdf_sample = sd.bsdf_sample
+
             # get information of the sampled interaction and update ray
             ray = si.spawn_ray(si.to_world(bsdf_sample.wo))
             pdf = bsdf_sample.pdf
@@ -145,6 +151,8 @@ class PLTIntegrator(ADIntegrator):
                 bsdf_weight=bsdf_weight.L,
                 is_emitter=is_emitter,
                 last_nd_pdf=last_nd_pdf,
+                sampled_lobe=sd.diffraction_lobe,
+                sampling_wavelengths=wavelengths,
                 active=active
             )
 
@@ -157,7 +165,7 @@ class PLTIntegrator(ADIntegrator):
             i += 1
         
         aovs[0] = α
-        return bounce_buffer, wavelength, aovs
+        return bounce_buffer, wavelengths, aovs
 
     @dr.syntax
     def plt_solve_phase(self,
@@ -256,7 +264,9 @@ class PLTIntegrator(ADIntegrator):
 
         # no need to recompute UV coordinates again, just get the bsdf
         bsdf = si.bsdf()
-        bsdf_val, bsdf_pdf = bsdf.wbsdf_eval_pdf(bsdf_ctx, si, wo, bounce.active)
+        sd = mi.PLTSamplePhaseData3f(dr.zeros(mi.BSDFSample3f), bounce.sampled_lobe, mi.Vector3f(0.0), bounce.sampling_wavelengths)
+        bsdf_val = bsdf.wbsdf_eval(bsdf_ctx, si, wo, sd, bounce.active)
+        bsdf_pdf = bsdf.wbsdf_pdf(bsdf_ctx, si, wo, sd, bounce.active)
         bsdf_val = bsdf_val.L
 
         mis_em = dr.select(ds.delta, 1.0, mis_weight(ds.pdf, bsdf_pdf))
@@ -423,7 +433,8 @@ class PLTIntegrator(ADIntegrator):
             bsdf = bounce.interaction.bsdf()
 
             # Correct way
-            α[bounce.active] = bsdf.wbsdf_weight(bsdf_ctx, bounce.interaction, bounce.wo).L * α[bounce.active]
+            sd = mi.PLTSamplePhaseData3f(dr.zeros(mi.BSDFSample3f), bounce.sampled_lobe, mi.Vector3f(0.0), bounce.sampling_wavelengths)
+            α[bounce.active] = bsdf.wbsdf_weight(bsdf_ctx, bounce.interaction, bounce.wo, sd).L * α[bounce.active]
 
             # Debug using information from sample pass
             #α[bounce.active] = bounce.bsdf_weight * α[bounce.active]
