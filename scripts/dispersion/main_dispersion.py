@@ -27,6 +27,11 @@ def main(args):
 
     plot_dispersion(angles, disp, show_sp=mi.is_polarized, show_360=True, title="Dielectric importance")
 
+    # create rough conductor dispersion diagram
+    angles, disp = roughconductor_dispersion(args)
+
+    plot_dispersion(angles, disp, show_sp=mi.is_polarized, title="Rough conductor importance")
+
     # create grating dispersion diagram
     angles, disp = grating_dispersion(args)
 

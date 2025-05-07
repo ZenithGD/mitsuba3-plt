@@ -34,6 +34,9 @@ def visualize_grating_3d(wi, ldirs, ax=None):
             np.ravel(ldirs[:, 0]),
             np.ravel(ldirs[:, 1]),
             np.ravel(ldirs[:, 2]))
+    ax.set_xlabel('X axis')
+    ax.set_ylabel('Y axis')
+    ax.set_zlabel('Z axis')
     return ax
 
 def visualize_lobe_intensity(intensities, ax=None, normalize=False):

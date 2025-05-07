@@ -14,6 +14,9 @@ def eval_wbsdf_image(bsdf, eval_context):
     
     # Specify an incident direction with 45 degrees elevation
     si.wi = eval_context["wi"]
+    si.uv = mi.Vector2f(0.0)
+
+    print(si.wi)
 
     # Create grid in spherical coordinates and map it onto the sphere
     lt = dr.linspace(mi.Float,  0,     dr.pi,     eval_context["resx"])
@@ -24,12 +27,13 @@ def eval_wbsdf_image(bsdf, eval_context):
     wo = sph_to_dir(theta_o, phi_o)
 
     # Evaluate the whole array (18000 directions) at once
-    values = bsdf.eval(mi.BSDFContext(), si, wo)
+    sd = mi.PLTSamplePhaseData3f(dr.zeros(mi.BSDFSample3f), mi.Vector2i(0), mi.Vector3f(0.0), mi.Color0f())
+    values = bsdf.wbsdf_eval(mi.BSDFContext(), si, wo, sd)
 
     if mi.is_spectral:
-        values = mi.spectrum_to_srgb(mi.unpolarized_spectrum(values), eval_context["wavelengths"])
+        values = mi.spectrum_to_srgb(mi.unpolarized_spectrum(values.L), eval_context["wavelengths"])
     else:
-        values = mi.unpolarized_spectrum(values)
+        values = mi.unpolarized_spectrum(values.L)
 
     return values, theta_o, phi_o
 

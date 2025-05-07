@@ -90,7 +90,7 @@ def main(args):
         λs, λs, λs, λs
     )
 
-    angle = 45
+    angle = 0
     sample_context = {
         "nsamples" : nsamples,
         "angle" : angle,
@@ -98,6 +98,8 @@ def main(args):
         "roughness": args.roughness,
         "wavelengths" : wavelengths
     }
+
+    print(sample_context["wi"])
 
     samples, weights = sample_wbsdf(bsdf, sample_context)
 

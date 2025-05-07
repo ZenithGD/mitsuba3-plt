@@ -30,7 +30,7 @@ def diffuse_dispersion(args, n = 400):
 
     wo = sph_to_dir(theta_o, 0.0)
     
-    ctx = mi.BSDFContext(mi.TransportMode.Impotance)
+    ctx = mi.BSDFContext(mi.TransportMode.Importance)
 
     val = bsdf.wbsdf_weight(ctx, si, wo)
     val = val.L 
@@ -58,7 +58,7 @@ def conductor_dispersion(args, n = 400):
 
     wo = sph_to_dir(theta_o, 0.0)
 
-    ctx = mi.BSDFContext(mi.TransportMode.Impotance)
+    ctx = mi.BSDFContext(mi.TransportMode.Importance)
     val = bsdf.wbsdf_weight(ctx, si, wo)
     val = val.L
 
@@ -115,4 +115,34 @@ def roughconductor_dispersion(args, n = 400):
     return theta_o, val
 
 def grating_dispersion(args):
-    pass
+    
+    bsdf = mi.load_dict({
+        'type': 'roughgrating',
+        'distribution': 'ggx',
+        'lobe_type' : 'sinusoidal',
+        'height' : 0.05,
+        'inv_period_x' : 0.4,
+        'inv_period_y' : 0.4,
+        'radial' : False,
+        'lobes' : 7,
+        'grating_angle' : 0,
+        **alpha
+    })
+
+    # Create a (dummy) surface interaction to use for the evaluation of the BSDF
+    si = dr.zeros(mi.SurfaceInteraction3f)
+
+    # Specify an incident direction with 0 degrees elevation (normal incidence)
+    si.wi = sph_to_dir(dr.deg2rad(45.0), 0.0)
+
+    # Create grid in spherical coordinates and map it onto the sphere
+    res = n
+    theta_o = dr.linspace(mi.Float, 0, 2 * dr.pi, 2 * res)
+
+    wo = sph_to_dir(theta_o, 0.0)
+
+    ctx = mi.BSDFContext(mi.TransportMode.Importance)
+    val, pdf = bsdf.eval_pdf(ctx, si, wo)
+    val = val
+
+    return theta_o, val

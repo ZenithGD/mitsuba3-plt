@@ -15,8 +15,8 @@ from eval import *
 
 def run_eval_and_plot(ax, bsdf, az, ev, eval_context, marker_dot):
     # Update incident direction
-    theta_i = dr.deg2rad(ev)
-    phi_i = dr.deg2rad(az)
+    theta_i = dr.deg2rad(az)
+    phi_i = dr.deg2rad(ev)
     eval_context["wi"] = sph_to_dir(phi_i, theta_i)
 
     # Evaluate BSDF image
@@ -39,7 +39,7 @@ def run_eval_and_plot(ax, bsdf, az, ev, eval_context, marker_dot):
     ax.set_xticklabels([])
 
     # Draw incident direction dot
-    marker_dot[0], = ax.plot([phi_i], [theta_i], 'wo', markersize=5)
+    marker_dot[0], = ax.plot([theta_i], [phi_i], 'wo', markersize=5)
 
     ax.figure.canvas.draw_idle()
 
@@ -101,17 +101,17 @@ def main(args):
     elif args.roughness:
         alpha["alpha"] = args.roughness
 
-    bsdf = mi.load_dict({
-        'type': 'measured',
-        'filename': 'aniso_morpho_melenaus_rgb.bsdf',
-        **alpha
-    })
-
     # bsdf = mi.load_dict({
-    #     'type': 'roughconductor',
-    #     'material': 'Au',
+    #     'type': 'measured',
+    #     'filename': 'aniso_morpho_melenaus_rgb.bsdf',
     #     **alpha
     # })
+
+    bsdf = mi.load_dict({
+        'type': 'roughconductor',
+        'material': 'Au',
+        **alpha
+    })
 
     λs = np.random.random(args.resx * 2 * args.resy) * (mi.MI_CIE_MAX - 150 - mi.MI_CIE_MIN) + mi.MI_CIE_MIN
 
@@ -160,17 +160,32 @@ def main_2d(args):
 
     print(args.roughnessU, args.roughnessV)
 
-    # bsdf = mi.load_dict({
+    # bsdf_measured = mi.load_dict({
     #     'type': 'measured',
     #     'filename': 'aniso_morpho_melenaus_rgb.bsdf',
     #     **alpha
     # })
 
-    bsdf = mi.load_dict({
+    bsdf_conductor = mi.load_dict({
         'type': 'roughconductor',
         'material': 'Au',
         **alpha
     })
+
+    bsdf_grating = mi.load_dict({
+        'type': 'roughgrating',
+        'distribution': 'ggx',
+        'material': 'Au',
+        'lobe_type' : 'sinusoidal',
+        'height' : 0.05,
+        'inv_period_x' : 0.5,
+        'inv_period_y' : 0.5,
+        'radial' : False,
+        'lobes' : 7,
+        'grating_angle' : 45,
+        **alpha
+    })
+
 
     λs = np.random.random(args.resx * 2 * args.resy) * (mi.MI_CIE_MAX - 150 - mi.MI_CIE_MIN) + mi.MI_CIE_MIN
 
@@ -178,31 +193,34 @@ def main_2d(args):
     if mi.is_spectral:
         wavelengths = mi.UnpolarizedSpectrum(λs, λs, λs, λs)
 
+    angle = 30
     eval_context = {
-        "wi": sph_to_dir(0, dr.deg2rad(90)),  # Initial direction
+        "wi": sph_to_dir(0, dr.deg2rad(angle)),  # Initial direction
         "roughness": args.roughness,
         "resx": args.resx,
         "resy": args.resy,
         "wavelengths": wavelengths
     }
 
-    fig, ax = plt.subplots(subplot_kw={'polar': True})
+    fig, (ax1, ax2) = plt.subplots(1, 2, subplot_kw={'polar': True})
     plt.subplots_adjust(bottom=0.25)
 
     marker_dot = [None]  # Holder for incident marker
 
-    run_eval_and_plot(ax, bsdf, 0, 90, eval_context, marker_dot)
+    run_eval_and_plot(ax1, bsdf_conductor, angle, 0, eval_context, marker_dot)
+    run_eval_and_plot(ax2, bsdf_grating, angle, 0, eval_context, marker_dot)
 
     # Sliders
     ax_az = plt.axes([0.2, 0.1, 0.65, 0.03])
     ax_ev = plt.axes([0.2, 0.05, 0.65, 0.03])
     slider_az = Slider(ax_az, 'Azimuth (°)', -180, 180, valinit=0)
-    slider_ev = Slider(ax_ev, 'Elevation (°)', 0, 90, valinit=90)
+    slider_ev = Slider(ax_ev, 'Elevation (°)', -90, 90, valinit=angle)
 
     def update(val):
         az = slider_az.val
         ev = slider_ev.val
-        run_eval_and_plot(ax, bsdf, az, ev, eval_context, marker_dot)
+        run_eval_and_plot(ax1, bsdf_conductor, az, ev, eval_context, marker_dot)
+        run_eval_and_plot(ax2, bsdf_grating, az, ev, eval_context, marker_dot)
 
     slider_az.on_changed(update)
     slider_ev.on_changed(update)
@@ -212,11 +230,11 @@ def main_2d(args):
 if __name__ == "__main__":
 
     parser = argparse.ArgumentParser(description="Sample wBSDF and plot the dispersion of the samples in 3D")
-    parser.add_argument("--resx", type=int, help="X resolution of the image", default=256)
-    parser.add_argument("--resy", type=int, help="half Y resolution of the image", default=256)
+    parser.add_argument("--resx", type=int, help="X resolution of the image", default=64)
+    parser.add_argument("--resy", type=int, help="half Y resolution of the image", default=64)
     parser.add_argument("--roughness", type=float, help="Roughness of the grating")
     parser.add_argument("--roughnessU", "-ru", type=float, help="Roughness of the grating in UV direction U")
     parser.add_argument("--roughnessV", "-rv", type=float, help="Roughness of the grating in UV direction V")
     parser.add_argument("--angle", type=float, help="azimuth of incident light", default=0.01)
     args = parser.parse_args() 
-    main(args)
+    main_2d(args)

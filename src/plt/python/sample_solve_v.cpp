@@ -13,9 +13,9 @@ MI_PY_EXPORT(SampleSolve)
     auto it = nb::class_<PLTSamplePhaseData3f>(m, "PLTSamplePhaseData3f", D(PLTSamplePhaseData3f))
         .def_field(PLTSamplePhaseData3f, bsdf_sample, "bsdf_sample")
         .def_field(PLTSamplePhaseData3f, diffraction_lobe, "diffraction_lobe")
-        .def_field(PLTSamplePhaseData3f, center_lobe, "center_lobe")
+        .def_field(PLTSamplePhaseData3f, internal_frame, "internal_frame")
         .def_field(PLTSamplePhaseData3f, sampling_wavelengths, "sampling_wavelengths")
         .def(nb::init<BSDFSample3f, Vector2i, Vector3f, Wavelength>());
 
-    MI_PY_DRJIT_STRUCT(it, PLTSamplePhaseData3f, bsdf_sample, diffraction_lobe, center_lobe, sampling_wavelengths);
+    MI_PY_DRJIT_STRUCT(it, PLTSamplePhaseData3f, bsdf_sample, diffraction_lobe, internal_frame, sampling_wavelengths);
 }

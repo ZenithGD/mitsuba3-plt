@@ -293,7 +293,7 @@ public:
     }
 
     /**
-     * Note: Apart from PLT Integrator, this sampling routine will behave 
+     * Note: Apart from PLT Integrator, this sampling routine will behave
      * as a conventional rough conductor.
      */
     std::pair<BSDFSample3f, Spectrum> sample(const BSDFContext &ctx,
@@ -388,11 +388,10 @@ public:
         return { bs, (F * weight) & active };
     }
 
-    std::tuple<Vector3f, Float, Vector2i, Mask> sample_diffract(const Vector2f &sample2,
-        const Vector2f &uv,
-        const Vector3f &wi,
-        const Vector3f &n,
-        const Float &wl) const {
+    std::tuple<Vector3f, Float, Vector2i, Mask>
+    sample_diffract(const Vector2f &sample2, const Vector2f &uv,
+                    const Vector3f &wi, const Vector3f &n,
+                    const Float &wl) const {
         // new frame along normal to compute diffracted direction
         // in that frame
         Frame3f normalFrame(n);
@@ -401,11 +400,11 @@ public:
 
         // sample lobe and diffract in local frame
         DiffractionGrating3f grating(
-        m_grating_angle, Vector2f(m_inv_period_x, m_inv_period_y), m_height,
-        m_lobes, m_lobe_type, m_multiplier, uv);
+            m_grating_angle, Vector2f(m_inv_period_x, m_inv_period_y), m_height,
+            m_lobes, m_lobe_type, m_multiplier, uv);
 
         auto [lobe, pdf_xy] =
-        grating.sample_lobe(sample2, wi_local, wl * 1e-3f);
+            grating.sample_lobe(sample2, wi_local, wl * 1e-3f);
 
         // std::cout << lobe << std::endl;
 
@@ -416,13 +415,10 @@ public:
         return { wo, pdf_xy.x() * pdf_xy.y(), lobe, active };
     }
 
-
     std::pair<PLTSamplePhaseData3f, GeneralizedRadiance3f>
     wbsdf_sample(const BSDFContext &ctx, const SurfaceInteraction3f &si,
-                 Float /* sample1 */, 
-                 const Point2f &sample2,
-                 const Point2f &lobe_sample2,
-                 Mask active) const override {
+                 Float /* sample1 */, const Point2f &sample2,
+                 const Point2f &lobe_sample2, Mask active) const override {
         MI_MASKED_FUNCTION(ProfilerPhase::BSDFSample, active);
 
         BSDFSample3f bs   = dr::zeros<BSDFSample3f>();
@@ -430,12 +426,9 @@ public:
         active &= cos_theta_i > 0.f;
 
         if (unlikely(!ctx.is_enabled(BSDFFlags::GlossyReflection) ||
-                     dr::none_or<false>(active)))
-        {
-            PLTSamplePhaseData3f sd(bs, 
-                Vector2i(0, 0), 
-                Vector3f(0, 0, 0), 
-                si.wavelengths);
+                     dr::none_or<false>(active))) {
+            PLTSamplePhaseData3f sd(bs, Vector2i(0, 0), Vector3f(0, 0, 0),
+                                    si.wavelengths);
             return { sd, GeneralizedRadiance3f(0.0f) };
         }
         /* Construct a microfacet distribution matching the
@@ -456,12 +449,7 @@ public:
         Vector3f reflection_dir = reflect(si.wi, m);
         // TODO: loop for each wavelength
         std::tie(bs.wo, grating_pdf, lobe, active_diffracted) =
-            sample_diffract(
-                lobe_sample2, 
-                si.uv, 
-                si.wi, 
-                m,
-                si.wavelengths[0]);
+            sample_diffract(lobe_sample2, si.uv, si.wi, m, si.wavelengths[0]);
         bs.eta               = 1.f;
         bs.sampled_component = 0;
         bs.sampled_type      = +BSDFFlags::GlossyReflection;
@@ -533,12 +521,11 @@ public:
         return { sd, (F * weight * m_multiplier) & active };
     }
 
-    GeneralizedRadiance3f wbsdf_weight(const BSDFContext &ctx, 
-        const SurfaceInteraction3f &si,
-        const Vector3f &wo, 
-        const PLTSamplePhaseData3f& sd, 
-        Mask active) const override 
-    {
+    GeneralizedRadiance3f wbsdf_weight(const BSDFContext &ctx,
+                                       const SurfaceInteraction3f &si,
+                                       const Vector3f &wo,
+                                       const PLTSamplePhaseData3f &sd,
+                                       Mask active) const override {
         MI_MASKED_FUNCTION(ProfilerPhase::BSDFEvaluate, active);
 
         DRJIT_MARK_USED(wo);
@@ -630,6 +617,164 @@ public:
         //     result *= m_specular_reflectance->eval(si, active);
 
         return (F * result) & active;
+    }
+
+    GeneralizedRadiance3f wbsdf_eval(const BSDFContext &ctx,
+                                     const SurfaceInteraction3f &si,
+                                     const Vector3f &wo,
+                                     const PLTSamplePhaseData3f &sd,
+                                     Mask active) const override {
+        MI_MASKED_FUNCTION(ProfilerPhase::BSDFEvaluate, active);
+
+        Float cos_theta_i = Frame3f::cos_theta(si.wi),
+              cos_theta_o = Frame3f::cos_theta(wo);
+
+        active &= cos_theta_i > 0.f && cos_theta_o > 0.f;
+
+        if (unlikely(!ctx.is_enabled(BSDFFlags::GlossyReflection) ||
+                     dr::none_or<false>(active)))
+            return 0.f;
+
+        // Calculate the half-direction vector
+        Vector3f H = dr::normalize(wo + si.wi);
+
+        /* Construct a microfacet distribution matching the
+        roughness values at the current surface position. */
+        MicrofacetDistribution distr(m_type, m_alpha_u->eval_1(si, active),
+                                     m_alpha_v->eval_1(si, active),
+                                     m_sample_visible);
+
+        // instantiate grating model
+        DiffractionGrating3f grating(
+            m_grating_angle, Vector2f(m_inv_period_x, m_inv_period_y), m_height,
+            m_lobes, m_lobe_type, m_multiplier, si.uv);
+
+        UnpolarizedSpectrum wavelengths;
+
+        // fallback in RGB mode
+        if constexpr (!is_spectral_v<Spectrum>) {
+            wavelengths[0] = 465.0f;
+            wavelengths[1] = 532.0f;
+            wavelengths[2] = 630.0f;
+
+            Spectrum result(0.0);
+
+            // exhaustive search of the lobes
+            for (int lx = -((int) m_lobes) / 2; lx < (int) m_lobes / 2 + 1;
+                 lx++) {
+                for (int ly = -((int) m_lobes) / 2; ly < (int) m_lobes / 2 + 1;
+                     ly++) {
+                    Vector2i lobe(lx, ly);
+
+                    for (int i = 0; i < dr::size_v<UnpolarizedSpectrum>; i++) {
+                        auto wl = wavelengths[i];
+
+                        Float lobe_intensity =
+                            grating.lobe_intensity(lobe, si.wi, wl * 1e-3f);
+
+                        Vector3f center_dir;
+                        Mask lobe_active;
+                        std::tie(center_dir, lobe_active) =
+                            grating.diffract(si.wi, lobe, wl * 1e-3f);
+
+                        // std::cout << "lobe=" << lobe << "& " << center_dir <<
+                        // ":::::::::" << si.wo<< ":::::::::::" <<
+                        // dr::unit_angle(center_dir, si.wi) << std::endl;
+                        auto colour        = xyz_to_srgb(cie1931_xyz(wl));
+                        Float lobes_result = dr::select(
+                            lobe_active &
+                                dr::abs(dr::unit_angle(center_dir, wo)) < 0.1,
+                            lobe_intensity, 0.0);
+
+                        auto r = lobes_result * colour;
+
+                        result += Spectrum(r);
+                    }
+
+                    // // evaluate microfacet distribution considering the
+                    // internal
+                    // // shading frame
+                    // Vector3f center_dir;
+                    // Mask lobe_active;
+                    // std::tie(center_dir, lobe_active) =
+                    // grating.diffract(si.wi, lobe, wl);
+
+                    // // microfacet distribution is symmetric along the
+                    // z-vector => operate in local frame Frame3f
+                    // center_dir_frame(center_dir); Float D =
+                    // distr.eval(center_dir_frame.to_local(wo));
+
+                    // active &= (D != 0.f);
+
+                    // // Evaluate Smith's shadow-masking function
+                    // Float G = distr.G(si.wi, wo, H);
+
+                    // // Evaluate the full microfacet model (except Fresnel)
+                    // UnpolarizedSpectrum lobe_result =
+                    //     D * G / (4.f * Frame3f::cos_theta(si.wi));
+
+                    // // Evaluate the Fresnel factor
+                    // dr::Complex<UnpolarizedSpectrum> eta_c(m_eta->eval(si,
+                    // active),
+                    //                                        m_k->eval(si,
+                    //                                        active));
+
+                    // Spectrum F;
+                    // if constexpr (is_polarized_v<Spectrum>) {
+                    //     /* Due to the coordinate system rotations for
+                    //        polarization-aware pBSDFs below we need to know
+                    //        the propagation direction of light. In the
+                    //        following, light arrives along `-wo_hat` and
+                    //        leaves along
+                    //        `+wi_hat`. */
+                    //     Vector3f wo_hat = ctx.mode == TransportMode::Radiance
+                    //                           ? wo
+                    //                           : si.wi,
+                    //              wi_hat = ctx.mode == TransportMode::Radiance
+                    //                           ? si.wi
+                    //                           : wo;
+
+                    //     // Mueller matrix for specular reflection.
+                    //     F = mueller::specular_reflection(
+                    //         UnpolarizedSpectrum(dot(wo_hat, H)), eta_c);
+
+                    //     /* The Stokes reference frame vector of this matrix
+                    //     lies
+                    //        perpendicular to the plane of reflection. */
+                    //     Vector3f s_axis_in  = dr::cross(H, -wo_hat);
+                    //     Vector3f s_axis_out = dr::cross(H, wi_hat);
+
+                    //     // Singularity when the input & output are collinear
+                    //     with
+                    //     // the normal
+                    //     Mask collinear = dr::all(s_axis_in == Vector3f(0));
+                    //     s_axis_in      = dr::select(collinear, Vector3f(1, 0,
+                    //     0),
+                    //                                 dr::normalize(s_axis_in));
+                    //     s_axis_out     = dr::select(collinear, Vector3f(1, 0,
+                    //     0),
+                    //                                 dr::normalize(s_axis_out));
+
+                    //     /* Rotate in/out reference vector of F s.t. it aligns
+                    //     with
+                    //        the implicit Stokes bases of -wo_hat & wi_hat. */
+                    //     F = mueller::rotate_mueller_basis(
+                    //         F, -wo_hat, s_axis_in,
+                    //         mueller::stokes_basis(-wo_hat), wi_hat,
+                    //         s_axis_out, mueller::stokes_basis(wi_hat));
+                    // } else {
+                    //     F = fresnel_conductor(
+                    //         UnpolarizedSpectrum(dr::dot(si.wi, H)), eta_c);
+                    // }
+
+                    // result += F * lobe_result;
+                }
+            }
+
+            return result;
+        } else {
+            return Spectrum(0.0);
+        }
     }
 
     Float pdf(const BSDFContext &ctx, const SurfaceInteraction3f &si,
