@@ -39,7 +39,8 @@
 
 	<bsdf type="twosided" id="mat-grating" name="mat-grating">
 		<bsdf type="roughgrating" name="bsdf">
-			<string name="lobe_type" value="rectangular" />
+			<!-- <string name="material" value="Au" /> -->
+			<string name="lobe_type" value="sinusoidal" />
 			<float name="height" value="0.04" />
 			<float name="inv_period" value="0.7" />
 			<boolean name="radial" value="false" />
@@ -52,7 +53,7 @@
 
 <!-- Emitters -->
 	<emitter type="directional" id="elm__7" name="elm__7">
-		<rgb value="10.000000 10.000000 10.000000" name="irradiance"/>
+		<rgb value="20.000000 20.000000 20.000000" name="irradiance"/>
 		<transform name="to_world">
 			<matrix value="1.000000 0.000000 0.000000 0.000000 0.000000 0.707107 -0.707107 11.921600 0.000000 0.707107 0.707107 0.000000 0.000000 0.000000 0.000000 1.000000"/>
 		</transform>

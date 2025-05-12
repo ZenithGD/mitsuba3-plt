@@ -37,15 +37,15 @@
 
 	<bsdf type="twosided" id="mat-grating" name="mat-grating">
 		<bsdf type="roughgrating" name="bsdf">
-			<string name="distribution" value="ggx" />
-			<string name="material" value="Au" />
-			<string name="lobe_type" value="rectangular" />
+			<!-- <string name="material" value="Au" /> -->
+			<string name="lobe_type" value="sinusoidal" />
 			<float name="height" value="0.04" />
-			<float name="inv_period" value="0.55" />
+			<float name="inv_period" value="0.7" />
 			<boolean name="radial" value="false" />
-			<integer name="lobes" value="5" />
+			<integer name="lobes" value="7" />
 			<float name="grating_angle" value="0" />
-			<float name="alpha" value="0.07"/>
+			<float name="multiplier" value="5" />
+			<float name="alpha" value="0.01"/>
 		</bsdf>
 	</bsdf>
 	
@@ -100,7 +100,7 @@
 		<string name="filename" value="meshes/Sphere_002.ply"/>
 		<ref id="mat-glass" name="bsdf"/>
 	</shape>
-	<shape type="ply" id="elm__11" name="elm__11">
+	<!-- <shape type="ply" id="elm__11" name="elm__11">
 		<string name="filename" value="meshes/Cube_001.ply"/>
 		<boolean name="face_normals" value="true"/>
 		<ref id="mat-Material" name="bsdf"/>
@@ -119,7 +119,7 @@
 		<string name="filename" value="meshes/Cube_004.ply"/>
 		<boolean name="face_normals" value="true"/>
 		<ref id="mat-green" name="bsdf"/>
-	</shape>
+	</shape> -->
 	<shape type="ply" id="elm__17" name="elm__17">
 		<string name="filename" value="meshes/Cube_005.ply"/>
 		<boolean name="face_normals" value="true"/>

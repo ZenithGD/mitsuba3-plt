@@ -171,14 +171,15 @@ public:
         const Float m = (dr::square(a) - 1) / (dr::square(a * b) - 1);
         const Float q = 1 - dr::square(b) * m;
 
-        return {
-            // diffracted directions
-            Vector3f(       
+
+        // diffracted directions
+        Vector3f diff(       
                 a * dr::sqrt(dr::maximum(0.0f, q)), 
                 b * dr::sqrt(m),
-                dr::sqrt(dr::maximum(0.0f, 1 - dr::square(a) * q - dr::square(b) * m))
-            ),
-            // active mask
+                dr::sqrt(dr::maximum(0.0f, 1 - dr::square(a) * q - dr::square(b) * m)));
+        
+        return {
+            diff,
             dr::all(dr::abs(sin_o) <= 1.0f)
         };
     }

@@ -228,7 +228,7 @@ public:
             m_flags = m_flags | BSDFFlags::Anisotropic;
 
         // grating properties
-        m_grating_angle = props.get<Texture>("grating_angle", 0.0);
+        m_grating_angle = props.texture<Texture>("grating_angle", 0.0f);
 
         if (props.has_property("inv_period_x") ||
             props.has_property("inv_period_x")) {
@@ -389,19 +389,19 @@ public:
     }
 
     std::tuple<Vector3f, Float, Float, Vector2i, Mask>
-    sample_diffract(const Vector2f &sample2, const Vector2f &uv,
-                    const Vector3f &wi, const Vector3f &n,
-                    const Float &wl) const {
+    sample_diffract(const Vector2f &sample2, const SurfaceInteraction3f &si,
+                    Normal3f &n, const Float &wl) const {
         // new frame along normal to compute diffracted direction
         // in that frame
         Frame3f normalFrame(n);
-        Vector3f wi_local = normalFrame.to_local(wi);
+        Vector3f wi_local = normalFrame.to_local(si.wi);
         // std::cout << wi << ";" << wi_local << std::endl;
 
         // sample lobe and diffract in local frame
-        DiffractionGrating3f grating(
-            m_grating_angle, Vector2f(m_inv_period_x, m_inv_period_y), m_height,
-            m_lobes, m_lobe_type, m_multiplier, uv);
+        DiffractionGrating3f grating(m_grating_angle->eval_1(si),
+                                     Vector2f(m_inv_period_x, m_inv_period_y),
+                                     m_height, m_lobes, m_lobe_type,
+                                     m_multiplier, si.uv);
 
         auto [lobe, pdf_xy] =
             grating.sample_lobe(sample2, wi_local, wl * 1e-3f);
@@ -452,16 +452,16 @@ public:
         // TODO: loop for each wavelength
 
         Float wavelength;
-        if constexpr ( is_spectral_v<Spectrum> ) {
+        if constexpr (is_spectral_v<Spectrum>) {
             wavelength = si.wavelengths[0];
-        }
-        else {
+        } else {
             // Use sample 1 for random wavelength sample
-            wavelength = sample1 * (MI_CIE_MAX - 150.0 - MI_CIE_MIN) + MI_CIE_MIN;
+            wavelength =
+                sample1 * (MI_CIE_MAX - 150.0 - MI_CIE_MIN) + MI_CIE_MIN;
         }
 
         std::tie(bs.wo, grating_pdf, intensity, lobe, active_diffracted) =
-            sample_diffract(lobe_sample2, si.uv, si.wi, m, wavelength);
+            sample_diffract(lobe_sample2, si, m, wavelength);
         bs.eta               = 1.f;
         bs.sampled_component = 0;
         bs.sampled_type      = +BSDFFlags::GlossyReflection;
@@ -638,20 +638,23 @@ public:
                                      m_sample_visible);
 
         // instantiate grating model
-        DiffractionGrating3f grating(
-            m_grating_angle->eval_1(si.uv), Vector2f(m_inv_period_x, m_inv_period_y), m_height,
-            m_lobes, m_lobe_type, m_multiplier, si.uv);
+        DiffractionGrating3f grating(m_grating_angle->eval_1(si),
+                                     Vector2f(m_inv_period_x, m_inv_period_y),
+                                     m_height, m_lobes, m_lobe_type,
+                                     m_multiplier, si.uv);
 
         // fallback in RGB mode
         if constexpr (!is_spectral_v<Spectrum>) {
 
+            // Restrict to the peak wavelength of the RGB channels' SRF
             Spectrum result(0.0);
             dr::Array<Float, 3> wavelengths;
             wavelengths[0] = 465.0f;
             wavelengths[1] = 532.0f;
             wavelengths[2] = 630.0f;
 
-            auto a = 2 * dr::sqrt(m_alpha_u->eval_1(si) * m_alpha_v->eval_1(si));
+            auto a =
+                2 * dr::sqrt(m_alpha_u->eval_1(si) * m_alpha_v->eval_1(si));
 
             // exhaustive search of the lobes
             for (int lx = -((int) m_lobes) / 2; lx < (int) m_lobes / 2 + 1;
@@ -671,9 +674,6 @@ public:
                         std::tie(center_dir, lobe_active) =
                             grating.diffract(si.wi, lobe, wl * 1e-3f);
 
-                        // std::cout << "lobe=" << lobe << "& " << center_dir <<
-                        // ":::::::::" << si.wo<< ":::::::::::" <<
-                        // dr::unit_angle(center_dir, si.wi) << std::endl;
                         auto colour        = xyz_to_srgb(cie1931_xyz(wl));
                         Float lobes_result = dr::select(
                             lobe_active &
@@ -706,72 +706,165 @@ public:
                     // // Evaluate the full microfacet model (except Fresnel)
                     // UnpolarizedSpectrum lobe_result =
                     //     D * G / (4.f * Frame3f::cos_theta(si.wi));
-
-                    // // Evaluate the Fresnel factor
-                    // dr::Complex<UnpolarizedSpectrum> eta_c(m_eta->eval(si,
-                    // active),
-                    //                                        m_k->eval(si,
-                    //                                        active));
-
-                    // Spectrum F;
-                    // if constexpr (is_polarized_v<Spectrum>) {
-                    //     /* Due to the coordinate system rotations for
-                    //        polarization-aware pBSDFs below we need to know
-                    //        the propagation direction of light. In the
-                    //        following, light arrives along `-wo_hat` and
-                    //        leaves along
-                    //        `+wi_hat`. */
-                    //     Vector3f wo_hat = ctx.mode == TransportMode::Radiance
-                    //                           ? wo
-                    //                           : si.wi,
-                    //              wi_hat = ctx.mode == TransportMode::Radiance
-                    //                           ? si.wi
-                    //                           : wo;
-
-                    //     // Mueller matrix for specular reflection.
-                    //     F = mueller::specular_reflection(
-                    //         UnpolarizedSpectrum(dot(wo_hat, H)), eta_c);
-
-                    //     /* The Stokes reference frame vector of this matrix
-                    //     lies
-                    //        perpendicular to the plane of reflection. */
-                    //     Vector3f s_axis_in  = dr::cross(H, -wo_hat);
-                    //     Vector3f s_axis_out = dr::cross(H, wi_hat);
-
-                    //     // Singularity when the input & output are collinear
-                    //     with
-                    //     // the normal
-                    //     Mask collinear = dr::all(s_axis_in == Vector3f(0));
-                    //     s_axis_in      = dr::select(collinear, Vector3f(1, 0,
-                    //     0),
-                    //                                 dr::normalize(s_axis_in));
-                    //     s_axis_out     = dr::select(collinear, Vector3f(1, 0,
-                    //     0),
-                    //                                 dr::normalize(s_axis_out));
-
-                    //     /* Rotate in/out reference vector of F s.t. it aligns
-                    //     with
-                    //        the implicit Stokes bases of -wo_hat & wi_hat. */
-                    //     F = mueller::rotate_mueller_basis(
-                    //         F, -wo_hat, s_axis_in,
-                    //         mueller::stokes_basis(-wo_hat), wi_hat,
-                    //         s_axis_out, mueller::stokes_basis(wi_hat));
-                    // } else {
-                    //     F = fresnel_conductor(
-                    //         UnpolarizedSpectrum(dr::dot(si.wi, H)), eta_c);
-                    // }
-
-                    // result += F * lobe_result;
                 }
             }
+            // Evaluate the Fresnel factor
+            dr::Complex<UnpolarizedSpectrum> eta_c(m_eta->eval(si, active),
+                                                   m_k->eval(si, active));
 
-            if ( m_specular_reflectance )
+            Spectrum F;
+            if constexpr (is_polarized_v<Spectrum>) {
+                /* Due to the coordinate system rotations for
+                polarization-aware pBSDFs below we need to know
+                the propagation direction of light. In the
+                following, light arrives along `-wo_hat` and
+                leaves along
+                `+wi_hat`. */
+                Vector3f wo_hat =
+                             ctx.mode == TransportMode::Radiance ? wo : si.wi,
+                         wi_hat =
+                             ctx.mode == TransportMode::Radiance ? si.wi : wo;
+
+                // Mueller matrix for specular reflection.
+                F = mueller::specular_reflection(
+                    UnpolarizedSpectrum(dot(wo_hat, H)), eta_c);
+
+                /* The Stokes reference frame vector of this matrix
+                lies
+                perpendicular to the plane of reflection. */
+                Vector3f s_axis_in  = dr::cross(H, -wo_hat);
+                Vector3f s_axis_out = dr::cross(H, wi_hat);
+
+                // Singularity when the input & output are collinear with the
+                // normal
+                Mask collinear = dr::all(s_axis_in == Vector3f(0));
+                s_axis_in      = dr::select(collinear, Vector3f(1, 0, 0),
+                                            dr::normalize(s_axis_in));
+                s_axis_out     = dr::select(collinear, Vector3f(1, 0, 0),
+                                            dr::normalize(s_axis_out));
+
+                /* Rotate in/out reference vector of F s.t. it aligns
+                with
+                the implicit Stokes bases of -wo_hat & wi_hat. */
+                F = mueller::rotate_mueller_basis(
+                    F, -wo_hat, s_axis_in, mueller::stokes_basis(-wo_hat),
+                    wi_hat, s_axis_out, mueller::stokes_basis(wi_hat));
+            } else {
+                F = fresnel_conductor(UnpolarizedSpectrum(dr::dot(si.wi, H)),
+                                      eta_c);
+            }
+
+            if (m_specular_reflectance)
                 result *= m_specular_reflectance->eval(si);
 
-            return result;
+            return F * result;
 
         } else {
-            return Spectrum(0.0);
+            UnpolarizedSpectrum result(0.0);
+            auto wavelengths = si.wavelengths;
+
+            auto a =
+                2 * dr::sqrt(m_alpha_u->eval_1(si) * m_alpha_v->eval_1(si));
+
+            // exhaustive search of the lobes
+            for (int lx = -((int) m_lobes) / 2; lx < (int) m_lobes / 2 + 1;
+                 lx++) {
+                for (int ly = -((int) m_lobes) / 2; ly < (int) m_lobes / 2 + 1;
+                     ly++) {
+                    Vector2i lobe(lx, ly);
+
+                    for (int i = 0; i < dr::size_v<decltype(wavelengths)>; i++) {
+                        auto wl = wavelengths[i];
+
+                        Float lobe_intensity =
+                            grating.lobe_intensity(lobe, si.wi, wl * 1e-3f);
+
+                        Vector3f center_dir;
+                        Mask lobe_active;
+                        std::tie(center_dir, lobe_active) =
+                            grating.diffract(si.wi, lobe, wl * 1e-3f);
+
+                        Float lobes_result = dr::select(
+                            lobe_active &
+                                dr::abs(dr::unit_angle(center_dir, wo)) < a,
+                            lobe_intensity, 0.0);
+
+                        result[i] += lobes_result;
+                    }
+
+                    // // evaluate microfacet distribution considering the
+                    // internal
+                    // // shading frame
+                    // Vector3f center_dir;
+                    // Mask lobe_active;
+                    // std::tie(center_dir, lobe_active) =
+                    // grating.diffract(si.wi, lobe, wl);
+
+                    // // microfacet distribution is symmetric along the
+                    // z-vector => operate in local frame Frame3f
+                    // center_dir_frame(center_dir); Float D =
+                    // distr.eval(center_dir_frame.to_local(wo));
+
+                    // active &= (D != 0.f);
+
+                    // // Evaluate Smith's shadow-masking function
+                    // Float G = distr.G(si.wi, wo, H);
+
+                    // // Evaluate the full microfacet model (except Fresnel)
+                    // UnpolarizedSpectrum lobe_result =
+                    //     D * G / (4.f * Frame3f::cos_theta(si.wi));
+                }
+            }
+            // Evaluate the Fresnel factor
+            dr::Complex<UnpolarizedSpectrum> eta_c(m_eta->eval(si, active),
+                                                   m_k->eval(si, active));
+
+            Spectrum F;
+            if constexpr (is_polarized_v<Spectrum>) {
+                /* Due to the coordinate system rotations for
+                polarization-aware pBSDFs below we need to know
+                the propagation direction of light. In the
+                following, light arrives along `-wo_hat` and
+                leaves along
+                `+wi_hat`. */
+                Vector3f wo_hat =
+                             ctx.mode == TransportMode::Radiance ? wo : si.wi,
+                         wi_hat =
+                             ctx.mode == TransportMode::Radiance ? si.wi : wo;
+
+                // Mueller matrix for specular reflection.
+                F = mueller::specular_reflection(
+                    UnpolarizedSpectrum(dot(wo_hat, H)), eta_c);
+
+                /* The Stokes reference frame vector of this matrix
+                lies
+                perpendicular to the plane of reflection. */
+                Vector3f s_axis_in  = dr::cross(H, -wo_hat);
+                Vector3f s_axis_out = dr::cross(H, wi_hat);
+
+                // Singularity when the input & output are collinear with the
+                // normal
+                Mask collinear = dr::all(s_axis_in == Vector3f(0));
+                s_axis_in      = dr::select(collinear, Vector3f(1, 0, 0),
+                                            dr::normalize(s_axis_in));
+                s_axis_out     = dr::select(collinear, Vector3f(1, 0, 0),
+                                            dr::normalize(s_axis_out));
+
+                /* Rotate in/out reference vector of F s.t. it aligns
+                with
+                the implicit Stokes bases of -wo_hat & wi_hat. */
+                F = mueller::rotate_mueller_basis(
+                    F, -wo_hat, s_axis_in, mueller::stokes_basis(-wo_hat),
+                    wi_hat, s_axis_out, mueller::stokes_basis(wi_hat));
+            } else {
+                F = fresnel_conductor(UnpolarizedSpectrum(dr::dot(si.wi, H)),
+                                      eta_c);
+            }
+
+            if (m_specular_reflectance)
+                result *= m_specular_reflectance->eval(si);
+
+            return F * result;
         }
     }
 
@@ -812,13 +905,9 @@ public:
         return dr::select(active, result, 0.f);
     }
 
-    Float wbsdf_pdf(
-        const BSDFContext &ctx, 
-        const SurfaceInteraction3f &si,
-        const Vector3f &wo, 
-        const PLTSamplePhaseData3f &sd,
-        Mask active) const override 
-    {
+    Float wbsdf_pdf(const BSDFContext &ctx, const SurfaceInteraction3f &si,
+                    const Vector3f &wo, const PLTSamplePhaseData3f &sd,
+                    Mask active) const override {
         MI_MASKED_FUNCTION(ProfilerPhase::BSDFEvaluate, active);
 
         // perfect conductor pdf for now
@@ -958,7 +1047,7 @@ private:
     float m_height;
 
     /// @brief Angle of the grating.
-    float m_grating_angle;
+    ref<Texture> m_grating_angle;
 
     /// @brief Type of grating phase function.
     DiffractionGratingType m_lobe_type;
