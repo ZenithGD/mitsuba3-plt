@@ -2,7 +2,7 @@
 
 <!-- Defaults, these can be set via the command line: -Darg=value -->
 
-	<default name="spp" value="2048"/>
+	<default name="spp" value="4096"/>
 	<default name="resx" value="640"/>
 	<default name="resy" value="480"/>
 
@@ -41,13 +41,12 @@
 		<bsdf type="roughgrating" name="bsdf">
 			<string name="lobe_type" value="rectangular" />
 			<float name="height" value="0.04" />
-			<float name="inv_period_x" value="0.4" />
-			<float name="inv_period_y" value="0.4" />
+			<float name="inv_period" value="0.7" />
 			<boolean name="radial" value="false" />
 			<integer name="lobes" value="7" />
 			<float name="grating_angle" value="0" />
 			<float name="multiplier" value="5" />
-			<float name="alpha" value="0.015"/>
+			<float name="alpha" value="0.01"/>
 		</bsdf>
 	</bsdf>
 

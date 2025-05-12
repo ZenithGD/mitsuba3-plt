@@ -1,7 +1,9 @@
 import mitsuba as mi
 import drjit as dr
 
+import json
 import time
+import os
 
 from utils import *
 
@@ -28,6 +30,7 @@ def main(args):
     if args.verbose:
         scene_params = mi.traverse(scene)
         print(scene_params)
+        print(scene)
 
     #render scene using the desired integrator
     integrator = mi.load_dict({
@@ -54,11 +57,10 @@ def main(args):
     #             "rr_depth": 50
     #         }
     #     })
-    print(integrator)
 
     print("Rendering...")
     start = time.perf_counter_ns()
-    result = integrator.render(scene)
+    result = integrator.render(scene, spp=args.spp)
     bmp = mi.Bitmap(result).convert()
     el = time.perf_counter_ns() - start
     print(f"...done. ({el / 1e6} ms)")
@@ -66,13 +68,38 @@ def main(args):
     print(bmp)
 
     L, sp = stokes_to_bitmaps(bmp)
+
+    # folder to store data
+    folder_path = ""
+    if args.outdir:
+        folder_path = args.outdir
+
+        try:
+            os.makedirs(folder_path)
+            print(f"Creating folder at '{folder_path}'")
+        except FileExistsError:
+            pass
+            
     
-    mi.util.write_bitmap(f'result.exr', L, write_async=True)
-    mi.util.write_bitmap(f'result.png', L, write_async=True)
+    mi.util.write_bitmap(os.path.join(folder_path, f'result.exr'), L, write_async=True)
+    mi.util.write_bitmap(os.path.join(folder_path, f'result.png'), L, write_async=True)
 
     for i, si in enumerate(sp):
-        mi.util.write_bitmap(f'result_s{i}.exr', si, write_async=True)
-        mi.util.write_bitmap(f'result_s{i}.png', si, write_async=True)
+        mi.util.write_bitmap(os.path.join(folder_path, f'result_s{i}.exr'), si, write_async=True)
+        mi.util.write_bitmap(os.path.join(folder_path, f'result_s{i}.png'), si, write_async=True)
+
+    # write data about the render
+    render_data = {
+        "bitmap_size" : {
+            "width" : L.size().x,
+            "height" : L.size().y
+        },
+        "samples" : args.spp,
+        "time": el / 1e9
+    }
+
+    with open(os.path.join(folder_path, "params.json"), "w") as f:
+        json.dump(render_data, f)
 
     if args.plot:
         # plot intensity (s0)
@@ -105,6 +132,8 @@ if __name__ == '__main__':
     parser.add_argument("--verbose", "-v", action="store_true", help="Shows additional information during rendering (ONLY USE WHILE DEBUGGING!).")
     parser.add_argument("--plot", "-p", action="store_true", help="Plot result")
     parser.add_argument("--integrator", "-i", type=str, help="Integrator type.", default="mispath")
+    parser.add_argument("--spp", type=int, help="Samples per pixel", default=64)
+    parser.add_argument("--outdir", "-o", type=str, help="The folder in which to store the results")
 
     args = parser.parse_args()
     main(args)

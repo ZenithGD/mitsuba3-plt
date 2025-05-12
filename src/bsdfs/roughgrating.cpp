@@ -228,7 +228,7 @@ public:
             m_flags = m_flags | BSDFFlags::Anisotropic;
 
         // grating properties
-        m_grating_angle = props.get<ScalarFloat>("grating_angle", 0.0);
+        m_grating_angle = props.get<Texture>("grating_angle", 0.0);
 
         if (props.has_property("inv_period_x") ||
             props.has_property("inv_period_x")) {
@@ -639,7 +639,7 @@ public:
 
         // instantiate grating model
         DiffractionGrating3f grating(
-            m_grating_angle, Vector2f(m_inv_period_x, m_inv_period_y), m_height,
+            m_grating_angle->eval_1(si.uv), Vector2f(m_inv_period_x, m_inv_period_y), m_height,
             m_lobes, m_lobe_type, m_multiplier, si.uv);
 
         // fallback in RGB mode
