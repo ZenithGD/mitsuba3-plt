@@ -12568,6 +12568,8 @@ static const char *__doc_mitsuba_DiffractionGrating_is_1D_grating = R"doc()doc";
 
 static const char *__doc_mitsuba_DiffractionGrating_alpha = R"doc()doc";
 
+static const char *__doc_mitsuba_DiffractionGrating_alpha_2 = R"doc()doc";
+
 static const char *__doc_mitsuba_DiffractionGrating_sample_lobe = R"doc()doc";
 
 static const char *__doc_mitsuba_DiffractionGrating_diffract = R"doc()doc";

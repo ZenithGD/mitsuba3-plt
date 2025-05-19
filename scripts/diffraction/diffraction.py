@@ -88,7 +88,7 @@ ax2 = fig.add_subplot(1, 2, 2)
 # wavelength in micrometers
 px = 0.4
 py = 0.5
-angle = 45
+angle = 0
 h = 0.05
 wl = 0.4
 ldirs, intensities = compute_metrics(

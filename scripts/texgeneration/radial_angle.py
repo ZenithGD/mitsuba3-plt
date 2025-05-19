@@ -2,17 +2,26 @@ import argparse
 
 import scipy.special as sp
 import matplotlib.pyplot as plt
-import pandas as pd
-
 import numpy as np
 import mitsuba as mi
 import drjit as dr
 import time
 
+mi.set_variant("cuda_ad_rgb_polarized")
+
 def main(args):
 
-    X = np.meshgrid(np.arange(args.sx))
-    
+    X, Y = np.meshgrid(np.arange(args.sizex), np.arange(args.sizey))
+
+    rx = X - args.centerx
+    ry = Y - args.centery
+
+    angle = np.atan2(ry, rx)
+    # limit to 0...1 range
+    angle = (angle + np.pi) / (2.0 * np.pi)
+
+    bitmap = mi.Bitmap(array=angle, pixel_format=mi.Bitmap.PixelFormat.Y)
+    mi.util.write_bitmap(args.outfile, bitmap)
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description="Generates a texture where channels correspond to the grating angle")

@@ -3,8 +3,8 @@
 <!-- Defaults, these can be set via the command line: -Darg=value -->
 
 	<default name="spp" value="4096"/>
-	<default name="resx" value="640"/>
-	<default name="resy" value="480"/>
+	<default name="resx" value="800"/>
+	<default name="resy" value="600"/>
 
 <!-- Camera and Rendering Parameters -->
 
@@ -42,18 +42,22 @@
 			<!-- <string name="material" value="Au" /> -->
 			<string name="lobe_type" value="sinusoidal" />
 			<float name="height" value="0.04" />
-			<float name="inv_period" value="0.7" />
+			<float name="inv_period" value="0.9" />
 			<boolean name="radial" value="false" />
 			<integer name="lobes" value="7" />
 			<float name="grating_angle" value="0" />
-			<float name="multiplier" value="5" />
+			<float name="multiplier" value="10" />
 			<float name="alpha" value="0.01"/>
 		</bsdf>
 	</bsdf>
 
 <!-- Emitters -->
 	<emitter type="directional" id="elm__7" name="elm__7">
-		<rgb value="20.000000 20.000000 20.000000" name="irradiance"/>
+		<!-- <spectrum type="irregular" name="irradiance">
+			<string name="wavelengths" value="400, 460, 520, 580, 700"/>
+			<string name="values" value="20, 0, 0, 0, 20"/>
+		</spectrum> -->
+		<rgb name="irradiance" value="20, 20, 20" />
 		<transform name="to_world">
 			<matrix value="1.000000 0.000000 0.000000 0.000000 0.000000 0.707107 -0.707107 11.921600 0.000000 0.707107 0.707107 0.000000 0.000000 0.000000 0.000000 1.000000"/>
 		</transform>

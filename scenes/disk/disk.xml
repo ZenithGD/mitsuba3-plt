@@ -1,0 +1,149 @@
+<scene version="2.1.0">
+
+<!-- Defaults, these can be set via the command line: -Darg=value -->
+
+	<default name="spp" value="4096"/>
+	<default name="resx" value="800"/>
+	<default name="resy" value="600"/>
+
+<!-- Camera and Rendering Parameters -->
+
+	<integrator type="path" id="elm__0" name="elm__0">
+		<integer name="max_depth" value="12"/>
+	</integrator>
+	<sensor type="perspective" id="elm__1" name="elm__1">
+		<string name="fov_axis" value="x"/>
+		<float name="fov" value="39.379790"/>
+		<float name="principal_point_offset_x" value="0.000000"/>
+		<float name="principal_point_offset_y" value="-0.000000"/>
+		<float name="near_clip" value="0.100000"/>
+		<float name="far_clip" value="100.000000"/>
+		<transform name="to_world">
+			<rotate x="1" angle="-153.5592908827048"/>
+			<rotate y="1" angle="-18.26924314288295"/>
+			<rotate z="1" angle="-179.999991348578"/>
+			<translate value="4.924093 7.262070 11.595866"/>
+		</transform>
+		<sampler type="independent" name="sampler">
+			<integer name="sample_count" value="$spp"/>
+		</sampler>
+		<film type="hdrfilm" name="film">
+			<integer name="width" value="$resx"/>
+			<integer name="height" value="$resy"/>
+		</film>
+	</sensor>
+
+<!-- Materials -->
+
+	<bsdf type="twosided" id="mat-Material.001" name="mat-Material.001">
+		<!-- <bsdf type="roughconductor" name="bsdf">
+			<float name="alpha" value="0.250000"/>
+			<string name="distribution" value="ggx"/>
+			<rgb value="0.800000 0.800000 0.800000" name="specular_reflectance"/>
+		</bsdf> -->
+
+		<bsdf type="roughgrating" name="bsdf">
+			<!-- <string name="material" value="W" /> -->
+			<string name="lobe_type" value="sinusoidal" />
+			<float name="height" value="0.04" />
+			<float name="inv_period" value="0.8" />
+			<boolean name="radial" value="true" />
+			<integer name="lobes" value="7" />
+			<float name="grating_angle" value="0" />
+			<float name="multiplier" value="10" />
+			<float name="alpha" value="0.02"/>
+		</bsdf>
+	</bsdf>
+	<bsdf type="twosided" id="default-bsdf" name="default-bsdf">
+		<bsdf type="diffuse" name="bsdf"/>
+	</bsdf>
+	<bsdf type="diffuse" id="empty-emitter-bsdf" name="empty-emitter-bsdf">
+		<rgb value="0.000000" name="reflectance"/>
+	</bsdf>
+	<bsdf type="twosided" id="mat-Material.005" name="mat-Material.005">
+		<bsdf type="principled" name="bsdf">
+			<texture type="bitmap" name="base_color">
+				<string name="filename" value="textures/Material.005_baseColor.png"/>
+			</texture>
+			<rgb value="1.000000 1.000000 1.000000" name="spec_tint"/>
+			<float name="spec_trans" value="0.000000"/>
+			<float name="metallic" value="1.000000"/>
+			<float name="anisotropic" value="0.000000"/>
+			<float name="roughness" value="0.250000"/>
+			<float name="sheen" value="0.000000"/>
+			<rgb value="1.000000 1.000000 1.000000" name="sheen_tint"/>
+			<float name="clearcoat" value="0.000000"/>
+			<float name="clearcoat_gloss" value="0.000000"/>
+			<float name="specular" value="0.500000"/>
+		</bsdf>
+	</bsdf>
+	<bsdf type="twosided" id="mat-Material.009" name="mat-Material.009">
+		<bsdf type="principled" name="bsdf">
+			<rgb value="0.049707 0.049707 0.066626" name="base_color"/>
+			<rgb value="1.000000 1.000000 1.000000" name="spec_tint"/>
+			<float name="spec_trans" value="0.000000"/>
+			<float name="metallic" value="1.000000"/>
+			<float name="anisotropic" value="0.000000"/>
+			<float name="roughness" value="0.250000"/>
+			<float name="sheen" value="0.000000"/>
+			<rgb value="1.000000 1.000000 1.000000" name="sheen_tint"/>
+			<float name="clearcoat" value="0.000000"/>
+			<float name="clearcoat_gloss" value="0.000000"/>
+			<float name="specular" value="0.500000"/>
+		</bsdf>
+	</bsdf>
+
+<!-- Emitters -->
+
+	<!-- <shape type="ply" id="elm__7" name="elm__7">
+		<string name="filename" value="meshes/Plane_002.ply"/>
+		<boolean name="face_normals" value="true"/>
+		<ref id="empty-emitter-bsdf" name="bsdf"/>
+		<emitter type="area" name="emitter">
+			<rgb value="39.699997 39.699997 39.699997" name="radiance"/>
+		</emitter>
+	</shape> -->
+	<emitter type="envmap" id="elm__7" name="elm__7">
+		<string name="filename" value="textures/empty_play_room.exr"/>
+		<float name="scale" value="1.000000"/>
+		<transform name="to_world">
+			<matrix value="0.000000 0.000000 1.000000 0.000000 0.000000 1.000000 0.000000 0.000000 -1.000000 0.000000 0.000000 0.000000 0.000000 0.000000 0.000000 1.000000"/>
+		</transform>
+	</emitter>
+
+<!-- Shapes -->
+
+	<shape type="ply" id="elm__3" name="elm__3">
+		<string name="filename" value="meshes/Circle.ply"/>
+		<boolean name="face_normals" value="true"/>
+		<ref id="mat-Material.001" name="bsdf"/>
+	</shape>
+	<shape type="ply" id="elm__5" name="elm__5">
+		<string name="filename" value="meshes/Plane_001.ply"/>
+		<boolean name="face_normals" value="true"/>
+		<ref id="default-bsdf" name="bsdf"/>
+	</shape>
+	<shape type="ply" id="elm__9" name="elm__9">
+		<string name="filename" value="meshes/Object_4.ply"/>
+		<ref id="mat-Material.005" name="bsdf"/>
+	</shape>
+	<shape type="ply" id="elm__11" name="elm__11">
+		<string name="filename" value="meshes/Object_6.ply"/>
+		<ref id="mat-Material.009" name="bsdf"/>
+	</shape>
+	<shape type="ply" id="elm__12" name="elm__12">
+		<string name="filename" value="meshes/Object_8.ply"/>
+		<ref id="mat-Material.009" name="bsdf"/>
+	</shape>
+	<shape type="ply" id="elm__13" name="elm__13">
+		<string name="filename" value="meshes/Object_10.ply"/>
+		<ref id="mat-Material.009" name="bsdf"/>
+	</shape>
+	<shape type="ply" id="elm__14" name="elm__14">
+		<string name="filename" value="meshes/Object_12.ply"/>
+		<ref id="mat-Material.009" name="bsdf"/>
+	</shape>
+
+<!-- Volumes -->
+
+</scene>

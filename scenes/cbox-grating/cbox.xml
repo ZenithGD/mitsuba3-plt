@@ -40,12 +40,13 @@
 			<!-- <string name="material" value="Au" /> -->
 			<string name="lobe_type" value="sinusoidal" />
 			<float name="height" value="0.04" />
-			<float name="inv_period" value="0.7" />
-			<boolean name="radial" value="false" />
+			<float name="inv_period_x" value="0.7" />
+			<float name="inv_period_y" value="0.4" />
+			<boolean name="radial" value="true" />
 			<integer name="lobes" value="7" />
-			<float name="grating_angle" value="0" />
-			<float name="multiplier" value="5" />
-			<float name="alpha" value="0.01"/>
+			<float name="grating_angle" value="1.509" />
+			<float name="multiplier" value="10" />
+			<float name="alpha" value="0.02"/>
 		</bsdf>
 	</bsdf>
 	
@@ -74,6 +75,15 @@
 			<rgb value="0.077992 0.587736 0.073049" name="reflectance"/>
 		</bsdf>
 	</bsdf>
+	<bsdf type="twosided" id="mat-uvtest" name="mat-uvtest">
+		<bsdf type="diffuse" name="bsdf">
+			
+			<texture type="bitmap" name="reflectance">
+				<string name="filename" value="textures/UVtest.png"/>
+				<string name="wrap_mode" value="mirror"/>
+			</texture>	
+		</bsdf>
+	</bsdf>
 
 <!-- Emitters -->
 
@@ -82,7 +92,7 @@
 		<boolean name="face_normals" value="true"/>
 		<ref id="empty-emitter-bsdf" name="bsdf"/>
 		<emitter type="area" name="emitter">
-			<rgb value="4.000000 2.000000 2.000000" name="radiance"/>
+			<rgb value="10.000000 5.000000 5.000000" name="radiance"/>
 		</emitter>
 	</shape>
 
@@ -94,18 +104,18 @@
 	</shape>
 	<shape type="ply" id="elm__5" name="elm__5">
 		<string name="filename" value="meshes/Sphere_001.ply"/>
-		<ref id="mat-grating" name="bsdf"/>
+		<ref id="mat-uvtest" name="bsdf"/>
 	</shape>
 	<shape type="ply" id="elm__7" name="elm__7">
 		<string name="filename" value="meshes/Sphere_002.ply"/>
 		<ref id="mat-glass" name="bsdf"/>
 	</shape>
-	<!-- <shape type="ply" id="elm__11" name="elm__11">
+	<shape type="ply" id="elm__11" name="elm__11">
 		<string name="filename" value="meshes/Cube_001.ply"/>
 		<boolean name="face_normals" value="true"/>
 		<ref id="mat-Material" name="bsdf"/>
 	</shape>
-	<shape type="ply" id="elm__13" name="elm__13">
+	<!-- <shape type="ply" id="elm__13" name="elm__13">
 		<string name="filename" value="meshes/Cube_002.ply"/>
 		<boolean name="face_normals" value="true"/>
 		<ref id="mat-red" name="bsdf"/>

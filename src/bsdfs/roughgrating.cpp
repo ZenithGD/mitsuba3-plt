@@ -245,7 +245,7 @@ public:
             m_inv_period_x = m_inv_period_y =
                 props.get<ScalarFloat>("inv_period", 0.1f);
         }
-        m_height = props.get<ScalarFloat>("height", 0.3);
+        m_height = props.get<ScalarFloat>("height", 0.3f);
         m_lobes  = props.get<uint32_t>("lobes", 5);
         std::string lobe_type =
             props.get<std::string>("lobe_type", "rectangular");
@@ -261,7 +261,13 @@ public:
         }
 
         m_radial     = props.get<bool>("radial", false);
-        m_multiplier = props.get("multiplier", 1.0);
+        if ( m_radial )
+        {
+            m_lobe_type = static_cast<DiffractionGratingType>(
+                static_cast<uint32_t>(m_lobe_type) | static_cast<uint32_t>(DiffractionGratingType::Radial)
+            );
+        }
+        m_multiplier = props.get("multiplier", 1.0f);
 
         m_components.clear();
         m_components.push_back(m_flags);
@@ -457,7 +463,7 @@ public:
         } else {
             // Use sample 1 for random wavelength sample
             wavelength =
-                sample1 * (MI_CIE_MAX - 150.0 - MI_CIE_MIN) + MI_CIE_MIN;
+                sample1 * (MI_CIE_MAX - 150.0f - MI_CIE_MIN) + MI_CIE_MIN;
         }
 
         std::tie(bs.wo, grating_pdf, intensity, lobe, active_diffracted) =
@@ -909,9 +915,25 @@ public:
                     const Vector3f &wo, const PLTSamplePhaseData3f &sd,
                     Mask active) const override {
         MI_MASKED_FUNCTION(ProfilerPhase::BSDFEvaluate, active);
+        
+        // instantiate grating model
+        DiffractionGrating3f grating(m_grating_angle->eval_1(si),
+                                     Vector2f(m_inv_period_x, m_inv_period_y),
+                                     m_height, m_lobes, m_lobe_type,
+                                     m_multiplier, si.uv);
 
-        // perfect conductor pdf for now
-        return 1.0;
+        
+        Float k;
+        if constexpr ( is_spectral_v<Spectrum> )
+        {
+            k = dr::TwoPi<Float> / (si.wavelengths[0] * 1e-3f);
+        }
+        else 
+        {
+            k = dr::TwoPi<Float> / (sd.sampling_wavelengths[0] * 1e-3f);
+        }
+        
+        return grating.alpha(si.wi, k);
     }
 
     std::pair<Spectrum, Float> eval_pdf(const BSDFContext &ctx,

@@ -7,7 +7,7 @@ import os
 
 from utils import *
 
-mi.set_variant("cuda_ad_rgb_polarized")
+mi.set_variant("cuda_ad_spectral_polarized")
 
 import numpy as np
 import matplotlib.pyplot as plt
@@ -39,7 +39,7 @@ def main(args):
         "nested" : {
             "type" : args.integrator,
             "max_depth": 7,
-            "rr_depth": 25
+            "rr_depth": 50
         }
     })
     # if args.integrator == "plt":

@@ -336,7 +336,7 @@ template <typename T> T bessel_j(const T& x, const dr::int_array_t<T>& nu, const
     using IntArray = dr::int_array_t<T>;
 
     const T nu_abs = IntArray(dr::abs(nu));
-    const T nsign  = dr::sign(nu);
+    const T nsign  = dr::sign<T>(nu);
 
     // interpolate between polynomial and asymptotic approximations with a smooth weighting function
     T center = c + nu_abs;
