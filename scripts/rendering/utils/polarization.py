@@ -17,7 +17,7 @@ def stokes_to_bitmaps(bitmap : mi.Bitmap):
 
     print(val.shape)
 
-    L  = val[:,:,3]
+    L  = val[:,:,0:3]
     s0 = val[:,:,3:6]
     s1 = val[:,:,6:9]
     s2 = val[:,:,9:12]
@@ -29,7 +29,7 @@ def stokes_to_bitmaps(bitmap : mi.Bitmap):
     s2_b = mi.Bitmap(s2)
     s3_b = mi.Bitmap(s3)
 
-    return L_b, (s0_b, s1_b, s2_b, s3_b)
+    return L_b, [s0_b, s1_b, s2_b, s3_b]
 
 def plot_stokes_component(ax, image):
     # Convert the image into a TensorXf for manipulation

@@ -7,15 +7,10 @@ import os
 
 from utils import *
 
-mi.set_variant("cuda_ad_spectral_polarized")
-
 import numpy as np
 import matplotlib.pyplot as plt
 
 import argparse
-
-from scripts.rendering.integrators.path import MISPathIntegrator
-from scripts.rendering.integrators.plt import PLTIntegrator
 # from scripts.rendering.integrators.plt import PLTIntegrator
 
 def main(args):
@@ -42,21 +37,6 @@ def main(args):
             "rr_depth": 50
         }
     })
-    # if args.integrator == "plt":
-    #     integrator = mi.load_dict({
-    #         "type" : args.integrator,
-    #         "max_depth": 12,
-    #         "rr_depth": 50
-    #     })
-    # else:
-    #     integrator = mi.load_dict({
-    #         "type": "stokes",
-    #         "nested" : {
-    #             "type" : args.integrator,
-    #             "max_depth": 12,
-    #             "rr_depth": 50
-    #         }
-    #     })
 
     print("Rendering...")
     start = time.perf_counter_ns()
@@ -65,9 +45,17 @@ def main(args):
     el = time.perf_counter_ns() - start
     print(f"...done. ({el / 1e6} ms)")
 
-    print(bmp)
-
     L, sp = stokes_to_bitmaps(bmp)
+
+    if args.denoise:
+        print("Denoising...")
+        print(L.size())
+        # Denoise the rendered image
+        denoiser = mi.OptixDenoiser(input_size=L.size(), albedo=False, normals=False, temporal=False)
+        L = denoiser(L)
+
+        for i, s in enumerate(sp):
+            sp[i] = denoiser(s)
 
     # folder to store data
     folder_path = ""
@@ -134,6 +122,20 @@ if __name__ == '__main__':
     parser.add_argument("--integrator", "-i", type=str, help="Integrator type.", default="mispath")
     parser.add_argument("--spp", type=int, help="Samples per pixel", default=64)
     parser.add_argument("--outdir", "-o", type=str, help="The folder in which to store the results")
-
+    parser.add_argument("--denoise", "-d", action="store_true", help="Whether to denoise the final result.")
+    
     args = parser.parse_args()
+
+    # setup mode here
+    if args.spectral:
+        print("Loading spectral variant...")
+        mi.set_variant("cuda_ad_spectral_polarized")
+    else:
+        print("Loading RGB variant...")
+        mi.set_variant("cuda_ad_rgb_polarized")
+
+    # load integrators
+    from scripts.rendering.integrators.path import MISPathIntegrator
+    from scripts.rendering.integrators.plt import PLTIntegrator
+
     main(args)

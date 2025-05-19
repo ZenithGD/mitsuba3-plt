@@ -30,15 +30,15 @@ def show_srfs(values : np.array, srfs : dict):
     plt.legend()
     plt.show()
 
-def main(args):
+def gen_srfs(n, points, min_wl, max_wl):
 
-    delta_wl = (args.max_wl - args.min_wl) / args.n
+    delta_wl = (max_wl - min_wl) / n
     print(delta_wl)
-    values = np.linspace(args.min_wl, args.max_wl, args.points)
+    values = np.linspace(min_wl, max_wl, points)
     srfs = {}
-    for wl in np.linspace(args.min_wl, args.max_wl, args.n + 2)[1:-1]:
+    for wl in np.linspace(min_wl, max_wl, n + 2)[1:-1]:
 
-        srf = gen_srf(values, wl, delta_wl, args.n, args.points)
+        srf = gen_srf(values, wl, delta_wl, n, points)
 
         print(np.trapezoid(srf, values))
 
@@ -46,7 +46,13 @@ def main(args):
 
         srfs[wl] = srf
 
-    show_srfs(values, srfs)
+    return values, srfs
+
+def main(args):
+
+    wl, srfs = gen_srfs(args.n, args.points, args.min_wl, args.max_wl)
+
+    show_srfs(wl, srfs)
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description="Generate a set of evenly spaced gaussian profile SRFs in a finite domain")
