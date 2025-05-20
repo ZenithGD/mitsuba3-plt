@@ -5,6 +5,7 @@ import matplotlib.pyplot as plt
 # plt.rcParams['text.usetex'] = True
 
 from utils import *
+from scripts.utils import *
 
 def sample_wbsdf(bsdf : mi.BSDF, sample_context):
     
@@ -17,10 +18,12 @@ def sample_wbsdf(bsdf : mi.BSDF, sample_context):
     si.p = [0, 0, 0]
     si.n = [0, 0, 1]
     si.wi = sample_context["wi"]
-    si.wavelengths = sample_context["wavelengths"]
+    si.wavelengths = sample_context["wavelengths"] if mi.is_spectral else mi.Color0f()
     si.sh_frame = mi.Frame3f(si.n)
 
     samples, gr = bsdf.wbsdf_sample(ctx, si, sample, sample2, lobe_sample2)
+
+    pdf = bsdf.wbsdf_pdf(ctx, si, samples.bsdf_sample.wo, samples)
 
     return samples, mi.unpolarized_spectrum(gr.L)
 

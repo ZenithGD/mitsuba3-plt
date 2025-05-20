@@ -28,7 +28,7 @@ MI_PY_EXPORT(BounceData) {
 
             .def(nb::init<>(), "Blank constructor")
             .def(nb::init<UInt32, SurfaceInteraction3f, Vector3f, Vector3f, UInt32,
-                          Float, Spectrum, Spectrum, Mask, Float, Vector2i, Wavelength, Mask>(),
+                          Float, Spectrum, Spectrum, Mask, Float, Vector2i, UnpolarizedSpectrum, Mask>(),
                  "id"_a, "interaction"_a, "wi"_a, "wo"_a, "bsdf_flags"_a,
                  "rr_thp"_a, "throughput"_a, "bsdf_weight"_a, "is_emitter"_a,
                  "last_nd_pdf"_a, "sampled_lobe"_a, "sampling_wavelengths"_a, "active"_a, D(BounceData, BounceData));

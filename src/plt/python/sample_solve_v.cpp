@@ -15,7 +15,7 @@ MI_PY_EXPORT(SampleSolve)
         .def_field(PLTSamplePhaseData3f, diffraction_lobe, "diffraction_lobe")
         .def_field(PLTSamplePhaseData3f, internal_frame, "internal_frame")
         .def_field(PLTSamplePhaseData3f, sampling_wavelengths, "sampling_wavelengths")
-        .def(nb::init<BSDFSample3f, Vector2i, Vector3f, Wavelength>());
+        .def(nb::init<BSDFSample3f, Vector2i, Vector3f, UnpolarizedSpectrum>());
 
     MI_PY_DRJIT_STRUCT(it, PLTSamplePhaseData3f, bsdf_sample, diffraction_lobe, internal_frame, sampling_wavelengths);
 }

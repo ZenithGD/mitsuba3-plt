@@ -4,16 +4,7 @@ import mitsuba as mi
 import numpy as np
 import matplotlib.pyplot as plt
 
-def sph_to_dir(theta, phi):
-    """Map spherical to Euclidean coordinates"""
-    st, ct = dr.sincos(theta)
-    sp, cp = dr.sincos(phi)
-    return mi.Vector3f(cp * st, sp * st, ct)
-
-def dir_to_sph(v):
-    theta = dr.atan2(v.y, v.x)
-    phi = dr.acos(v.z / dr.norm(v))
-    return theta, phi
+from scripts.utils import sph_to_dir
 
 def plot_dispersion(angles, values, show_360=False, show_sp=False, **kwargs):
     

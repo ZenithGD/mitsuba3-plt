@@ -10,6 +10,8 @@ import matplotlib.pyplot as plt
 
 from dispersion import *
 
+from scripts.utils import sph_to_dir
+
 def main(args):
 
     # create diffuse dispersion diagram

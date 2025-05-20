@@ -3,12 +3,14 @@ import argparse
 import mitsuba as mi
 import drjit as dr
 
-mi.set_variant("cuda_ad_spectral_polarized")
+mi.set_variant("cuda_ad_rgb_polarized")
 
 import numpy as np
 import matplotlib.pyplot as plt
 
 from sample import *
+
+from scripts.utils import *
 
 def plot_roughness_diagrams(alphas, sample_context):
     n = alphas.shape[0]
@@ -27,7 +29,7 @@ def plot_roughness_diagrams(alphas, sample_context):
             'inv_period_y' : 0.4,
             'radial' : False,
             'lobes' : 5,
-            'grating_angle' : 0,
+            'grating_angle' : 0.0,
         })
 
         ax = fig.add_subplot(1, n, i+1, projection='polar')
@@ -75,7 +77,7 @@ def main(args):
         'inv_period_y' : 0.4,
         'radial' : False,
         'lobes' : 5,
-        'grating_angle' : 0,
+        'grating_angle' : 0.0,
         **alpha
     })
 
@@ -86,9 +88,14 @@ def main(args):
     # })
     λs = np.random.random(nsamples) * (mi.MI_CIE_MAX - 150 - mi.MI_CIE_MIN) + mi.MI_CIE_MIN
     # λs = dr.linspace(mi.Float, mi.MI_CIE_MIN, mi.MI_CIE_MAX - 200, nsamples)
-    wavelengths = mi.UnpolarizedSpectrum(
-        λs, λs, λs, λs
-    )
+    if mi.is_spectral:
+        wavelengths = mi.UnpolarizedSpectrum(
+            λs, λs, λs, λs
+        )
+    else:
+        wavelengths = mi.UnpolarizedSpectrum(
+            λs, λs, λs
+        )
 
     angle = args.angle
     sample_context = {

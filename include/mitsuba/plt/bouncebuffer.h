@@ -62,7 +62,7 @@ struct BounceData {
     /**
      * @brief The wavelength(s) that drive the sample process.
      */
-    Wavelength sampling_wavelengths;
+    UnpolarizedSpectrum sampling_wavelengths;
 
     /// \brief Whether this vertex of the path belongs to an active path.
     Mask active;
@@ -73,7 +73,7 @@ struct BounceData {
         const Vector3f& wi_, const Vector3f& wo_, const UInt32& bf_,
         const Float& rr_thp_, const Spectrum& throughput_, 
         const Spectrum& bsdf_weight_, const Mask& is_emitter_, 
-        const Float& ld_, const Vector2i& sl_, const Wavelength& swl_, const Mask& active_)
+        const Float& ld_, const Vector2i& sl_, const UnpolarizedSpectrum& swl_, const Mask& active_)
 
         : id(id_),
           interaction(it_), 

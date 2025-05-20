@@ -35,12 +35,12 @@ struct PLTSamplePhaseData
      * @brief Wavelength(s) driving the sampling process.
      * First wavelength is assumed to be the hero wavelength
      */
-    Wavelength sampling_wavelengths;
+    UnpolarizedSpectrum sampling_wavelengths;
 
     // add more data here if needed...
 
     PLTSamplePhaseData(const BSDFSample3f &sp, const Vector2i& lobe, 
-        const Frame3f& sn, const Wavelength& wl)
+        const Frame3f& sn, const UnpolarizedSpectrum& wl)
         : bsdf_sample(sp), diffraction_lobe(lobe), internal_frame(sn), sampling_wavelengths(wl)
     {}
 

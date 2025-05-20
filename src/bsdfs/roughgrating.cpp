@@ -260,12 +260,11 @@ public:
             Throw("Grating surface type %s not supported!", lobe_type);
         }
 
-        m_radial     = props.get<bool>("radial", false);
-        if ( m_radial )
-        {
+        m_radial = props.get<bool>("radial", false);
+        if (m_radial) {
             m_lobe_type = static_cast<DiffractionGratingType>(
-                static_cast<uint32_t>(m_lobe_type) | static_cast<uint32_t>(DiffractionGratingType::Radial)
-            );
+                static_cast<uint32_t>(m_lobe_type) |
+                static_cast<uint32_t>(DiffractionGratingType::Radial));
         }
         m_multiplier = props.get("multiplier", 1.0f);
 
@@ -435,9 +434,17 @@ public:
 
         if (unlikely(!ctx.is_enabled(BSDFFlags::GlossyReflection) ||
                      dr::none_or<false>(active))) {
-            PLTSamplePhaseData3f sd(bs, Vector2i(0, 0), Vector3f(0, 0, 0),
-                                    si.wavelengths);
-            return { sd, GeneralizedRadiance3f(0.0f) };
+
+            UnpolarizedSpectrum(0.0f);
+            if constexpr (is_spectral_v<Spectrum>) {
+                PLTSamplePhaseData3f sd(bs, Vector2i(0, 0), Vector3f(0, 0, 0),
+                                        si.wavelengths);
+                return { sd, GeneralizedRadiance3f(0.0f) };
+            } else {
+                PLTSamplePhaseData3f sd(bs, Vector2i(0, 0), Vector3f(0, 0, 0),
+                                        UnpolarizedSpectrum(0.0));
+                return { sd, GeneralizedRadiance3f(0.0f) };
+            }
         }
         /* Construct a microfacet distribution matching the
            roughness values at the current surface position. */
@@ -534,9 +541,16 @@ public:
         if (m_specular_reflectance)
             weight *= m_specular_reflectance->eval(si, active);
 
-        PLTSamplePhaseData3f sd(bs, lobe, reflection_dir, si.wavelengths);
+        if constexpr (is_spectral_v<Spectrum>) {
+            PLTSamplePhaseData3f sd(bs, lobe, reflection_dir, si.wavelengths);
 
-        return { sd, (F * weight * intensity * m_multiplier) & active };
+            return { sd, (F * weight * intensity * m_multiplier) & active };
+        } else {
+            PLTSamplePhaseData3f sd(bs, lobe, reflection_dir,
+                                    UnpolarizedSpectrum(wavelength));
+
+            return { sd, (F * weight * intensity * m_multiplier) & active };
+        }
     }
 
     Spectrum eval(const BSDFContext &ctx, const SurfaceInteraction3f &si,
@@ -655,9 +669,9 @@ public:
             // Restrict to the peak wavelength of the RGB channels' SRF
             Spectrum result(0.0);
             dr::Array<Float, 3> wavelengths;
-            wavelengths[0] = 465.0f;
-            wavelengths[1] = 532.0f;
-            wavelengths[2] = 630.0f;
+            wavelengths[0] = sd.sampling_wavelengths[0];
+            wavelengths[1] = sd.sampling_wavelengths[1];
+            wavelengths[2] = sd.sampling_wavelengths[2];
 
             auto a =
                 2 * dr::sqrt(m_alpha_u->eval_1(si) * m_alpha_v->eval_1(si));
@@ -779,7 +793,8 @@ public:
                      ly++) {
                     Vector2i lobe(lx, ly);
 
-                    for (int i = 0; i < dr::size_v<decltype(wavelengths)>; i++) {
+                    for (int i = 0; i < dr::size_v<decltype(wavelengths)>;
+                         i++) {
                         auto wl = wavelengths[i];
 
                         Float lobe_intensity =
@@ -915,24 +930,20 @@ public:
                     const Vector3f &wo, const PLTSamplePhaseData3f &sd,
                     Mask active) const override {
         MI_MASKED_FUNCTION(ProfilerPhase::BSDFEvaluate, active);
-        
+
         // instantiate grating model
         DiffractionGrating3f grating(m_grating_angle->eval_1(si),
                                      Vector2f(m_inv_period_x, m_inv_period_y),
                                      m_height, m_lobes, m_lobe_type,
                                      m_multiplier, si.uv);
 
-        
         Float k;
-        if constexpr ( is_spectral_v<Spectrum> )
-        {
+        if constexpr (is_spectral_v<Spectrum>) {
             k = dr::TwoPi<Float> / (si.wavelengths[0] * 1e-3f);
-        }
-        else 
-        {
+        } else {
             k = dr::TwoPi<Float> / (sd.sampling_wavelengths[0] * 1e-3f);
         }
-        
+
         return grating.alpha(si.wi, k);
     }
 

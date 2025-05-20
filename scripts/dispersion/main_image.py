@@ -12,6 +12,8 @@ from matplotlib.widgets import Slider
 from sample import *
 from eval import * 
 
+from scripts.utils import sph_to_dir
+
 
 def run_eval_and_plot(ax, bsdf, az, ev, eval_context, marker_dot):
     # Update incident direction

@@ -31,9 +31,17 @@ BSDF<Float, Spectrum>::wbsdf_sample(
     auto [ sp, weight ] = sample(ctx, si, sample1, sample2, active);
 
     GeneralizedRadiance<Float, Spectrum> gr(weight);
-    PLTSamplePhaseData<Float, Spectrum> sd(sp, Vector2i(0, 0), Vector3f(0, 0, 0), si.wavelengths);
+    if constexpr ( is_spectral_v<Spectrum> )
+    {
+        PLTSamplePhaseData<Float, Spectrum> sd(sp, Vector2i(0, 0), Vector3f(0, 0, 0), si.wavelengths);
     
-    return { sd, gr };     
+        return { sd, gr };  
+    }
+    else {
+        PLTSamplePhaseData<Float, Spectrum> sd(sp, Vector2i(0, 0), Vector3f(0, 0, 0), UnpolarizedSpectrum(0.0));
+    
+        return { sd, gr };  
+    }
 }
 
 MI_VARIANT GeneralizedRadiance<Float, Spectrum> 

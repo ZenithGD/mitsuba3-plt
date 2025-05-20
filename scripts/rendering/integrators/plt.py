@@ -62,11 +62,12 @@ class PLTIntegrator(ADIntegrator):
         bounce_buffer : dr.Local[mi.BounceData3f] = dr.alloc_local(mi.BounceData3f, self.max_depth)
 
         # sampling wavelengths
-        λs = sampler.next_1d() * (mi.MI_CIE_MAX - 150 - mi.MI_CIE_MIN) + mi.MI_CIE_MIN
+        scale_wl = (mi.MI_CIE_MAX - 150 - mi.MI_CIE_MIN) + mi.MI_CIE_MIN
+        (λs1, λs2, λs3, λs4) = [ sampler.next_1d() * scale_wl for i in range(4) ]
         if mi.is_spectral:
-            wavelengths = mi.UnpolarizedSpectrum(λs)
+            wavelengths = mi.UnpolarizedSpectrum(λs1,λs2,λs3,λs4)
         else:
-            wavelengths = mi.Color0f()
+            wavelengths = mi.UnpolarizedSpectrum(λs1,λs2,λs3)
 
         # prepare loop state
         i = mi.UInt32(0)
