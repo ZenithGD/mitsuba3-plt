@@ -1,0 +1,14 @@
+{
+    "wavelengths" : {
+        "min" : 500.0,
+        "max" : 650.0,
+        "measure_points" : 20,
+        "domain_points" : 150
+    },
+    "spectrum" : {
+        "type" : "irregular",
+        "wavelengths" : "400, 500, 550, 600, 650, 700",
+        "values" : "100, 100, 100, 100, 100, 100"
+    },
+    "use_srfs" : false
+}

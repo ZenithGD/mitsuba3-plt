@@ -7,7 +7,7 @@ from typing import List, Tuple, Sequence
 
 from mitsuba.ad.integrators.common import ADIntegrator, mis_weight
 
-from utils import spec_fma
+from scripts.utils import spec_fma
 
 class MISPathIntegrator(ADIntegrator):
     

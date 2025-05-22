@@ -6,7 +6,7 @@ import numpy as np
 from collections import namedtuple
 
 from typing import List, Tuple, Sequence
-from utils import spec_fma, spec_prod, spec_add
+from scripts.utils import spec_fma, spec_prod, spec_add
 
 from mitsuba.ad.integrators.common import ADIntegrator, mis_weight
 

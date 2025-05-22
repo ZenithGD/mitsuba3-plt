@@ -11,6 +11,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 import argparse
+
+from scripts.utils import *
 # from scripts.rendering.integrators.plt import PLTIntegrator
 
 def main(args):
@@ -34,7 +36,8 @@ def main(args):
         "nested" : {
             "type" : args.integrator,
             "max_depth": 7,
-            "rr_depth": 50
+            "rr_depth": 50,
+            'samples_per_pass': 512
         }
     })
 

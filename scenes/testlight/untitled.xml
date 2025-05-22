@@ -1,0 +1,76 @@
+<scene version="2.1.0">
+
+<!-- Defaults, these can be set via the command line: -Darg=value -->
+
+	<default name="spp" value="512"/>
+	<default name="resx" value="400"/>
+	<default name="resy" value="400"/>
+
+<!-- Camera and Rendering Parameters -->
+
+	<integrator type="path" id="elm__0" name="elm__0">
+		<integer name="max_depth" value="-1"/>
+		<integer name="rr_depth" value="5"/>
+		<boolean name="hide_emitters" value="false"/>
+	</integrator>
+	<sensor type="perspective" id="elm__4" name="elm__4">
+		<string name="fov_axis" value="x"/>
+		<float name="fov" value="79.999991"/>
+		<float name="principal_point_offset_x" value="0.000000"/>
+		<float name="principal_point_offset_y" value="-0.000000"/>
+		<float name="near_clip" value="0.010000"/>
+		<float name="far_clip" value="10000.000000"/>
+		<transform name="to_world">
+			<rotate x="1" angle="75.50164874575131"/>
+			<rotate y="1" angle="-2.779157077999343e-06"/>
+			<rotate z="1" angle="-105.19063008653167"/>
+			<translate value="0.373731 -0.101475 -0.100141"/>
+		</transform>
+		<sampler type="independent" name="sampler">
+			<integer name="sample_count" value="$spp"/>
+			<integer name="seed" value="0"/>
+		</sampler>
+		<film type="hdrfilm" name="film">
+			<integer name="width" value="15"/>
+			<integer name="height" value="$resy"/>
+			<rfilter type="box" name="rfilter"/>
+		</film>
+	</sensor>
+
+<!-- Materials -->
+
+	<bsdf type="twosided" id="mat-_unnamed_31" name="mat-_unnamed_31">
+		<bsdf type="roughgrating" name="bsdf">
+			<string name="distribution" value="ggx"/>
+			<string name="material" value="Au"/>
+			<string name="lobe_type" value="sinusoidal"/>
+			<float name="height" value="$resy"/>
+			<float name="inv_period_x" value="0.650000"/>
+			<float name="inv_period_y" value="0.650000"/>
+			<boolean name="radial" value="false"/>
+			<integer name="lobes" value="5"/>
+			<float name="grating_angle" value="0.000000"/>
+			<float name="alpha" value="0.50000"/>
+		</bsdf>
+	</bsdf>
+
+<!-- Emitters -->
+
+	<emitter type="directional" id="elm__3" name="elm__3">
+		<rgb value="100.000000 100.000000 100.000000" name="irradiance"/>
+		<transform name="to_world">
+			<matrix value="-0.258819 0.000000 -0.965926 0.000000 -0.000000 1.000000 0.000000 0.000000 0.965926 0.000000 -0.258819 0.000000 0.000000 0.000000 0.000000 1.000000"/>
+		</transform>
+	</emitter>
+
+<!-- Shapes -->
+
+	<shape type="ply" id="elm__2" name="elm__2">
+		<string name="filename" value="meshes/grating_patch.ply"/>
+		<boolean name="face_normals" value="true"/>
+		<ref id="mat-_unnamed_31" name="bsdf"/>
+	</shape>
+
+<!-- Volumes -->
+
+</scene>
