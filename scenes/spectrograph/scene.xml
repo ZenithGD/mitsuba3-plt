@@ -11,10 +11,10 @@
 	<sensor type="batch" id="sensor" name="sensor">
 		<sensor type="orthographic" name="sensor0">
 			<transform name="to_world">
-				<rotate x="1" angle="76.59040822020802"/>
-				<rotate y="1" angle="1.101527151496374e-06"/>
-				<rotate z="1" angle="-117.1568961161514"/>
-				<translate value="0.346201 -0.177594 -0.092764"/>
+				<rotate x="1" angle="75.99440591323271"/>
+				<rotate y="1" angle="-1.7220263987462073e-06"/>
+				<rotate z="1" angle="-111.42568438359369"/>
+				<translate value="0.361287 -0.141774 -0.096807"/>
 			</transform>
 			<film type="hdrfilm" name="film">
 				<integer name="width" value="$resx"/>
@@ -24,10 +24,10 @@
 		</sensor>
 		<sensor type="orthographic" name="sensor1">
 			<transform name="to_world">
-				<rotate x="1" angle="76.63875229915337"/>
-				<rotate y="1" angle="-8.71222016567478e-07"/>
-				<rotate z="1" angle="-117.57162520255457"/>
-				<translate value="0.344976 -0.180131 -0.092436"/>
+				<rotate x="1" angle="76.0246773116342"/>
+				<rotate y="1" angle="2.7752636719582322e-06"/>
+				<rotate z="1" angle="-111.7518942183535"/>
+				<translate value="0.360522 -0.143848 -0.096602"/>
 			</transform>
 			<film type="hdrfilm" name="film">
 				<integer name="width" value="$resx"/>
@@ -37,10 +37,10 @@
 		</sensor>
 		<sensor type="orthographic" name="sensor2">
 			<transform name="to_world">
-				<rotate x="1" angle="76.68798430269082"/>
-				<rotate y="1" angle="-1.587014549628451e-06"/>
-				<rotate z="1" angle="-117.98795255322352"/>
-				<translate value="0.343728 -0.182671 -0.092102"/>
+				<rotate x="1" angle="76.05548146479096"/>
+				<rotate y="1" angle="-1.439508871055407e-06"/>
+				<rotate z="1" angle="-112.07886903430035"/>
+				<translate value="0.359743 -0.145922 -0.096393"/>
 			</transform>
 			<film type="hdrfilm" name="film">
 				<integer name="width" value="$resx"/>
@@ -50,10 +50,10 @@
 		</sensor>
 		<sensor type="orthographic" name="sensor3">
 			<transform name="to_world">
-				<rotate x="1" angle="76.73809057044204"/>
-				<rotate y="1" angle="1.1708581546647884e-06"/>
-				<rotate z="1" angle="-118.40586450777992"/>
-				<translate value="0.342457 -0.185211 -0.091761"/>
+				<rotate x="1" angle="76.08679788213547"/>
+				<rotate y="1" angle="-3.230154642943379e-06"/>
+				<rotate z="1" angle="-112.40658151067757"/>
+				<translate value="0.358951 -0.147997 -0.096181"/>
 			</transform>
 			<film type="hdrfilm" name="film">
 				<integer name="width" value="$resx"/>
@@ -63,10 +63,10 @@
 		</sensor>
 		<sensor type="orthographic" name="sensor4">
 			<transform name="to_world">
-				<rotate x="1" angle="76.7891189137312"/>
-				<rotate y="1" angle="-3.2054719101712256e-06"/>
-				<rotate z="1" angle="-118.82544302849381"/>
-				<translate value="0.341163 -0.187753 -0.091414"/>
+				<rotate x="1" angle="76.11862656366773"/>
+				<rotate y="1" angle="-8.866226185572487e-07"/>
+				<rotate z="1" angle="-112.73507262862016"/>
+				<translate value="0.358146 -0.150073 -0.095965"/>
 			</transform>
 			<film type="hdrfilm" name="film">
 				<integer name="width" value="$resx"/>
@@ -76,10 +76,10 @@
 		</sensor>
 		<sensor type="orthographic" name="sensor5">
 			<transform name="to_world">
-				<rotate x="1" angle="76.84104884199081"/>
-				<rotate y="1" angle="-5.07168297951428e-07"/>
-				<rotate z="1" angle="-119.2467290965002"/>
-				<translate value="0.339845 -0.190297 -0.091061"/>
+				<rotate x="1" angle="76.15098799995525"/>
+				<rotate y="1" angle="-4.5837848736002783e-07"/>
+				<rotate z="1" angle="-113.0643492183173"/>
+				<translate value="0.357328 -0.152150 -0.095746"/>
 			</transform>
 			<film type="hdrfilm" name="film">
 				<integer name="width" value="$resx"/>
@@ -89,10 +89,10 @@
 		</sensor>
 		<sensor type="orthographic" name="sensor6">
 			<transform name="to_world">
-				<rotate x="1" angle="76.89392816654505"/>
-				<rotate y="1" angle="1.5551049859535132e-06"/>
-				<rotate z="1" angle="-119.66975003255577"/>
-				<translate value="0.338504 -0.192842 -0.090702"/>
+				<rotate x="1" angle="76.18387536080887"/>
+				<rotate y="1" angle="-1.0021957316838986e-06"/>
+				<rotate z="1" angle="-113.39443860052567"/>
+				<translate value="0.356495 -0.154228 -0.095523"/>
 			</transform>
 			<film type="hdrfilm" name="film">
 				<integer name="width" value="$resx"/>
@@ -102,10 +102,10 @@
 		</sensor>
 		<sensor type="orthographic" name="sensor7">
 			<transform name="to_world">
-				<rotate x="1" angle="76.94772273644807"/>
-				<rotate y="1" angle="2.03980727052358e-07"/>
-				<rotate z="1" angle="-120.09456047817388"/>
-				<translate value="0.337138 -0.195390 -0.090336"/>
+				<rotate x="1" angle="76.21729547641773"/>
+				<rotate y="1" angle="-2.1245940392221607e-06"/>
+				<rotate z="1" angle="-113.72534077524529"/>
+				<translate value="0.355650 -0.156307 -0.095296"/>
 			</transform>
 			<film type="hdrfilm" name="film">
 				<integer name="width" value="$resx"/>
@@ -115,10 +115,10 @@
 		</sensor>
 		<sensor type="orthographic" name="sensor8">
 			<transform name="to_world">
-				<rotate x="1" angle="77.00248719321323"/>
-				<rotate y="1" angle="2.6890184281049202e-06"/>
-				<rotate z="1" angle="-120.52120141448955"/>
-				<translate value="0.335748 -0.197938 -0.089964"/>
+				<rotate x="1" angle="76.25126883734939"/>
+				<rotate y="1" angle="2.796343675942724e-06"/>
+				<rotate z="1" angle="-114.05711721417866"/>
+				<translate value="0.354790 -0.158387 -0.095066"/>
 			</transform>
 			<film type="hdrfilm" name="film">
 				<integer name="width" value="$resx"/>
@@ -128,10 +128,10 @@
 		</sensor>
 		<sensor type="orthographic" name="sensor9">
 			<transform name="to_world">
-				<rotate x="1" angle="77.05821470665137"/>
-				<rotate y="1" angle="-4.207057382467282e-06"/>
-				<rotate z="1" angle="-120.94972748301616"/>
-				<translate value="0.334334 -0.200489 -0.089584"/>
+				<rotate x="1" angle="76.28576812284712"/>
+				<rotate y="1" angle="7.212809999970562e-07"/>
+				<rotate z="1" angle="-114.3897201060016"/>
+				<translate value="0.353917 -0.160467 -0.094832"/>
 			</transform>
 			<film type="hdrfilm" name="film">
 				<integer name="width" value="$resx"/>
@@ -141,10 +141,10 @@
 		</sensor>
 		<sensor type="orthographic" name="sensor10">
 			<transform name="to_world">
-				<rotate x="1" angle="77.11491893714081"/>
-				<rotate y="1" angle="1.1283266579090104e-06"/>
-				<rotate z="1" angle="-121.3801796648887"/>
-				<translate value="0.332893 -0.203041 -0.089199"/>
+				<rotate x="1" angle="76.32082748385679"/>
+				<rotate y="1" angle="-2.665965157107174e-06"/>
+				<rotate z="1" angle="-114.72323141298415"/>
+				<translate value="0.353030 -0.162549 -0.094594"/>
 			</transform>
 			<film type="hdrfilm" name="film">
 				<integer name="width" value="$resx"/>
@@ -154,10 +154,10 @@
 		</sensor>
 		<sensor type="orthographic" name="sensor11">
 			<transform name="to_world">
-				<rotate x="1" angle="77.17261354505992"/>
-				<rotate y="1" angle="-1.2853139516540588e-06"/>
-				<rotate z="1" angle="-121.8125989412422"/>
-				<translate value="0.331428 -0.205595 -0.088806"/>
+				<rotate x="1" angle="76.35643326000006"/>
+				<rotate y="1" angle="-7.056910913926448e-07"/>
+				<rotate z="1" angle="-115.05761015399129"/>
+				<translate value="0.352128 -0.164631 -0.094352"/>
 			</transform>
 			<film type="hdrfilm" name="film">
 				<integer name="width" value="$resx"/>
@@ -167,10 +167,10 @@
 		</sensor>
 		<sensor type="orthographic" name="sensor12">
 			<transform name="to_world">
-				<rotate x="1" angle="77.23132585116534"/>
-				<rotate y="1" angle="2.025279514516153e-06"/>
-				<rotate z="1" angle="-122.24706727434672"/>
-				<translate value="0.329936 -0.208151 -0.088406"/>
+				<rotate x="1" angle="76.39259911165529"/>
+				<rotate y="1" angle="1.0400505408360526e-06"/>
+				<rotate z="1" angle="-115.39291780072556"/>
+				<translate value="0.351212 -0.166715 -0.094107"/>
 			</transform>
 			<film type="hdrfilm" name="film">
 				<integer name="width" value="$resx"/>
@@ -179,6 +179,266 @@
 			</film>
 		</sensor>
 		<sensor type="orthographic" name="sensor13">
+			<transform name="to_world">
+				<rotate x="1" angle="76.42931820863328"/>
+				<rotate y="1" angle="5.109925765448697e-06"/>
+				<rotate z="1" angle="-115.72915435318696"/>
+				<translate value="0.350282 -0.168799 -0.093858"/>
+			</transform>
+			<film type="hdrfilm" name="film">
+				<integer name="width" value="$resx"/>
+				<integer name="height" value="$resy"/>
+				<boolean name="sample_border" value="false"/>
+			</film>
+		</sensor>
+		<sensor type="orthographic" name="sensor14">
+			<transform name="to_world">
+				<rotate x="1" angle="76.46662470187988"/>
+				<rotate y="1" angle="1.236246287805686e-06"/>
+				<rotate z="1" angle="-116.06636079251048"/>
+				<translate value="0.349338 -0.170884 -0.093605"/>
+			</transform>
+			<film type="hdrfilm" name="film">
+				<integer name="width" value="$resx"/>
+				<integer name="height" value="$resy"/>
+				<boolean name="sample_border" value="false"/>
+			</film>
+		</sensor>
+		<sensor type="orthographic" name="sensor15">
+			<transform name="to_world">
+				<rotate x="1" angle="76.5044981008276"/>
+				<rotate y="1" angle="-3.4287266968155027e-06"/>
+				<rotate z="1" angle="-116.40452345831781"/>
+				<translate value="0.348378 -0.172971 -0.093348"/>
+			</transform>
+			<film type="hdrfilm" name="film">
+				<integer name="width" value="$resx"/>
+				<integer name="height" value="$resy"/>
+				<boolean name="sample_border" value="false"/>
+			</film>
+		</sensor>
+		<sensor type="orthographic" name="sensor16">
+			<transform name="to_world">
+				<rotate x="1" angle="76.54293840547643"/>
+				<rotate y="1" angle="2.7132873325463593e-06"/>
+				<rotate z="1" angle="-116.74368333174397"/>
+				<translate value="0.347404 -0.175058 -0.093087"/>
+			</transform>
+			<film type="hdrfilm" name="film">
+				<integer name="width" value="$resx"/>
+				<integer name="height" value="$resy"/>
+				<boolean name="sample_border" value="false"/>
+			</film>
+		</sensor>
+		<sensor type="orthographic" name="sensor17">
+			<transform name="to_world">
+				<rotate x="1" angle="76.58196610639389"/>
+				<rotate y="1" angle="-7.095985427632287e-07"/>
+				<rotate z="1" angle="-117.08386773354562"/>
+				<translate value="0.346415 -0.177146 -0.092822"/>
+			</transform>
+			<film type="hdrfilm" name="film">
+				<integer name="width" value="$resx"/>
+				<integer name="height" value="$resy"/>
+				<boolean name="sample_border" value="false"/>
+			</film>
+		</sensor>
+		<sensor type="orthographic" name="sensor18">
+			<transform name="to_world">
+				<rotate x="1" angle="76.62158803376913"/>
+				<rotate y="1" angle="-2.4079304706879064e-06"/>
+				<rotate z="1" angle="-117.42506300334443"/>
+				<translate value="0.345411 -0.179236 -0.092553"/>
+			</transform>
+			<film type="hdrfilm" name="film">
+				<integer name="width" value="$resx"/>
+				<integer name="height" value="$resy"/>
+				<boolean name="sample_border" value="false"/>
+			</film>
+		</sensor>
+		<sensor type="orthographic" name="sensor19">
+			<transform name="to_world">
+				<rotate x="1" angle="76.66181101779134"/>
+				<rotate y="1" angle="1.2694781480061141e-06"/>
+				<rotate z="1" angle="-117.76733744303212"/>
+				<translate value="0.344391 -0.181326 -0.092279"/>
+			</transform>
+			<film type="hdrfilm" name="film">
+				<integer name="width" value="$resx"/>
+				<integer name="height" value="$resy"/>
+				<boolean name="sample_border" value="false"/>
+			</film>
+		</sensor>
+		<sensor type="orthographic" name="sensor20">
+			<transform name="to_world">
+				<rotate x="1" angle="76.70262139808216"/>
+				<rotate y="1" angle="3.7749917003203146e-06"/>
+				<rotate z="1" angle="-118.11069105260866"/>
+				<translate value="0.343356 -0.183418 -0.092002"/>
+			</transform>
+			<film type="hdrfilm" name="film">
+				<integer name="width" value="$resx"/>
+				<integer name="height" value="$resy"/>
+				<boolean name="sample_border" value="false"/>
+			</film>
+		</sensor>
+		<sensor type="orthographic" name="sensor21">
+			<transform name="to_world">
+				<rotate x="1" angle="76.7440464953983"/>
+				<rotate y="1" angle="-3.871597104881964e-06"/>
+				<rotate z="1" angle="-118.4551374924524"/>
+				<translate value="0.342306 -0.185510 -0.091721"/>
+			</transform>
+			<film type="hdrfilm" name="film">
+				<integer name="width" value="$resx"/>
+				<integer name="height" value="$resy"/>
+				<boolean name="sample_border" value="false"/>
+			</film>
+		</sensor>
+		<sensor type="orthographic" name="sensor22">
+			<transform name="to_world">
+				<rotate x="1" angle="76.7860931399289"/>
+				<rotate y="1" angle="-1.5108391963410268e-06"/>
+				<rotate z="1" angle="-118.80071774369837"/>
+				<translate value="0.341240 -0.187604 -0.091435"/>
+			</transform>
+			<film type="hdrfilm" name="film">
+				<integer name="width" value="$resx"/>
+				<integer name="height" value="$resy"/>
+				<boolean name="sample_border" value="false"/>
+			</film>
+		</sensor>
+		<sensor type="orthographic" name="sensor23">
+			<transform name="to_world">
+				<rotate x="1" angle="76.82874767129562"/>
+				<rotate y="1" angle="-1.1965317956090615e-07"/>
+				<rotate z="1" angle="-119.14744546672489"/>
+				<translate value="0.340157 -0.189698 -0.091145"/>
+			</transform>
+			<film type="hdrfilm" name="film">
+				<integer name="width" value="$resx"/>
+				<integer name="height" value="$resy"/>
+				<boolean name="sample_border" value="false"/>
+			</film>
+		</sensor>
+		<sensor type="orthographic" name="sensor24">
+			<transform name="to_world">
+				<rotate x="1" angle="76.87203741025516"/>
+				<rotate y="1" angle="-2.1890474455088324e-06"/>
+				<rotate z="1" angle="-119.49534798228866"/>
+				<translate value="0.339059 -0.191794 -0.090851"/>
+			</transform>
+			<film type="hdrfilm" name="film">
+				<integer name="width" value="$resx"/>
+				<integer name="height" value="$resy"/>
+				<boolean name="sample_border" value="false"/>
+			</film>
+		</sensor>
+		<sensor type="orthographic" name="sensor25">
+			<transform name="to_world">
+				<rotate x="1" angle="76.91596235680751"/>
+				<rotate y="1" angle="1.994208803055123e-07"/>
+				<rotate z="1" angle="-119.8444662715247"/>
+				<translate value="0.337945 -0.193891 -0.090552"/>
+			</transform>
+			<film type="hdrfilm" name="film">
+				<integer name="width" value="$resx"/>
+				<integer name="height" value="$resy"/>
+				<boolean name="sample_border" value="false"/>
+			</film>
+		</sensor>
+		<sensor type="orthographic" name="sensor26">
+			<transform name="to_world">
+				<rotate x="1" angle="76.96052251095267"/>
+				<rotate y="1" angle="-1.6896924218545752e-06"/>
+				<rotate z="1" angle="-120.19478667405464"/>
+				<translate value="0.336814 -0.195989 -0.090249"/>
+			</transform>
+			<film type="hdrfilm" name="film">
+				<integer name="width" value="$resx"/>
+				<integer name="height" value="$resy"/>
+				<boolean name="sample_border" value="false"/>
+			</film>
+		</sensor>
+		<sensor type="orthographic" name="sensor27">
+			<transform name="to_world">
+				<rotate x="1" angle="77.00574519344732"/>
+				<rotate y="1" angle="-3.658681716285063e-06"/>
+				<rotate z="1" angle="-120.54635017101354"/>
+				<translate value="0.335666 -0.198088 -0.089941"/>
+			</transform>
+			<film type="hdrfilm" name="film">
+				<integer name="width" value="$resx"/>
+				<integer name="height" value="$resy"/>
+				<boolean name="sample_border" value="false"/>
+			</film>
+		</sensor>
+		<sensor type="orthographic" name="sensor28">
+			<transform name="to_world">
+				<rotate x="1" angle="77.0516030835348"/>
+				<rotate y="1" angle="8.676781153192041e-07"/>
+				<rotate z="1" angle="-120.89921140391475"/>
+				<translate value="0.334501 -0.200189 -0.089629"/>
+			</transform>
+			<film type="hdrfilm" name="film">
+				<integer name="width" value="$resx"/>
+				<integer name="height" value="$resy"/>
+				<boolean name="sample_border" value="false"/>
+			</film>
+		</sensor>
+		<sensor type="orthographic" name="sensor29">
+			<transform name="to_world">
+				<rotate x="1" angle="77.09813716235008"/>
+				<rotate y="1" angle="1.4689346505240588e-06"/>
+				<rotate z="1" angle="-121.25337037275824"/>
+				<translate value="0.333320 -0.202290 -0.089313"/>
+			</transform>
+			<film type="hdrfilm" name="film">
+				<integer name="width" value="$resx"/>
+				<integer name="height" value="$resy"/>
+				<boolean name="sample_border" value="false"/>
+			</film>
+		</sensor>
+		<sensor type="orthographic" name="sensor30">
+			<transform name="to_world">
+				<rotate x="1" angle="77.14534059970406"/>
+				<rotate y="1" angle="1.6985802656342066e-06"/>
+				<rotate z="1" angle="-121.60886805867906"/>
+				<translate value="0.332121 -0.204393 -0.088991"/>
+			</transform>
+			<film type="hdrfilm" name="film">
+				<integer name="width" value="$resx"/>
+				<integer name="height" value="$resy"/>
+				<boolean name="sample_border" value="false"/>
+			</film>
+		</sensor>
+		<sensor type="orthographic" name="sensor31">
+			<transform name="to_world">
+				<rotate x="1" angle="77.19323388616418"/>
+				<rotate y="1" angle="-6.701128876592699e-06"/>
+				<rotate z="1" angle="-121.96573178243389"/>
+				<translate value="0.330904 -0.206497 -0.088666"/>
+			</transform>
+			<film type="hdrfilm" name="film">
+				<integer name="width" value="$resx"/>
+				<integer name="height" value="$resy"/>
+				<boolean name="sample_border" value="false"/>
+			</film>
+		</sensor>
+		<sensor type="orthographic" name="sensor32">
+			<transform name="to_world">
+				<rotate x="1" angle="77.24180336135214"/>
+				<rotate y="1" angle="7.555263630300607e-07"/>
+				<rotate z="1" angle="-122.32397520440107"/>
+				<translate value="0.329670 -0.208602 -0.088335"/>
+			</transform>
+			<film type="hdrfilm" name="film">
+				<integer name="width" value="$resx"/>
+				<integer name="height" value="$resy"/>
+				<boolean name="sample_border" value="false"/>
+			</film>
+		</sensor>
+		<sensor type="orthographic" name="sensor33">
 			<transform name="to_world">
 				<rotate x="1" angle="77.29106951583545"/>
 				<rotate y="1" angle="5.343267134209831e-06"/>
@@ -191,12 +451,12 @@
 				<boolean name="sample_border" value="false"/>
 			</film>
 		</sensor>
-		<sensor type="orthographic" name="sensor14">
+		<sensor type="orthographic" name="sensor34">
 			<transform name="to_world">
-				<rotate x="1" angle="77.35185819944856"/>
-				<rotate y="1" angle="-1.2882453544039951e-06"/>
-				<rotate z="1" angle="-123.1223423561055"/>
-				<translate value="0.326873 -0.213267 -0.087585"/>
+				<rotate x="1" angle="77.34104600999243"/>
+				<rotate y="1" angle="3.633604900065657e-06"/>
+				<rotate z="1" angle="-123.0447650675125"/>
+				<translate value="0.327147 -0.212816 -0.087659"/>
 			</transform>
 			<film type="hdrfilm" name="film">
 				<integer name="width" value="$resx"/>
@@ -204,12 +464,12 @@
 				<boolean name="sample_border" value="false"/>
 			</film>
 		</sensor>
-		<sensor type="orthographic" name="sensor15">
+		<sensor type="orthographic" name="sensor35">
 			<transform name="to_world">
-				<rotate x="1" angle="77.41367824162634"/>
-				<rotate y="1" angle="1.8061715605100054e-06"/>
-				<rotate z="1" angle="-123.56324472740818"/>
-				<translate value="0.325301 -0.215829 -0.087164"/>
+				<rotate x="1" angle="77.39173967401226"/>
+				<rotate y="1" angle="-2.246938222487959e-06"/>
+				<rotate z="1" angle="-123.40737981054849"/>
+				<translate value="0.325859 -0.214924 -0.087314"/>
 			</transform>
 			<film type="hdrfilm" name="film">
 				<integer name="width" value="$resx"/>
@@ -217,12 +477,12 @@
 				<boolean name="sample_border" value="false"/>
 			</film>
 		</sensor>
-		<sensor type="orthographic" name="sensor16">
+		<sensor type="orthographic" name="sensor36">
 			<transform name="to_world">
-				<rotate x="1" angle="77.4765979442605"/>
-				<rotate y="1" angle="-3.439124311735769e-06"/>
-				<rotate z="1" angle="-124.00641472151528"/>
-				<translate value="0.323701 -0.218392 -0.086735"/>
+				<rotate x="1" angle="77.44315733808412"/>
+				<rotate y="1" angle="-2.637421383618348e-06"/>
+				<rotate z="1" angle="-123.7715108555802"/>
+				<translate value="0.324551 -0.217034 -0.086963"/>
 			</transform>
 			<film type="hdrfilm" name="film">
 				<integer name="width" value="$resx"/>
@@ -230,12 +490,12 @@
 				<boolean name="sample_border" value="false"/>
 			</film>
 		</sensor>
-		<sensor type="orthographic" name="sensor17">
+		<sensor type="orthographic" name="sensor37">
 			<transform name="to_world">
-				<rotate x="1" angle="77.54060364697268"/>
-				<rotate y="1" angle="1.2722267579173975e-06"/>
-				<rotate z="1" angle="-124.45190697994019"/>
-				<translate value="0.322073 -0.220956 -0.086299"/>
+				<rotate x="1" angle="77.49530583239716"/>
+				<rotate y="1" angle="-4.551649566876269e-07"/>
+				<rotate z="1" angle="-124.13719918374268"/>
+				<translate value="0.323225 -0.219146 -0.086608"/>
 			</transform>
 			<film type="hdrfilm" name="film">
 				<integer name="width" value="$resx"/>
@@ -243,12 +503,12 @@
 				<boolean name="sample_border" value="false"/>
 			</film>
 		</sensor>
-		<sensor type="orthographic" name="sensor18">
+		<sensor type="orthographic" name="sensor38">
 			<transform name="to_world">
-				<rotate x="1" angle="77.60570901014125"/>
-				<rotate y="1" angle="1.2573405406751506e-06"/>
-				<rotate z="1" angle="-124.89978980457461"/>
-				<translate value="0.320416 -0.223523 -0.085855"/>
+				<rotate x="1" angle="77.54820564751891"/>
+				<rotate y="1" angle="2.6445881656487457e-06"/>
+				<rotate z="1" angle="-124.50447211579261"/>
+				<translate value="0.321879 -0.221258 -0.086247"/>
 			</transform>
 			<film type="hdrfilm" name="film">
 				<integer name="width" value="$resx"/>
@@ -256,12 +516,142 @@
 				<boolean name="sample_border" value="false"/>
 			</film>
 		</sensor>
-		<sensor type="orthographic" name="sensor19">
+		<sensor type="orthographic" name="sensor39">
 			<transform name="to_world">
-				<rotate x="1" angle="77.67196184509038"/>
-				<rotate y="1" angle="2.6559461554161893e-06"/>
-				<rotate z="1" angle="-125.35013149731023"/>
-				<translate value="0.318730 -0.226092 -0.085403"/>
+				<rotate x="1" angle="77.60186361363853"/>
+				<rotate y="1" angle="-3.2543850753953915e-06"/>
+				<rotate z="1" angle="-124.87338429324335"/>
+				<translate value="0.320514 -0.223372 -0.085881"/>
+			</transform>
+			<film type="hdrfilm" name="film">
+				<integer name="width" value="$resx"/>
+				<integer name="height" value="$resy"/>
+				<boolean name="sample_border" value="false"/>
+			</film>
+		</sensor>
+		<sensor type="orthographic" name="sensor40">
+			<transform name="to_world">
+				<rotate x="1" angle="77.65627973075603"/>
+				<rotate y="1" angle="8.508365439476683e-07"/>
+				<rotate z="1" angle="-125.24393571609487"/>
+				<translate value="0.319129 -0.225488 -0.085510"/>
+			</transform>
+			<film type="hdrfilm" name="film">
+				<integer name="width" value="$resx"/>
+				<integer name="height" value="$resy"/>
+				<boolean name="sample_border" value="false"/>
+			</film>
+		</sensor>
+		<sensor type="orthographic" name="sensor41">
+			<transform name="to_world">
+				<rotate x="1" angle="77.71146082906056"/>
+				<rotate y="1" angle="-7.389899213524459e-07"/>
+				<rotate z="1" angle="-125.61619468623891"/>
+				<translate value="0.317724 -0.227604 -0.085134"/>
+			</transform>
+			<film type="hdrfilm" name="film">
+				<integer name="width" value="$resx"/>
+				<integer name="height" value="$resy"/>
+				<boolean name="sample_border" value="false"/>
+			</film>
+		</sensor>
+		<sensor type="orthographic" name="sensor42">
+			<transform name="to_world">
+				<rotate x="1" angle="77.76744105949798"/>
+				<rotate y="1" angle="-1.7253093418439766e-06"/>
+				<rotate z="1" angle="-125.99020218481047"/>
+				<translate value="0.316299 -0.229722 -0.084752"/>
+			</transform>
+			<film type="hdrfilm" name="film">
+				<integer name="width" value="$resx"/>
+				<integer name="height" value="$resy"/>
+				<boolean name="sample_border" value="false"/>
+			</film>
+		</sensor>
+		<sensor type="orthographic" name="sensor43">
+			<transform name="to_world">
+				<rotate x="1" angle="77.82423408244664"/>
+				<rotate y="1" angle="-2.319685904717389e-07"/>
+				<rotate z="1" angle="-126.36599919294457"/>
+				<translate value="0.314853 -0.231841 -0.084365"/>
+			</transform>
+			<film type="hdrfilm" name="film">
+				<integer name="width" value="$resx"/>
+				<integer name="height" value="$resy"/>
+				<boolean name="sample_border" value="false"/>
+			</film>
+		</sensor>
+		<sensor type="orthographic" name="sensor44">
+			<transform name="to_world">
+				<rotate x="1" angle="77.88182623752819"/>
+				<rotate y="1" angle="-1.3203529775800571e-06"/>
+				<rotate z="1" angle="-126.7436130313979"/>
+				<translate value="0.313386 -0.233962 -0.083971"/>
+			</transform>
+			<film type="hdrfilm" name="film">
+				<integer name="width" value="$resx"/>
+				<integer name="height" value="$resy"/>
+				<boolean name="sample_border" value="false"/>
+			</film>
+		</sensor>
+		<sensor type="orthographic" name="sensor45">
+			<transform name="to_world">
+				<rotate x="1" angle="77.94024484549931"/>
+				<rotate y="1" angle="1.7049118594496897e-06"/>
+				<rotate z="1" angle="-127.1230983416838"/>
+				<translate value="0.311897 -0.236084 -0.083573"/>
+			</transform>
+			<film type="hdrfilm" name="film">
+				<integer name="width" value="$resx"/>
+				<integer name="height" value="$resy"/>
+				<boolean name="sample_border" value="false"/>
+			</film>
+		</sensor>
+		<sensor type="orthographic" name="sensor46">
+			<transform name="to_world">
+				<rotate x="1" angle="77.99949673654916"/>
+				<rotate y="1" angle="-1.7057619072160762e-06"/>
+				<rotate z="1" angle="-127.50448244455897"/>
+				<translate value="0.310387 -0.238207 -0.083168"/>
+			</transform>
+			<film type="hdrfilm" name="film">
+				<integer name="width" value="$resx"/>
+				<integer name="height" value="$resy"/>
+				<boolean name="sample_border" value="false"/>
+			</film>
+		</sensor>
+		<sensor type="orthographic" name="sensor47">
+			<transform name="to_world">
+				<rotate x="1" angle="78.05961606162361"/>
+				<rotate y="1" angle="6.702683633498748e-07"/>
+				<rotate z="1" angle="-127.88783364191511"/>
+				<translate value="0.308855 -0.240332 -0.082758"/>
+			</transform>
+			<film type="hdrfilm" name="film">
+				<integer name="width" value="$resx"/>
+				<integer name="height" value="$resy"/>
+				<boolean name="sample_border" value="false"/>
+			</film>
+		</sensor>
+		<sensor type="orthographic" name="sensor48">
+			<transform name="to_world">
+				<rotate x="1" angle="78.12058233015514"/>
+				<rotate y="1" angle="-1.5321610242590593e-06"/>
+				<rotate z="1" angle="-128.27317925450888"/>
+				<translate value="0.307301 -0.242458 -0.082341"/>
+			</transform>
+			<film type="hdrfilm" name="film">
+				<integer name="width" value="$resx"/>
+				<integer name="height" value="$resy"/>
+				<boolean name="sample_border" value="false"/>
+			</film>
+		</sensor>
+		<sensor type="orthographic" name="sensor49">
+			<transform name="to_world">
+				<rotate x="1" angle="78.18242969308962"/>
+				<rotate y="1" angle="-1.79598442197634e-07"/>
+				<rotate z="1" angle="-128.66060124461035"/>
+				<translate value="0.305724 -0.244586 -0.081918"/>
 			</transform>
 			<film type="hdrfilm" name="film">
 				<integer name="width" value="$resx"/>

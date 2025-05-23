@@ -49,7 +49,7 @@ def render_scene(scene, samples):
     bmp = mi.Bitmap(result).convert()
 
     L, sp = stokes_to_bitmaps(bmp)
-    return L, sp, sp[0].convert(mi.Bitmap.PixelFormat.Y), result
+    return L, sp, result
 
 def save_spectrograph_output(folder_path, L, sp):
 
@@ -80,8 +80,12 @@ def main(args):
     
     print("Creating scene... ", end="")
     start = time.perf_counter_ns()
+    
     domain_wls, measured_wls, srfs = gen_srfs(measure_points, domain_points, min_wl, max_wl)
     light_dir, sensors, grating_patch = generate_scene_elements(args.outdir, domain_wls, measured_wls, srfs, use_srfs)
+    
+    # scene and prior scene
+    prior_scene = build_scene(light_dir, sensors, grating_patch)
     scene = build_scene(light_dir, sensors, grating_patch, spectrum)
     scene_build_time = time.perf_counter_ns() - start
     mi.xml.dict_to_xml(scene, os.path.join(args.outdir, "scene.xml"))
@@ -90,12 +94,15 @@ def main(args):
     print("Simulating spectrograph capture... ", end="")
     start = time.perf_counter_ns()
 
-    pprint(scene)
-    L, sp, intensity, raw = render_scene(mi.load_dict(scene), args.spp)
+    L_prior, sp_prior, raw_prior = render_scene(mi.load_dict(prior_scene), args.spp)
+    L, sp, raw = render_scene(mi.load_dict(scene), args.spp)
     render_time = time.perf_counter_ns() - start
     print(f"done. ({render_time / 1e6} ms)")
 
-    plot_spectra(np.ravel(measured_wls), np.ravel(intensity))
+    prior_intensity = np.ravel(np.mean(np.array(sp_prior[0]), axis=-1))
+    intensity = np.ravel(np.mean(np.array(sp[0]), axis=-1))
+
+    plot_spectra(np.ravel(measured_wls),intensity / prior_intensity)
 
     save_spectrograph_output(args.outdir, L, sp)
 

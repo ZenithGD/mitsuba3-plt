@@ -1,8 +1,8 @@
 {
     "wavelengths" : {
-        "min" : 500.0,
-        "max" : 650.0,
-        "measure_points" : 20,
+        "min" : 400.0,
+        "max" : 700.0,
+        "measure_points" : 50,
         "domain_points" : 150
     },
     "spectrum" : {
