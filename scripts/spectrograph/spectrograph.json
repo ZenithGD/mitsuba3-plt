@@ -2,13 +2,13 @@
     "wavelengths" : {
         "min" : 400.0,
         "max" : 700.0,
-        "measure_points" : 50,
+        "measure_points" : 150,
         "domain_points" : 150
     },
     "spectrum" : {
         "type" : "irregular",
         "wavelengths" : "400, 500, 550, 600, 650, 700",
-        "values" : "100, 100, 100, 100, 100, 100"
+        "values" : "100, 100, 0, 0, 100, 100"
     },
     "use_srfs" : false
 }
