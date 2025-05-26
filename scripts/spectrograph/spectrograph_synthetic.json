@@ -6,9 +6,11 @@
         "domain_points" : 150
     },
     "spectrum" : {
-        "type" : "spectrum",
-        "filename": "scripts/spectrograph/data/materials/01267_Light_Door_sce.spd"
+        "type" : "irregular",
+        "wavelengths" : "400, 500, 550, 600, 650, 700",
+        "values" : "50, 300, 0, 65, 100, 100"
+
     },
-    "use_srfs" : true,
+    "use_srfs" : false,
     "use_prior" : true
 }

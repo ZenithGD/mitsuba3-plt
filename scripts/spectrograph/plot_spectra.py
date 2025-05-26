@@ -3,12 +3,12 @@ import mitsuba as mi
 import drjit as dr
 import numpy as np
 
-def plot_spectra(wavelengths, intensities):
+def plot_spectra(ax, wavelengths, intensities, **kwargs):
 
-    fig, ax = plt.subplots()
+    if ax is None:
+        fig, ax = plt.subplots()
 
     #colours = np.array(mi.xyz_to_srgb(mi.cie1931_xyz(wavelengths)))
 
-    ax.plot(wavelengths, intensities)
-    ax.set_ylim(0, np.max(intensities) * 1.1)
-    plt.show()
+    ax.plot(wavelengths, intensities, **kwargs)
+

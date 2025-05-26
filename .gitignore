@@ -31,3 +31,7 @@ __pycache__
 
 # ignore bsdf data
 *.bsdf
+
+# ignore generated spd data
+**/spectra/*.spd
+**/materials/*.spd

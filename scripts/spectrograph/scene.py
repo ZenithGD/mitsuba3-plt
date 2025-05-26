@@ -61,10 +61,10 @@ def generate_scene_elements(folder_path, domain_wls, measured_wls, srfs, use_srf
         'distribution': 'ggx',
         'lobe_type' : 'sinusoidal',
         'height' : 0.05,
-        'inv_period_x' : 0.9,
-        'inv_period_y' : 0.9,
+        'inv_period_x' : 0.7,
+        'inv_period_y' : 0.7,
         'radial' : False,
-        'lobes' : 3,
+        'lobes' : 5,
         'multiplier' : 10,
         'grating_angle' : 0.0,
         'alpha' : 0.02
@@ -97,7 +97,7 @@ def generate_scene_elements(folder_path, domain_wls, measured_wls, srfs, use_srf
         mi.spectrum_to_file(os.path.join(folder_path, "spectra", f"srf_{i}.spd"), domain_wls, srfs[i])
 
         # diffract first lobe (wi)
-        local_diff_dir, mask = grating.diffract(-light_dir_local, mi.ScalarVector2i(1, 0), float(wl * 1e-3))
+        local_diff_dir, mask = grating.diffract(-light_dir_local, mi.ScalarVector2i(2, 0), float(wl * 1e-3))
         
         # back to global frame
         diff_dir = grating_frame.to_world(local_diff_dir)
@@ -130,7 +130,7 @@ def generate_scene_elements(folder_path, domain_wls, measured_wls, srfs, use_srf
 
         sensors.append(sensor)
     # generate a patch with normals in the positive X dir at origin 0,0,0
-    patch_transform = mi.scalar_rgb.Transform4f().to_frame(grating_frame).scale([0.1, 0.1, 0.1])
+    patch_transform = mi.scalar_rgb.Transform4f().to_frame(grating_frame).scale([0.1, 1, 0.1])
 
     grating_patch = {
         'type': 'rectangle',

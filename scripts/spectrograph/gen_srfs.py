@@ -9,7 +9,7 @@ mi.set_variant("cuda_ad_rgb_polarized")
 
 def gen_srf(domain_wls : np.array, measured_wl : float, delta_wl : float):
 
-    std_dev = delta_wl * 2
+    std_dev = delta_wl / 4
     srf = np.exp(-np.square(domain_wls - measured_wl) / (2 * std_dev ** 2))
     srf /= np.trapezoid(srf, domain_wls) 
     return srf

@@ -42,16 +42,15 @@
 			<rgb value="0.800000 0.800000 0.800000" name="specular_reflectance"/>
 		</bsdf> -->
 		<bsdf type="roughgrating" name="bsdf">
-			<string name="distribution" value="ggx"/>
-			<string name="lobe_type" value="sinusoidal"/>
-			<float name="height" value="$resy"/>
-			<float name="inv_period_x" value="0.900000"/>
-			<float name="inv_period_y" value="0.900000"/>
-			<boolean name="radial" value="false"/>
-			<integer name="lobes" value="3"/>
-			<integer name="multiplier" value="10"/>
-			<float name="grating_angle" value="0.000000"/>
-			<float name="alpha" value="0.010000"/>
+			<!-- <string name="material" value="Au" /> -->
+			<string name="lobe_type" value="sinusoidal" />
+			<float name="height" value="0.04" />
+			<float name="inv_period" value="0.9" />
+			<boolean name="radial" value="false" />
+			<integer name="lobes" value="7" />
+			<float name="grating_angle" value="0" />
+			<float name="multiplier" value="10" />
+			<float name="alpha" value="0.01"/>
 		</bsdf>
 	</bsdf>
 	<bsdf type="twosided" id="mat-screen" name="mat-screen">
@@ -73,7 +72,7 @@
 <!-- Emitters -->
 
 	<emitter type="directional" id="elm__4" name="elm__4">
-		<rgb value="100.000000 0.000000 100.000000" name="irradiance"/>
+		<rgb value="100.000000 100.000000 100.000000" name="irradiance"/>
 		<transform name="to_world">
 			<matrix value="0.382683 0.000000 -0.923880 5.000000 -0.923880 0.000000 -0.382683 5.000000 0.000000 1.000000 0.000000 0.000000 0.000000 0.000000 0.000000 1.000000"/>
 		</transform>
