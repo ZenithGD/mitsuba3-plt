@@ -156,4 +156,4 @@ if __name__ == '__main__':
     from scripts.rendering.integrators.path import MISPathIntegrator
     from scripts.rendering.integrators.plt import PLTIntegrator
 
-    main(args
+    main(args)
