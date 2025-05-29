@@ -1,0 +1,2156 @@
+<scene version="2.1.0">
+
+<!-- Defaults, these can be set via the command line: -Darg=value -->
+
+	<default name="resx" value="1"/>
+	<default name="resy" value="1"/>
+	<default name="spp" value="512"/>
+
+<!-- Camera and Rendering Parameters -->
+
+	<sensor type="batch" id="sensor" name="sensor">
+		<sensor type="orthographic" name="sensor0">
+			<transform name="to_world">
+				<rotate x="1" angle="77.51127481467665"/>
+				<rotate y="1" angle="1.3179605897930977e-06"/>
+				<rotate z="1" angle="-124.24838100305216"/>
+				<translate value="0.322819 -0.219786 -0.086499"/>
+			</transform>
+			<film type="hdrfilm" name="film">
+				<integer name="width" value="$resx"/>
+				<integer name="height" value="$resy"/>
+				<boolean name="sample_border" value="false"/>
+			</film>
+			<spectrum filename="spectra/srf_0.spd" name="srf"/>
+		</sensor>
+		<sensor type="orthographic" name="sensor1">
+			<transform name="to_world">
+				<rotate x="1" angle="77.53909417516611"/>
+				<rotate y="1" angle="-3.0561212045496834e-06"/>
+				<rotate z="1" angle="-124.44138848861837"/>
+				<translate value="0.322111 -0.220896 -0.086309"/>
+			</transform>
+			<film type="hdrfilm" name="film">
+				<integer name="width" value="$resx"/>
+				<integer name="height" value="$resy"/>
+				<boolean name="sample_border" value="false"/>
+			</film>
+			<spectrum filename="spectra/srf_1.spd" name="srf"/>
+		</sensor>
+		<sensor type="orthographic" name="sensor2">
+			<transform name="to_world">
+				<rotate x="1" angle="77.56711161114151"/>
+				<rotate y="1" angle="2.9877204500145036e-07"/>
+				<rotate z="1" angle="-124.63486042704815"/>
+				<translate value="0.321398 -0.222006 -0.086118"/>
+			</transform>
+			<film type="hdrfilm" name="film">
+				<integer name="width" value="$resx"/>
+				<integer name="height" value="$resy"/>
+				<boolean name="sample_border" value="false"/>
+			</film>
+			<spectrum filename="spectra/srf_2.spd" name="srf"/>
+		</sensor>
+		<sensor type="orthographic" name="sensor3">
+			<transform name="to_world">
+				<rotate x="1" angle="77.59535444335951"/>
+				<rotate y="1" angle="5.349878209726284e-07"/>
+				<rotate z="1" angle="-124.82878315796316"/>
+				<translate value="0.320680 -0.223117 -0.085926"/>
+			</transform>
+			<film type="hdrfilm" name="film">
+				<integer name="width" value="$resx"/>
+				<integer name="height" value="$resy"/>
+				<boolean name="sample_border" value="false"/>
+			</film>
+			<spectrum filename="spectra/srf_3.spd" name="srf"/>
+		</sensor>
+		<sensor type="orthographic" name="sensor4">
+			<transform name="to_world">
+				<rotate x="1" angle="77.62378852087427"/>
+				<rotate y="1" angle="-1.6640816795596825e-06"/>
+				<rotate z="1" angle="-125.02314302098505"/>
+				<translate value="0.319956 -0.224228 -0.085732"/>
+			</transform>
+			<film type="hdrfilm" name="film">
+				<integer name="width" value="$resx"/>
+				<integer name="height" value="$resy"/>
+				<boolean name="sample_border" value="false"/>
+			</film>
+			<spectrum filename="spectra/srf_4.spd" name="srf"/>
+		</sensor>
+		<sensor type="orthographic" name="sensor5">
+			<transform name="to_world">
+				<rotate x="1" angle="77.65244116444248"/>
+				<rotate y="1" angle="-1.0960415343372854e-06"/>
+				<rotate z="1" angle="-125.21798099724883"/>
+				<translate value="0.319227 -0.225340 -0.085537"/>
+			</transform>
+			<film type="hdrfilm" name="film">
+				<integer name="width" value="$resx"/>
+				<integer name="height" value="$resy"/>
+				<boolean name="sample_border" value="false"/>
+			</film>
+			<spectrum filename="spectra/srf_5.spd" name="srf"/>
+		</sensor>
+		<sensor type="orthographic" name="sensor6">
+			<transform name="to_world">
+				<rotate x="1" angle="77.68133286463163"/>
+				<rotate y="1" angle="-2.3194817385512766e-06"/>
+				<rotate z="1" angle="-125.41329708675451"/>
+				<translate value="0.318492 -0.226451 -0.085340"/>
+			</transform>
+			<film type="hdrfilm" name="film">
+				<integer name="width" value="$resx"/>
+				<integer name="height" value="$resy"/>
+				<boolean name="sample_border" value="false"/>
+			</film>
+			<spectrum filename="spectra/srf_6.spd" name="srf"/>
+		</sensor>
+		<sensor type="orthographic" name="sensor7">
+			<transform name="to_world">
+				<rotate x="1" angle="77.71040214973921"/>
+				<rotate y="1" angle="-2.5004649688127823e-06"/>
+				<rotate z="1" angle="-125.60906396874542"/>
+				<translate value="0.317751 -0.227564 -0.085141"/>
+			</transform>
+			<film type="hdrfilm" name="film">
+				<integer name="width" value="$resx"/>
+				<integer name="height" value="$resy"/>
+				<boolean name="sample_border" value="false"/>
+			</film>
+			<spectrum filename="spectra/srf_7.spd" name="srf"/>
+		</sensor>
+		<sensor type="orthographic" name="sensor8">
+			<transform name="to_world">
+				<rotate x="1" angle="77.7397173216569"/>
+				<rotate y="1" angle="-1.4134745297658185e-06"/>
+				<rotate z="1" angle="-125.8053362847349"/>
+				<translate value="0.317005 -0.228676 -0.084941"/>
+			</transform>
+			<film type="hdrfilm" name="film">
+				<integer name="width" value="$resx"/>
+				<integer name="height" value="$resy"/>
+				<boolean name="sample_border" value="false"/>
+			</film>
+			<spectrum filename="spectra/srf_8.spd" name="srf"/>
+		</sensor>
+		<sensor type="orthographic" name="sensor9">
+			<transform name="to_world">
+				<rotate x="1" angle="77.76923739924969"/>
+				<rotate y="1" angle="1.0926635308211965e-06"/>
+				<rotate z="1" angle="-126.00207305358795"/>
+				<translate value="0.316253 -0.229789 -0.084740"/>
+			</transform>
+			<film type="hdrfilm" name="film">
+				<integer name="width" value="$resx"/>
+				<integer name="height" value="$resy"/>
+				<boolean name="sample_border" value="false"/>
+			</film>
+			<spectrum filename="spectra/srf_9.spd" name="srf"/>
+		</sensor>
+		<sensor type="orthographic" name="sensor10">
+			<transform name="to_world">
+				<rotate x="1" angle="77.79897604289593"/>
+				<rotate y="1" angle="8.020864266786928e-07"/>
+				<rotate z="1" angle="-126.19931525643958"/>
+				<translate value="0.315496 -0.230902 -0.084537"/>
+			</transform>
+			<film type="hdrfilm" name="film">
+				<integer name="width" value="$resx"/>
+				<integer name="height" value="$resy"/>
+				<boolean name="sample_border" value="false"/>
+			</film>
+			<spectrum filename="spectra/srf_10.spd" name="srf"/>
+		</sensor>
+		<sensor type="orthographic" name="sensor11">
+			<transform name="to_world">
+				<rotate x="1" angle="77.82896057335229"/>
+				<rotate y="1" angle="1.1009421329904844e-06"/>
+				<rotate z="1" angle="-126.39704923291144"/>
+				<translate value="0.314733 -0.232016 -0.084332"/>
+			</transform>
+			<film type="hdrfilm" name="film">
+				<integer name="width" value="$resx"/>
+				<integer name="height" value="$resy"/>
+				<boolean name="sample_border" value="false"/>
+			</film>
+			<spectrum filename="spectra/srf_11.spd" name="srf"/>
+		</sensor>
+		<sensor type="orthographic" name="sensor12">
+			<transform name="to_world">
+				<rotate x="1" angle="77.8591363491054"/>
+				<rotate y="1" angle="-2.039495423498172e-06"/>
+				<rotate z="1" angle="-126.59528864338189"/>
+				<translate value="0.313964 -0.233130 -0.084126"/>
+			</transform>
+			<film type="hdrfilm" name="film">
+				<integer name="width" value="$resx"/>
+				<integer name="height" value="$resy"/>
+				<boolean name="sample_border" value="false"/>
+			</film>
+			<spectrum filename="spectra/srf_12.spd" name="srf"/>
+		</sensor>
+		<sensor type="orthographic" name="sensor13">
+			<transform name="to_world">
+				<rotate x="1" angle="77.88955801166864"/>
+				<rotate y="1" angle="-4.3045576170052333e-07"/>
+				<rotate z="1" angle="-126.79403348785092"/>
+				<translate value="0.313189 -0.234244 -0.083919"/>
+			</transform>
+			<film type="hdrfilm" name="film">
+				<integer name="width" value="$resx"/>
+				<integer name="height" value="$resy"/>
+				<boolean name="sample_border" value="false"/>
+			</film>
+			<spectrum filename="spectra/srf_13.spd" name="srf"/>
+		</sensor>
+		<sensor type="orthographic" name="sensor14">
+			<transform name="to_world">
+				<rotate x="1" angle="77.92021190066366"/>
+				<rotate y="1" angle="-9.68190157029439e-07"/>
+				<rotate z="1" angle="-126.99332474745356"/>
+				<translate value="0.312408 -0.235359 -0.083709"/>
+			</transform>
+			<film type="hdrfilm" name="film">
+				<integer name="width" value="$resx"/>
+				<integer name="height" value="$resy"/>
+				<boolean name="sample_border" value="false"/>
+			</film>
+			<spectrum filename="spectra/srf_14.spd" name="srf"/>
+		</sensor>
+		<sensor type="orthographic" name="sensor15">
+			<transform name="to_world">
+				<rotate x="1" angle="77.95108435571211"/>
+				<rotate y="1" angle="7.696681778102205e-07"/>
+				<rotate z="1" angle="-127.19312144105477"/>
+				<translate value="0.311621 -0.236474 -0.083499"/>
+			</transform>
+			<film type="hdrfilm" name="film">
+				<integer name="width" value="$resx"/>
+				<integer name="height" value="$resy"/>
+				<boolean name="sample_border" value="false"/>
+			</film>
+			<spectrum filename="spectra/srf_15.spd" name="srf"/>
+		</sensor>
+		<sensor type="orthographic" name="sensor16">
+			<transform name="to_world">
+				<rotate x="1" angle="77.98218220700318"/>
+				<rotate y="1" angle="2.5996795477684794e-06"/>
+				<rotate z="1" angle="-127.39342356865457"/>
+				<translate value="0.310829 -0.237590 -0.083286"/>
+			</transform>
+			<film type="hdrfilm" name="film">
+				<integer name="width" value="$resx"/>
+				<integer name="height" value="$resy"/>
+				<boolean name="sample_border" value="false"/>
+			</film>
+			<spectrum filename="spectra/srf_16.spd" name="srf"/>
+		</sensor>
+		<sensor type="orthographic" name="sensor17">
+			<transform name="to_world">
+				<rotate x="1" angle="78.01353277529354"/>
+				<rotate y="1" angle="-3.3133339338615106e-07"/>
+				<rotate z="1" angle="-127.5942857717663"/>
+				<translate value="0.310030 -0.238706 -0.083072"/>
+			</transform>
+			<film type="hdrfilm" name="film">
+				<integer name="width" value="$resx"/>
+				<integer name="height" value="$resy"/>
+				<boolean name="sample_border" value="false"/>
+			</film>
+			<spectrum filename="spectra/srf_17.spd" name="srf"/>
+		</sensor>
+		<sensor type="orthographic" name="sensor18">
+			<transform name="to_world">
+				<rotate x="1" angle="78.0451087398265"/>
+				<rotate y="1" angle="2.6874502365358966e-06"/>
+				<rotate z="1" angle="-127.79569439001163"/>
+				<translate value="0.309225 -0.239822 -0.082857"/>
+			</transform>
+			<film type="hdrfilm" name="film">
+				<integer name="width" value="$resx"/>
+				<integer name="height" value="$resy"/>
+				<boolean name="sample_border" value="false"/>
+			</film>
+			<spectrum filename="spectra/srf_18.spd" name="srf"/>
+		</sensor>
+		<sensor type="orthographic" name="sensor19">
+			<transform name="to_world">
+				<rotate x="1" angle="78.0769305911696"/>
+				<rotate y="1" angle="1.539167201000262e-06"/>
+				<rotate z="1" angle="-127.99764942339057"/>
+				<translate value="0.308414 -0.240939 -0.082639"/>
+			</transform>
+			<film type="hdrfilm" name="film">
+				<integer name="width" value="$resx"/>
+				<integer name="height" value="$resy"/>
+				<boolean name="sample_border" value="false"/>
+			</film>
+			<spectrum filename="spectra/srf_19.spd" name="srf"/>
+		</sensor>
+		<sensor type="orthographic" name="sensor20">
+			<transform name="to_world">
+				<rotate x="1" angle="78.10899149913364"/>
+				<rotate y="1" angle="-2.039102968494917e-07"/>
+				<rotate z="1" angle="-128.20016453228146"/>
+				<translate value="0.307597 -0.242056 -0.082420"/>
+			</transform>
+			<film type="hdrfilm" name="film">
+				<integer name="width" value="$resx"/>
+				<integer name="height" value="$resy"/>
+				<boolean name="sample_border" value="false"/>
+			</film>
+			<spectrum filename="spectra/srf_20.spd" name="srf"/>
+		</sensor>
+		<sensor type="orthographic" name="sensor21">
+			<transform name="to_world">
+				<rotate x="1" angle="78.14128463352945"/>
+				<rotate y="1" angle="-1.1292617918742355e-06"/>
+				<rotate z="1" angle="-128.40323971668428"/>
+				<translate value="0.306773 -0.243174 -0.082200"/>
+			</transform>
+			<film type="hdrfilm" name="film">
+				<integer name="width" value="$resx"/>
+				<integer name="height" value="$resy"/>
+				<boolean name="sample_border" value="false"/>
+			</film>
+			<spectrum filename="spectra/srf_21.spd" name="srf"/>
+		</sensor>
+		<sensor type="orthographic" name="sensor22">
+			<transform name="to_world">
+				<rotate x="1" angle="78.1738236547354"/>
+				<rotate y="1" angle="1.571831141356768e-06"/>
+				<rotate z="1" angle="-128.60688863697737"/>
+				<translate value="0.305943 -0.244292 -0.081977"/>
+			</transform>
+			<film type="hdrfilm" name="film">
+				<integer name="width" value="$resx"/>
+				<integer name="height" value="$resy"/>
+				<boolean name="sample_border" value="false"/>
+			</film>
+			<spectrum filename="spectra/srf_22.spd" name="srf"/>
+		</sensor>
+		<sensor type="orthographic" name="sensor23">
+			<transform name="to_world">
+				<rotate x="1" angle="78.20661539294063"/>
+				<rotate y="1" angle="2.5021713745660435e-07"/>
+				<rotate z="1" angle="-128.81111129316076"/>
+				<translate value="0.305107 -0.245410 -0.081753"/>
+			</transform>
+			<film type="hdrfilm" name="film">
+				<integer name="width" value="$resx"/>
+				<integer name="height" value="$resy"/>
+				<boolean name="sample_border" value="false"/>
+			</film>
+			<spectrum filename="spectra/srf_23.spd" name="srf"/>
+		</sensor>
+		<sensor type="orthographic" name="sensor24">
+			<transform name="to_world">
+				<rotate x="1" angle="78.23964618776681"/>
+				<rotate y="1" angle="2.8680750055625827e-06"/>
+				<rotate z="1" angle="-129.01592134561275"/>
+				<translate value="0.304265 -0.246529 -0.081527"/>
+			</transform>
+			<film type="hdrfilm" name="film">
+				<integer name="width" value="$resx"/>
+				<integer name="height" value="$resy"/>
+				<boolean name="sample_border" value="false"/>
+			</film>
+			<spectrum filename="spectra/srf_24.spd" name="srf"/>
+		</sensor>
+		<sensor type="orthographic" name="sensor25">
+			<transform name="to_world">
+				<rotate x="1" angle="78.27293652978146"/>
+				<rotate y="1" angle="-3.510220955307832e-07"/>
+				<rotate z="1" angle="-129.22133245471173"/>
+				<translate value="0.303415 -0.247648 -0.081300"/>
+			</transform>
+			<film type="hdrfilm" name="film">
+				<integer name="width" value="$resx"/>
+				<integer name="height" value="$resy"/>
+				<boolean name="sample_border" value="false"/>
+			</film>
+			<spectrum filename="spectra/srf_25.spd" name="srf"/>
+		</sensor>
+		<sensor type="orthographic" name="sensor26">
+			<transform name="to_world">
+				<rotate x="1" angle="78.30647958879538"/>
+				<rotate y="1" angle="-8.29371820068907e-07"/>
+				<rotate z="1" angle="-129.42734462045763"/>
+				<translate value="0.302560 -0.248767 -0.081071"/>
+			</transform>
+			<film type="hdrfilm" name="film">
+				<integer name="width" value="$resx"/>
+				<integer name="height" value="$resy"/>
+				<boolean name="sample_border" value="false"/>
+			</film>
+			<spectrum filename="spectra/srf_26.spd" name="srf"/>
+		</sensor>
+		<sensor type="orthographic" name="sensor27">
+			<transform name="to_world">
+				<rotate x="1" angle="78.3402753648086"/>
+				<rotate y="1" angle="-1.1367740075874778e-06"/>
+				<rotate z="1" angle="-129.6339851636072"/>
+				<translate value="0.301697 -0.249887 -0.080840"/>
+			</transform>
+			<film type="hdrfilm" name="film">
+				<integer name="width" value="$resx"/>
+				<integer name="height" value="$resy"/>
+				<boolean name="sample_border" value="false"/>
+			</film>
+			<spectrum filename="spectra/srf_27.spd" name="srf"/>
+		</sensor>
+		<sensor type="orthographic" name="sensor28">
+			<transform name="to_world">
+				<rotate x="1" angle="78.37432385782112"/>
+				<rotate y="1" angle="-1.6210618531603315e-06"/>
+				<rotate z="1" angle="-129.84121310302538"/>
+				<translate value="0.300828 -0.251008 -0.080607"/>
+			</transform>
+			<film type="hdrfilm" name="film">
+				<integer name="width" value="$resx"/>
+				<integer name="height" value="$resy"/>
+				<boolean name="sample_border" value="false"/>
+			</film>
+			<spectrum filename="spectra/srf_28.spd" name="srf"/>
+		</sensor>
+		<sensor type="orthographic" name="sensor29">
+			<transform name="to_world">
+				<rotate x="1" angle="78.40864555840044"/>
+				<rotate y="1" angle="-8.391663000438176e-07"/>
+				<rotate z="1" angle="-130.04909674060391"/>
+				<translate value="0.299953 -0.252128 -0.080372"/>
+			</transform>
+			<film type="hdrfilm" name="film">
+				<integer name="width" value="$resx"/>
+				<integer name="height" value="$resy"/>
+				<boolean name="sample_border" value="false"/>
+			</film>
+			<spectrum filename="spectra/srf_29.spd" name="srf"/>
+		</sensor>
+		<sensor type="orthographic" name="sensor30">
+			<transform name="to_world">
+				<rotate x="1" angle="78.44321314578987"/>
+				<rotate y="1" angle="3.075556683652796e-07"/>
+				<rotate z="1" angle="-130.2575950952077"/>
+				<translate value="0.299070 -0.253250 -0.080136"/>
+			</transform>
+			<film type="hdrfilm" name="film">
+				<integer name="width" value="$resx"/>
+				<integer name="height" value="$resy"/>
+				<boolean name="sample_border" value="false"/>
+			</film>
+			<spectrum filename="spectra/srf_30.spd" name="srf"/>
+		</sensor>
+		<sensor type="orthographic" name="sensor31">
+			<transform name="to_world">
+				<rotate x="1" angle="78.47806077093527"/>
+				<rotate y="1" angle="3.480244151101726e-06"/>
+				<rotate z="1" angle="-130.4667354875935"/>
+				<translate value="0.298181 -0.254371 -0.079897"/>
+			</transform>
+			<film type="hdrfilm" name="film">
+				<integer name="width" value="$resx"/>
+				<integer name="height" value="$resy"/>
+				<boolean name="sample_border" value="false"/>
+			</film>
+			<spectrum filename="spectra/srf_31.spd" name="srf"/>
+		</sensor>
+		<sensor type="orthographic" name="sensor32">
+			<transform name="to_world">
+				<rotate x="1" angle="78.51316794326914"/>
+				<rotate y="1" angle="1.7069030393469104e-06"/>
+				<rotate z="1" angle="-130.6765588988963"/>
+				<translate value="0.297284 -0.255493 -0.079657"/>
+			</transform>
+			<film type="hdrfilm" name="film">
+				<integer name="width" value="$resx"/>
+				<integer name="height" value="$resy"/>
+				<boolean name="sample_border" value="false"/>
+			</film>
+			<spectrum filename="spectra/srf_32.spd" name="srf"/>
+		</sensor>
+		<sensor type="orthographic" name="sensor33">
+			<transform name="to_world">
+				<rotate x="1" angle="78.54854832316981"/>
+				<rotate y="1" angle="2.819001438604721e-07"/>
+				<rotate z="1" angle="-130.88702434798105"/>
+				<translate value="0.296381 -0.256616 -0.079415"/>
+			</transform>
+			<film type="hdrfilm" name="film">
+				<integer name="width" value="$resx"/>
+				<integer name="height" value="$resy"/>
+				<boolean name="sample_border" value="false"/>
+			</film>
+			<spectrum filename="spectra/srf_33.spd" name="srf"/>
+		</sensor>
+		<sensor type="orthographic" name="sensor34">
+			<transform name="to_world">
+				<rotate x="1" angle="78.58420191063728"/>
+				<rotate y="1" angle="-1.7732024904595784e-07"/>
+				<rotate z="1" angle="-131.0981591556045"/>
+				<translate value="0.295470 -0.257739 -0.079171"/>
+			</transform>
+			<film type="hdrfilm" name="film">
+				<integer name="width" value="$resx"/>
+				<integer name="height" value="$resy"/>
+				<boolean name="sample_border" value="false"/>
+			</film>
+			<spectrum filename="spectra/srf_34.spd" name="srf"/>
+		</sensor>
+		<sensor type="orthographic" name="sensor35">
+			<transform name="to_world">
+				<rotate x="1" angle="78.62013553586071"/>
+				<rotate y="1" angle="-3.0889958248482896e-06"/>
+				<rotate z="1" angle="-131.30997698214495"/>
+				<translate value="0.294553 -0.258862 -0.078925"/>
+			</transform>
+			<film type="hdrfilm" name="film">
+				<integer name="width" value="$resx"/>
+				<integer name="height" value="$resy"/>
+				<boolean name="sample_border" value="false"/>
+			</film>
+			<spectrum filename="spectra/srf_35.spd" name="srf"/>
+		</sensor>
+		<sensor type="orthographic" name="sensor36">
+			<transform name="to_world">
+				<rotate x="1" angle="78.65633553846178"/>
+				<rotate y="1" angle="-1.398033827342624e-06"/>
+				<rotate z="1" angle="-131.52249148798072"/>
+				<translate value="0.293628 -0.259986 -0.078677"/>
+			</transform>
+			<film type="hdrfilm" name="film">
+				<integer name="width" value="$resx"/>
+				<integer name="height" value="$resy"/>
+				<boolean name="sample_border" value="false"/>
+			</film>
+			<spectrum filename="spectra/srf_36.spd" name="srf"/>
+		</sensor>
+		<sensor type="orthographic" name="sensor37">
+			<transform name="to_world">
+				<rotate x="1" angle="78.69281557881882"/>
+				<rotate y="1" angle="1.616874920088778e-06"/>
+				<rotate z="1" angle="-131.7356890127335"/>
+				<translate value="0.292696 -0.261110 -0.078428"/>
+			</transform>
+			<film type="hdrfilm" name="film">
+				<integer name="width" value="$resx"/>
+				<integer name="height" value="$resy"/>
+				<boolean name="sample_border" value="false"/>
+			</film>
+			<spectrum filename="spectra/srf_37.spd" name="srf"/>
+		</sensor>
+		<sensor type="orthographic" name="sensor38">
+			<transform name="to_world">
+				<rotate x="1" angle="78.72959614749934"/>
+				<rotate y="1" angle="-2.6968447299540663e-06"/>
+				<rotate z="1" angle="-131.9496105375383"/>
+				<translate value="0.291756 -0.262234 -0.078176"/>
+			</transform>
+			<film type="hdrfilm" name="film">
+				<integer name="width" value="$resx"/>
+				<integer name="height" value="$resy"/>
+				<boolean name="sample_border" value="false"/>
+			</film>
+			<spectrum filename="spectra/srf_38.spd" name="srf"/>
+		</sensor>
+		<sensor type="orthographic" name="sensor39">
+			<transform name="to_world">
+				<rotate x="1" angle="78.76665675393582"/>
+				<rotate y="1" angle="-1.773871373831309e-06"/>
+				<rotate z="1" angle="-132.1642560623951"/>
+				<translate value="0.290809 -0.263359 -0.077922"/>
+			</transform>
+			<film type="hdrfilm" name="film">
+				<integer name="width" value="$resx"/>
+				<integer name="height" value="$resy"/>
+				<boolean name="sample_border" value="false"/>
+			</film>
+			<spectrum filename="spectra/srf_39.spd" name="srf"/>
+		</sensor>
+		<sensor type="orthographic" name="sensor40">
+			<transform name="to_world">
+				<rotate x="1" angle="78.80400422831745"/>
+				<rotate y="1" angle="-2.0042974207269757e-06"/>
+				<rotate z="1" angle="-132.37962558730396"/>
+				<translate value="0.289855 -0.264485 -0.077666"/>
+			</transform>
+			<film type="hdrfilm" name="film">
+				<integer name="width" value="$resx"/>
+				<integer name="height" value="$resy"/>
+				<boolean name="sample_border" value="false"/>
+			</film>
+			<spectrum filename="spectra/srf_40.spd" name="srf"/>
+		</sensor>
+		<sensor type="orthographic" name="sensor41">
+			<transform name="to_world">
+				<rotate x="1" angle="78.84165223102256"/>
+				<rotate y="1" angle="1.425743430394033e-06"/>
+				<rotate z="1" angle="-132.5957464330215"/>
+				<translate value="0.288893 -0.265611 -0.077409"/>
+			</transform>
+			<film type="hdrfilm" name="film">
+				<integer name="width" value="$resx"/>
+				<integer name="height" value="$resy"/>
+				<boolean name="sample_border" value="false"/>
+			</film>
+			<spectrum filename="spectra/srf_41.spd" name="srf"/>
+		</sensor>
+		<sensor type="orthographic" name="sensor42">
+			<transform name="to_world">
+				<rotate x="1" angle="78.87957344129448"/>
+				<rotate y="1" angle="9.267427968646032e-07"/>
+				<rotate z="1" angle="-132.81259127879107"/>
+				<translate value="0.287923 -0.266737 -0.077149"/>
+			</transform>
+			<film type="hdrfilm" name="film">
+				<integer name="width" value="$resx"/>
+				<integer name="height" value="$resy"/>
+				<boolean name="sample_border" value="false"/>
+			</film>
+			<spectrum filename="spectra/srf_42.spd" name="srf"/>
+		</sensor>
+		<sensor type="orthographic" name="sensor43">
+			<transform name="to_world">
+				<rotate x="1" angle="78.91782933083572"/>
+				<rotate y="1" angle="-3.858455968937905e-06"/>
+				<rotate z="1" angle="-133.03022842650435"/>
+				<translate value="0.286945 -0.267864 -0.076887"/>
+			</transform>
+			<film type="hdrfilm" name="film">
+				<integer name="width" value="$resx"/>
+				<integer name="height" value="$resy"/>
+				<boolean name="sample_border" value="false"/>
+			</film>
+			<spectrum filename="spectra/srf_43.spd" name="srf"/>
+		</sensor>
+		<sensor type="orthographic" name="sensor44">
+			<transform name="to_world">
+				<rotate x="1" angle="78.9563720883221"/>
+				<rotate y="1" angle="-2.045914546178489e-06"/>
+				<rotate z="1" angle="-133.24863055540467"/>
+				<translate value="0.285960 -0.268991 -0.076623"/>
+			</transform>
+			<film type="hdrfilm" name="film">
+				<integer name="width" value="$resx"/>
+				<integer name="height" value="$resy"/>
+				<boolean name="sample_border" value="false"/>
+			</film>
+			<spectrum filename="spectra/srf_44.spd" name="srf"/>
+		</sensor>
+		<sensor type="orthographic" name="sensor45">
+			<transform name="to_world">
+				<rotate x="1" angle="78.99521537413196"/>
+				<rotate y="1" angle="-6.01215824104932e-07"/>
+				<rotate z="1" angle="-133.46782498624873"/>
+				<translate value="0.284966 -0.270119 -0.076356"/>
+			</transform>
+			<film type="hdrfilm" name="film">
+				<integer name="width" value="$resx"/>
+				<integer name="height" value="$resy"/>
+				<boolean name="sample_border" value="false"/>
+			</film>
+			<spectrum filename="spectra/srf_45.spd" name="srf"/>
+		</sensor>
+		<sensor type="orthographic" name="sensor46">
+			<transform name="to_world">
+				<rotate x="1" angle="79.03436601845448"/>
+				<rotate y="1" angle="1.3817290318235693e-06"/>
+				<rotate z="1" angle="-133.68779805865816"/>
+				<translate value="0.283964 -0.271247 -0.076088"/>
+			</transform>
+			<film type="hdrfilm" name="film">
+				<integer name="width" value="$resx"/>
+				<integer name="height" value="$resy"/>
+				<boolean name="sample_border" value="false"/>
+			</film>
+			<spectrum filename="spectra/srf_46.spd" name="srf"/>
+		</sensor>
+		<sensor type="orthographic" name="sensor47">
+			<transform name="to_world">
+				<rotate x="1" angle="79.07384451185715"/>
+				<rotate y="1" angle="9.662846739975553e-07"/>
+				<rotate z="1" angle="-133.90860441414634"/>
+				<translate value="0.282955 -0.272375 -0.075818"/>
+			</transform>
+			<film type="hdrfilm" name="film">
+				<integer name="width" value="$resx"/>
+				<integer name="height" value="$resy"/>
+				<boolean name="sample_border" value="false"/>
+			</film>
+			<spectrum filename="spectra/srf_47.spd" name="srf"/>
+		</sensor>
+		<sensor type="orthographic" name="sensor48">
+			<transform name="to_world">
+				<rotate x="1" angle="79.11362353358331"/>
+				<rotate y="1" angle="9.354067295946596e-07"/>
+				<rotate z="1" angle="-134.13020307157822"/>
+				<translate value="0.281937 -0.273504 -0.075545"/>
+			</transform>
+			<film type="hdrfilm" name="film">
+				<integer name="width" value="$resx"/>
+				<integer name="height" value="$resy"/>
+				<boolean name="sample_border" value="false"/>
+			</film>
+			<spectrum filename="spectra/srf_48.spd" name="srf"/>
+		</sensor>
+		<sensor type="orthographic" name="sensor49">
+			<transform name="to_world">
+				<rotate x="1" angle="79.15373723457878"/>
+				<rotate y="1" angle="2.811423067354104e-07"/>
+				<rotate z="1" angle="-134.35266233284554"/>
+				<translate value="0.280911 -0.274634 -0.075270"/>
+			</transform>
+			<film type="hdrfilm" name="film">
+				<integer name="width" value="$resx"/>
+				<integer name="height" value="$resy"/>
+				<boolean name="sample_border" value="false"/>
+			</film>
+			<spectrum filename="spectra/srf_49.spd" name="srf"/>
+		</sensor>
+		<sensor type="orthographic" name="sensor50">
+			<transform name="to_world">
+				<rotate x="1" angle="79.19415829408692"/>
+				<rotate y="1" angle="9.275075548766518e-07"/>
+				<rotate z="1" angle="-134.5759548771916"/>
+				<translate value="0.279876 -0.275764 -0.074993"/>
+			</transform>
+			<film type="hdrfilm" name="film">
+				<integer name="width" value="$resx"/>
+				<integer name="height" value="$resy"/>
+				<boolean name="sample_border" value="false"/>
+			</film>
+			<spectrum filename="spectra/srf_50.spd" name="srf"/>
+		</sensor>
+		<sensor type="orthographic" name="sensor51">
+			<transform name="to_world">
+				<rotate x="1" angle="79.2349345234319"/>
+				<rotate y="1" angle="-1.7055304646130155e-06"/>
+				<rotate z="1" angle="-134.80013534612976"/>
+				<translate value="0.278833 -0.276894 -0.074713"/>
+			</transform>
+			<film type="hdrfilm" name="film">
+				<integer name="width" value="$resx"/>
+				<integer name="height" value="$resy"/>
+				<boolean name="sample_border" value="false"/>
+			</film>
+			<spectrum filename="spectra/srf_51.spd" name="srf"/>
+		</sensor>
+		<sensor type="orthographic" name="sensor52">
+			<transform name="to_world">
+				<rotate x="1" angle="79.27601811128953"/>
+				<rotate y="1" angle="2.241996302068339e-06"/>
+				<rotate z="1" angle="-135.025162758525"/>
+				<translate value="0.277781 -0.278025 -0.074431"/>
+			</transform>
+			<film type="hdrfilm" name="film">
+				<integer name="width" value="$resx"/>
+				<integer name="height" value="$resy"/>
+				<boolean name="sample_border" value="false"/>
+			</film>
+			<spectrum filename="spectra/srf_52.spd" name="srf"/>
+		</sensor>
+		<sensor type="orthographic" name="sensor53">
+			<transform name="to_world">
+				<rotate x="1" angle="79.31743637841649"/>
+				<rotate y="1" angle="1.8273246409188582e-06"/>
+				<rotate z="1" angle="-135.25107809551233"/>
+				<translate value="0.276720 -0.279156 -0.074147"/>
+			</transform>
+			<film type="hdrfilm" name="film">
+				<integer name="width" value="$resx"/>
+				<integer name="height" value="$resy"/>
+				<boolean name="sample_border" value="false"/>
+			</film>
+			<spectrum filename="spectra/srf_53.spd" name="srf"/>
+		</sensor>
+		<sensor type="orthographic" name="sensor54">
+			<transform name="to_world">
+				<rotate x="1" angle="79.35922347575863"/>
+				<rotate y="1" angle="-1.4121791025662771e-06"/>
+				<rotate z="1" angle="-135.47790867784846"/>
+				<translate value="0.275651 -0.280288 -0.073860"/>
+			</transform>
+			<film type="hdrfilm" name="film">
+				<integer name="width" value="$resx"/>
+				<integer name="height" value="$resy"/>
+				<boolean name="sample_border" value="false"/>
+			</film>
+			<spectrum filename="spectra/srf_54.spd" name="srf"/>
+		</sensor>
+		<sensor type="orthographic" name="sensor55">
+			<transform name="to_world">
+				<rotate x="1" angle="79.40132476180258"/>
+				<rotate y="1" angle="4.685434383442354e-07"/>
+				<rotate z="1" angle="-135.70565450553337"/>
+				<translate value="0.274572 -0.281420 -0.073571"/>
+			</transform>
+			<film type="hdrfilm" name="film">
+				<integer name="width" value="$resx"/>
+				<integer name="height" value="$resy"/>
+				<boolean name="sample_border" value="false"/>
+			</film>
+			<spectrum filename="spectra/srf_55.spd" name="srf"/>
+		</sensor>
+		<sensor type="orthographic" name="sensor56">
+			<transform name="to_world">
+				<rotate x="1" angle="79.44378804787254"/>
+				<rotate y="1" angle="-9.836881603257746e-07"/>
+				<rotate z="1" angle="-135.9343292389454"/>
+				<translate value="0.273485 -0.282553 -0.073280"/>
+			</transform>
+			<film type="hdrfilm" name="film">
+				<integer name="width" value="$resx"/>
+				<integer name="height" value="$resy"/>
+				<boolean name="sample_border" value="false"/>
+			</film>
+			<spectrum filename="spectra/srf_56.spd" name="srf"/>
+		</sensor>
+		<sensor type="orthographic" name="sensor57">
+			<transform name="to_world">
+				<rotate x="1" angle="79.48661333396853"/>
+				<rotate y="1" angle="-1.464355873115749e-06"/>
+				<rotate z="1" angle="-136.16394653846288"/>
+				<translate value="0.272388 -0.283686 -0.072986"/>
+			</transform>
+			<film type="hdrfilm" name="film">
+				<integer name="width" value="$resx"/>
+				<integer name="height" value="$resy"/>
+				<boolean name="sample_border" value="false"/>
+			</film>
+			<spectrum filename="spectra/srf_57.spd" name="srf"/>
+		</sensor>
+		<sensor type="orthographic" name="sensor58">
+			<transform name="to_world">
+				<rotate x="1" angle="79.52978695971218"/>
+				<rotate y="1" angle="1.789165312739282e-07"/>
+				<rotate z="1" angle="-136.39453372484252"/>
+				<translate value="0.271282 -0.284820 -0.072690"/>
+			</transform>
+			<film type="hdrfilm" name="film">
+				<integer name="width" value="$resx"/>
+				<integer name="height" value="$resy"/>
+				<boolean name="sample_border" value="false"/>
+			</film>
+			<spectrum filename="spectra/srf_58.spd" name="srf"/>
+		</sensor>
+		<sensor type="orthographic" name="sensor59">
+			<transform name="to_world">
+				<rotate x="1" angle="79.57330209491433"/>
+				<rotate y="1" angle="-1.0286206959772456e-06"/>
+				<rotate z="1" angle="-136.62607713770595"/>
+				<translate value="0.270167 -0.285954 -0.072391"/>
+			</transform>
+			<film type="hdrfilm" name="film">
+				<integer name="width" value="$resx"/>
+				<integer name="height" value="$resy"/>
+				<boolean name="sample_border" value="false"/>
+			</film>
+			<spectrum filename="spectra/srf_59.spd" name="srf"/>
+		</sensor>
+		<sensor type="orthographic" name="sensor60">
+			<transform name="to_world">
+				<rotate x="1" angle="79.61720655089917"/>
+				<rotate y="1" angle="-5.766877935124846e-07"/>
+				<rotate z="1" angle="-136.85864507894487"/>
+				<translate value="0.269042 -0.287088 -0.072089"/>
+			</transform>
+			<film type="hdrfilm" name="film">
+				<integer name="width" value="$resx"/>
+				<integer name="height" value="$resy"/>
+				<boolean name="sample_border" value="false"/>
+			</film>
+			<spectrum filename="spectra/srf_60.spd" name="srf"/>
+		</sensor>
+		<sensor type="orthographic" name="sensor61">
+			<transform name="to_world">
+				<rotate x="1" angle="79.6614798370992"/>
+				<rotate y="1" angle="3.436904335456982e-07"/>
+				<rotate z="1" angle="-137.09221022780264"/>
+				<translate value="0.267907 -0.288223 -0.071785"/>
+			</transform>
+			<film type="hdrfilm" name="film">
+				<integer name="width" value="$resx"/>
+				<integer name="height" value="$resy"/>
+				<boolean name="sample_border" value="false"/>
+			</film>
+			<spectrum filename="spectra/srf_61.spd" name="srf"/>
+		</sensor>
+		<sensor type="orthographic" name="sensor62">
+			<transform name="to_world">
+				<rotate x="1" angle="79.7061219535144"/>
+				<rotate y="1" angle="3.568148779387889e-07"/>
+				<rotate z="1" angle="-137.3267999050359"/>
+				<translate value="0.266762 -0.289359 -0.071479"/>
+			</transform>
+			<film type="hdrfilm" name="film">
+				<integer name="width" value="$resx"/>
+				<integer name="height" value="$resy"/>
+				<boolean name="sample_border" value="false"/>
+			</film>
+			<spectrum filename="spectra/srf_62.spd" name="srf"/>
+		</sensor>
+		<sensor type="orthographic" name="sensor63">
+			<transform name="to_world">
+				<rotate x="1" angle="79.75116705109063"/>
+				<rotate y="1" angle="-6.526792344060078e-07"/>
+				<rotate z="1" angle="-137.56245509177967"/>
+				<translate value="0.265608 -0.290495 -0.071169"/>
+			</transform>
+			<film type="hdrfilm" name="film">
+				<integer name="width" value="$resx"/>
+				<integer name="height" value="$resy"/>
+				<boolean name="sample_border" value="false"/>
+			</film>
+			<spectrum filename="spectra/srf_63.spd" name="srf"/>
+		</sensor>
+		<sensor type="orthographic" name="sensor64">
+			<transform name="to_world">
+				<rotate x="1" angle="79.79659463926039"/>
+				<rotate y="1" angle="-2.8980076382252727e-06"/>
+				<rotate z="1" angle="-137.79916212765562"/>
+				<translate value="0.264443 -0.291632 -0.070857"/>
+			</transform>
+			<film type="hdrfilm" name="film">
+				<integer name="width" value="$resx"/>
+				<integer name="height" value="$resy"/>
+				<boolean name="sample_border" value="false"/>
+			</film>
+			<spectrum filename="spectra/srf_64.spd" name="srf"/>
+		</sensor>
+		<sensor type="orthographic" name="sensor65">
+			<transform name="to_world">
+				<rotate x="1" angle="79.84240471802366"/>
+				<rotate y="1" angle="-1.0401287061479042e-06"/>
+				<rotate z="1" angle="-138.03694833342047"/>
+				<translate value="0.263268 -0.292769 -0.070543"/>
+			</transform>
+			<film type="hdrfilm" name="film">
+				<integer name="width" value="$resx"/>
+				<integer name="height" value="$resy"/>
+				<boolean name="sample_border" value="false"/>
+			</film>
+			<spectrum filename="spectra/srf_65.spd" name="srf"/>
+		</sensor>
+		<sensor type="orthographic" name="sensor66">
+			<transform name="to_world">
+				<rotate x="1" angle="79.88861777794797"/>
+				<rotate y="1" angle="-1.815948738267449e-06"/>
+				<rotate z="1" angle="-138.27584102983081"/>
+				<translate value="0.262083 -0.293906 -0.070225"/>
+			</transform>
+			<film type="hdrfilm" name="film">
+				<integer name="width" value="$resx"/>
+				<integer name="height" value="$resy"/>
+				<boolean name="sample_border" value="false"/>
+			</film>
+			<spectrum filename="spectra/srf_66.spd" name="srf"/>
+		</sensor>
+		<sensor type="orthographic" name="sensor67">
+			<transform name="to_world">
+				<rotate x="1" angle="79.93522015865497"/>
+				<rotate y="1" angle="-8.260461303162188e-07"/>
+				<rotate z="1" angle="-138.51585387726507"/>
+				<translate value="0.260888 -0.295044 -0.069905"/>
+			</transform>
+			<film type="hdrfilm" name="film">
+				<integer name="width" value="$resx"/>
+				<integer name="height" value="$resy"/>
+				<boolean name="sample_border" value="false"/>
+			</film>
+			<spectrum filename="spectra/srf_67.spd" name="srf"/>
+		</sensor>
+		<sensor type="orthographic" name="sensor68">
+			<transform name="to_world">
+				<rotate x="1" angle="79.98223918090133"/>
+				<rotate y="1" angle="7.592590620042263e-07"/>
+				<rotate z="1" angle="-138.75701419647987"/>
+				<translate value="0.259681 -0.296183 -0.069581"/>
+			</transform>
+			<film type="hdrfilm" name="film">
+				<integer name="width" value="$resx"/>
+				<integer name="height" value="$resy"/>
+				<boolean name="sample_border" value="false"/>
+			</film>
+			<spectrum filename="spectra/srf_68.spd" name="srf"/>
+		</sensor>
+		<sensor type="orthographic" name="sensor69">
+			<transform name="to_world">
+				<rotate x="1" angle="80.02968167487624"/>
+				<rotate y="1" angle="-1.5071960617866911e-06"/>
+				<rotate z="1" angle="-138.9993356478536"/>
+				<translate value="0.258464 -0.297322 -0.069255"/>
+			</transform>
+			<film type="hdrfilm" name="film">
+				<integer name="width" value="$resx"/>
+				<integer name="height" value="$resy"/>
+				<boolean name="sample_border" value="false"/>
+			</film>
+			<spectrum filename="spectra/srf_69.spd" name="srf"/>
+		</sensor>
+		<sensor type="orthographic" name="sensor70">
+			<transform name="to_world">
+				<rotate x="1" angle="80.0775476405797"/>
+				<rotate y="1" angle="9.973397116851149e-07"/>
+				<rotate z="1" angle="-139.24284555214288"/>
+				<translate value="0.257236 -0.298461 -0.068926"/>
+			</transform>
+			<film type="hdrfilm" name="film">
+				<integer name="width" value="$resx"/>
+				<integer name="height" value="$resy"/>
+				<boolean name="sample_border" value="false"/>
+			</film>
+			<spectrum filename="spectra/srf_70.spd" name="srf"/>
+		</sensor>
+		<sensor type="orthographic" name="sensor71">
+			<transform name="to_world">
+				<rotate x="1" angle="80.12584390820085"/>
+				<rotate y="1" angle="3.1561288357318753e-06"/>
+				<rotate z="1" angle="-139.4875575697261"/>
+				<translate value="0.255996 -0.299601 -0.068594"/>
+			</transform>
+			<film type="hdrfilm" name="film">
+				<integer name="width" value="$resx"/>
+				<integer name="height" value="$resy"/>
+				<boolean name="sample_border" value="false"/>
+			</film>
+			<spectrum filename="spectra/srf_71.spd" name="srf"/>
+		</sensor>
+		<sensor type="orthographic" name="sensor72">
+			<transform name="to_world">
+				<rotate x="1" angle="80.17456364755056"/>
+				<rotate y="1" angle="4.532916354246823e-08"/>
+				<rotate z="1" angle="-139.73349902135993"/>
+				<translate value="0.254745 -0.300742 -0.068259"/>
+			</transform>
+			<film type="hdrfilm" name="film">
+				<integer name="width" value="$resx"/>
+				<integer name="height" value="$resy"/>
+				<boolean name="sample_border" value="false"/>
+			</film>
+			<spectrum filename="spectra/srf_72.spd" name="srf"/>
+		</sensor>
+		<sensor type="orthographic" name="sensor73">
+			<transform name="to_world">
+				<rotate x="1" angle="80.22371368881797"/>
+				<rotate y="1" angle="3.6170082059601566e-07"/>
+				<rotate z="1" angle="-139.9806835674227"/>
+				<translate value="0.253483 -0.301883 -0.067921"/>
+			</transform>
+			<film type="hdrfilm" name="film">
+				<integer name="width" value="$resx"/>
+				<integer name="height" value="$resy"/>
+				<boolean name="sample_border" value="false"/>
+			</film>
+			<spectrum filename="spectra/srf_73.spd" name="srf"/>
+		</sensor>
+		<sensor type="orthographic" name="sensor74">
+			<transform name="to_world">
+				<rotate x="1" angle="80.27334867351645"/>
+				<rotate y="1" angle="9.199731516139516e-08"/>
+				<rotate z="1" angle="-140.22916584942774"/>
+				<translate value="0.252209 -0.303024 -0.067579"/>
+			</transform>
+			<film type="hdrfilm" name="film">
+				<integer name="width" value="$resx"/>
+				<integer name="height" value="$resy"/>
+				<boolean name="sample_border" value="false"/>
+			</film>
+			<spectrum filename="spectra/srf_74.spd" name="srf"/>
+		</sensor>
+		<sensor type="orthographic" name="sensor75">
+			<transform name="to_world">
+				<rotate x="1" angle="80.3234002997543"/>
+				<rotate y="1" angle="-6.286274219049065e-07"/>
+				<rotate z="1" angle="-140.47893220699677"/>
+				<translate value="0.250923 -0.304166 -0.067235"/>
+			</transform>
+			<film type="hdrfilm" name="film">
+				<integer name="width" value="$resx"/>
+				<integer name="height" value="$resy"/>
+				<boolean name="sample_border" value="false"/>
+			</film>
+			<spectrum filename="spectra/srf_75.spd" name="srf"/>
+		</sensor>
+		<sensor type="orthographic" name="sensor76">
+			<transform name="to_world">
+				<rotate x="1" angle="80.3739436996124"/>
+				<rotate y="1" angle="-1.189747290806938e-06"/>
+				<rotate z="1" angle="-140.73003728164312"/>
+				<translate value="0.249625 -0.305309 -0.066887"/>
+			</transform>
+			<film type="hdrfilm" name="film">
+				<integer name="width" value="$resx"/>
+				<integer name="height" value="$resy"/>
+				<boolean name="sample_border" value="false"/>
+			</film>
+			<spectrum filename="spectra/srf_76.spd" name="srf"/>
+		</sensor>
+		<sensor type="orthographic" name="sensor77">
+			<transform name="to_world">
+				<rotate x="1" angle="80.42495155233405"/>
+				<rotate y="1" angle="-8.244073049888292e-07"/>
+				<rotate z="1" angle="-140.98249473374514"/>
+				<translate value="0.248315 -0.306452 -0.066536"/>
+			</transform>
+			<film type="hdrfilm" name="film">
+				<integer name="width" value="$resx"/>
+				<integer name="height" value="$resy"/>
+				<boolean name="sample_border" value="false"/>
+			</film>
+			<spectrum filename="spectra/srf_77.spd" name="srf"/>
+		</sensor>
+		<sensor type="orthographic" name="sensor78">
+			<transform name="to_world">
+				<rotate x="1" angle="80.47642385791927"/>
+				<rotate y="1" angle="1.6065355220414014e-06"/>
+				<rotate z="1" angle="-141.2363318840595"/>
+				<translate value="0.246992 -0.307595 -0.066181"/>
+			</transform>
+			<film type="hdrfilm" name="film">
+				<integer name="width" value="$resx"/>
+				<integer name="height" value="$resy"/>
+				<boolean name="sample_border" value="false"/>
+			</film>
+			<spectrum filename="spectra/srf_78.spd" name="srf"/>
+		</sensor>
+		<sensor type="orthographic" name="sensor79">
+			<transform name="to_world">
+				<rotate x="1" angle="80.5283947673139"/>
+				<rotate y="1" angle="8.07827302434297e-07"/>
+				<rotate z="1" angle="-141.49157605334287"/>
+				<translate value="0.245657 -0.308740 -0.065824"/>
+			</transform>
+			<film type="hdrfilm" name="film">
+				<integer name="width" value="$resx"/>
+				<integer name="height" value="$resy"/>
+				<boolean name="sample_border" value="false"/>
+			</film>
+			<spectrum filename="spectra/srf_79.spd" name="srf"/>
+		</sensor>
+		<sensor type="orthographic" name="sensor80">
+			<transform name="to_world">
+				<rotate x="1" angle="80.58085745032876"/>
+				<rotate y="1" angle="-1.3028885263797034e-06"/>
+				<rotate z="1" angle="-141.74825456235195"/>
+				<translate value="0.244308 -0.309884 -0.065462"/>
+			</transform>
+			<film type="hdrfilm" name="film">
+				<integer name="width" value="$resx"/>
+				<integer name="height" value="$resy"/>
+				<boolean name="sample_border" value="false"/>
+			</film>
+			<spectrum filename="spectra/srf_80.spd" name="srf"/>
+		</sensor>
+		<sensor type="orthographic" name="sensor81">
+			<transform name="to_world">
+				<rotate x="1" angle="80.63381873715304"/>
+				<rotate y="1" angle="2.722308912289237e-06"/>
+				<rotate z="1" angle="-142.00639473184341"/>
+				<translate value="0.242947 -0.311029 -0.065097"/>
+			</transform>
+			<film type="hdrfilm" name="film">
+				<integer name="width" value="$resx"/>
+				<integer name="height" value="$resy"/>
+				<boolean name="sample_border" value="false"/>
+			</film>
+			<spectrum filename="spectra/srf_81.spd" name="srf"/>
+		</sensor>
+		<sensor type="orthographic" name="sensor82">
+			<transform name="to_world">
+				<rotate x="1" angle="80.68729911835425"/>
+				<rotate y="1" angle="2.0715543969098264e-06"/>
+				<rotate z="1" angle="-142.26603754295226"/>
+				<translate value="0.241572 -0.312175 -0.064729"/>
+			</transform>
+			<film type="hdrfilm" name="film">
+				<integer name="width" value="$resx"/>
+				<integer name="height" value="$resy"/>
+				<boolean name="sample_border" value="false"/>
+			</film>
+			<spectrum filename="spectra/srf_82.spd" name="srf"/>
+		</sensor>
+		<sensor type="orthographic" name="sensor83">
+			<transform name="to_world">
+				<rotate x="1" angle="80.74129859393236"/>
+				<rotate y="1" angle="2.8690190959697908e-06"/>
+				<rotate z="1" angle="-142.52721031643523"/>
+				<translate value="0.240183 -0.313321 -0.064357"/>
+			</transform>
+			<film type="hdrfilm" name="film">
+				<integer name="width" value="$resx"/>
+				<integer name="height" value="$resy"/>
+				<boolean name="sample_border" value="false"/>
+			</film>
+			<spectrum filename="spectra/srf_83.spd" name="srf"/>
+		</sensor>
+		<sensor type="orthographic" name="sensor84">
+			<transform name="to_world">
+				<rotate x="1" angle="80.79584448464408"/>
+				<rotate y="1" angle="1.4655480976769863e-06"/>
+				<rotate z="1" angle="-142.7899676938056"/>
+				<translate value="0.238781 -0.314468 -0.063981"/>
+			</transform>
+			<film type="hdrfilm" name="film">
+				<integer name="width" value="$resx"/>
+				<integer name="height" value="$resy"/>
+				<boolean name="sample_border" value="false"/>
+			</film>
+			<spectrum filename="spectra/srf_84.spd" name="srf"/>
+		</sensor>
+		<sensor type="orthographic" name="sensor85">
+			<transform name="to_world">
+				<rotate x="1" angle="80.85089580935438"/>
+				<rotate y="1" angle="4.182821250461281e-07"/>
+				<rotate z="1" angle="-143.05428235430676"/>
+				<translate value="0.237365 -0.315615 -0.063602"/>
+			</transform>
+			<film type="hdrfilm" name="film">
+				<integer name="width" value="$resx"/>
+				<integer name="height" value="$resy"/>
+				<boolean name="sample_border" value="false"/>
+			</film>
+			<spectrum filename="spectra/srf_85.spd" name="srf"/>
+		</sensor>
+		<sensor type="orthographic" name="sensor86">
+			<transform name="to_world">
+				<rotate x="1" angle="80.90652086995497"/>
+				<rotate y="1" angle="-5.98531843064776e-07"/>
+				<rotate z="1" angle="-143.32022259983037"/>
+				<translate value="0.235934 -0.316763 -0.063218"/>
+			</transform>
+			<film type="hdrfilm" name="film">
+				<integer name="width" value="$resx"/>
+				<integer name="height" value="$resy"/>
+				<boolean name="sample_border" value="false"/>
+			</film>
+			<spectrum filename="spectra/srf_86.spd" name="srf"/>
+		</sensor>
+		<sensor type="orthographic" name="sensor87">
+			<transform name="to_world">
+				<rotate x="1" angle="80.96270600606749"/>
+				<rotate y="1" angle="2.9660784292955785e-07"/>
+				<rotate z="1" angle="-143.5878703926465"/>
+				<translate value="0.234488 -0.317911 -0.062831"/>
+			</transform>
+			<film type="hdrfilm" name="film">
+				<integer name="width" value="$resx"/>
+				<integer name="height" value="$resy"/>
+				<boolean name="sample_border" value="false"/>
+			</film>
+			<spectrum filename="spectra/srf_87.spd" name="srf"/>
+		</sensor>
+		<sensor type="orthographic" name="sensor88">
+			<transform name="to_world">
+				<rotate x="1" angle="81.01945804788113"/>
+				<rotate y="1" angle="-1.355235062215853e-06"/>
+				<rotate z="1" angle="-143.85721207237677"/>
+				<translate value="0.233028 -0.319060 -0.062440"/>
+			</transform>
+			<film type="hdrfilm" name="film">
+				<integer name="width" value="$resx"/>
+				<integer name="height" value="$resy"/>
+				<boolean name="sample_border" value="false"/>
+			</film>
+			<spectrum filename="spectra/srf_88.spd" name="srf"/>
+		</sensor>
+		<sensor type="orthographic" name="sensor89">
+			<transform name="to_world">
+				<rotate x="1" angle="81.07679065577422"/>
+				<rotate y="1" angle="1.9947445611301063e-06"/>
+				<rotate z="1" angle="-144.1283022805346"/>
+				<translate value="0.231552 -0.320210 -0.062044"/>
+			</transform>
+			<film type="hdrfilm" name="film">
+				<integer name="width" value="$resx"/>
+				<integer name="height" value="$resy"/>
+				<boolean name="sample_border" value="false"/>
+			</film>
+			<spectrum filename="spectra/srf_89.spd" name="srf"/>
+		</sensor>
+		<sensor type="orthographic" name="sensor90">
+			<transform name="to_world">
+				<rotate x="1" angle="81.13472432031426"/>
+				<rotate y="1" angle="-3.6332417570543467e-07"/>
+				<rotate z="1" angle="-144.40115467749825"/>
+				<translate value="0.230061 -0.321359 -0.061645"/>
+			</transform>
+			<film type="hdrfilm" name="film">
+				<integer name="width" value="$resx"/>
+				<integer name="height" value="$resy"/>
+				<boolean name="sample_border" value="false"/>
+			</film>
+			<spectrum filename="spectra/srf_90.spd" name="srf"/>
+		</sensor>
+		<sensor type="orthographic" name="sensor91">
+			<transform name="to_world">
+				<rotate x="1" angle="81.1932522113121"/>
+				<rotate y="1" angle="-3.5901791840000765e-06"/>
+				<rotate z="1" angle="-144.67585122553783"/>
+				<translate value="0.228554 -0.322510 -0.061241"/>
+			</transform>
+			<film type="hdrfilm" name="film">
+				<integer name="width" value="$resx"/>
+				<integer name="height" value="$resy"/>
+				<boolean name="sample_border" value="false"/>
+			</film>
+			<spectrum filename="spectra/srf_91.spd" name="srf"/>
+		</sensor>
+		<sensor type="orthographic" name="sensor92">
+			<transform name="to_world">
+				<rotate x="1" angle="81.25241530990276"/>
+				<rotate y="1" angle="1.3066805617820065e-06"/>
+				<rotate z="1" angle="-144.95241924541"/>
+				<translate value="0.227031 -0.323661 -0.060833"/>
+			</transform>
+			<film type="hdrfilm" name="film">
+				<integer name="width" value="$resx"/>
+				<integer name="height" value="$resy"/>
+				<boolean name="sample_border" value="false"/>
+			</film>
+			<spectrum filename="spectra/srf_92.spd" name="srf"/>
+		</sensor>
+		<sensor type="orthographic" name="sensor93">
+			<transform name="to_world">
+				<rotate x="1" angle="81.31220678589705"/>
+				<rotate y="1" angle="7.44433606078614e-07"/>
+				<rotate z="1" angle="-145.2309133786281"/>
+				<translate value="0.225491 -0.324813 -0.060420"/>
+			</transform>
+			<film type="hdrfilm" name="film">
+				<integer name="width" value="$resx"/>
+				<integer name="height" value="$resy"/>
+				<boolean name="sample_border" value="false"/>
+			</film>
+			<spectrum filename="spectra/srf_93.spd" name="srf"/>
+		</sensor>
+		<sensor type="orthographic" name="sensor94">
+			<transform name="to_world">
+				<rotate x="1" angle="81.37263346948416"/>
+				<rotate y="1" angle="5.72869194117482e-07"/>
+				<rotate z="1" angle="-145.51134728557048"/>
+				<translate value="0.223934 -0.325965 -0.060003"/>
+			</transform>
+			<film type="hdrfilm" name="film">
+				<integer name="width" value="$resx"/>
+				<integer name="height" value="$resy"/>
+				<boolean name="sample_border" value="false"/>
+			</film>
+			<spectrum filename="spectra/srf_94.spd" name="srf"/>
+		</sensor>
+		<sensor type="orthographic" name="sensor95">
+			<transform name="to_world">
+				<rotate x="1" angle="81.43372951160991"/>
+				<rotate y="1" angle="-7.657018989002483e-07"/>
+				<rotate z="1" angle="-145.79380292850718"/>
+				<translate value="0.222361 -0.327118 -0.059581"/>
+			</transform>
+			<film type="hdrfilm" name="film">
+				<integer name="width" value="$resx"/>
+				<integer name="height" value="$resy"/>
+				<boolean name="sample_border" value="false"/>
+			</film>
+			<spectrum filename="spectra/srf_95.spd" name="srf"/>
+		</sensor>
+		<sensor type="orthographic" name="sensor96">
+			<transform name="to_world">
+				<rotate x="1" angle="81.49548808208517"/>
+				<rotate y="1" angle="-5.661226524160365e-07"/>
+				<rotate z="1" angle="-146.07833494895158"/>
+				<translate value="0.220769 -0.328271 -0.059155"/>
+			</transform>
+			<film type="hdrfilm" name="film">
+				<integer name="width" value="$resx"/>
+				<integer name="height" value="$resy"/>
+				<boolean name="sample_border" value="false"/>
+			</film>
+			<spectrum filename="spectra/srf_96.spd" name="srf"/>
+		</sensor>
+		<sensor type="orthographic" name="sensor97">
+			<transform name="to_world">
+				<rotate x="1" angle="81.55794333185577"/>
+				<rotate y="1" angle="2.0573252568203322e-08"/>
+				<rotate z="1" angle="-146.36497066766032"/>
+				<translate value="0.219160 -0.329425 -0.058724"/>
+			</transform>
+			<film type="hdrfilm" name="film">
+				<integer name="width" value="$resx"/>
+				<integer name="height" value="$resy"/>
+				<boolean name="sample_border" value="false"/>
+			</film>
+			<spectrum filename="spectra/srf_97.spd" name="srf"/>
+		</sensor>
+		<sensor type="orthographic" name="sensor98">
+			<transform name="to_world">
+				<rotate x="1" angle="81.62110209111087"/>
+				<rotate y="1" angle="2.4351898089741703e-06"/>
+				<rotate z="1" angle="-146.65377838652515"/>
+				<translate value="0.217532 -0.330579 -0.058287"/>
+			</transform>
+			<film type="hdrfilm" name="film">
+				<integer name="width" value="$resx"/>
+				<integer name="height" value="$resy"/>
+				<boolean name="sample_border" value="false"/>
+			</film>
+			<spectrum filename="spectra/srf_98.spd" name="srf"/>
+		</sensor>
+		<sensor type="orthographic" name="sensor99">
+			<transform name="to_world">
+				<rotate x="1" angle="81.68497119003966"/>
+				<rotate y="1" angle="8.329010653212087e-07"/>
+				<rotate z="1" angle="-146.94482640743772"/>
+				<translate value="0.215885 -0.331734 -0.057846"/>
+			</transform>
+			<film type="hdrfilm" name="film">
+				<integer name="width" value="$resx"/>
+				<integer name="height" value="$resy"/>
+				<boolean name="sample_border" value="false"/>
+			</film>
+			<spectrum filename="spectra/srf_99.spd" name="srf"/>
+		</sensor>
+		<sensor type="orthographic" name="sensor100">
+			<transform name="to_world">
+				<rotate x="1" angle="81.74961210034466"/>
+				<rotate y="1" angle="-1.0252119555807152e-06"/>
+				<rotate z="1" angle="-147.2381557115331"/>
+				<translate value="0.214219 -0.332890 -0.057400"/>
+			</transform>
+			<film type="hdrfilm" name="film">
+				<integer name="width" value="$resx"/>
+				<integer name="height" value="$resy"/>
+				<boolean name="sample_border" value="false"/>
+			</film>
+			<spectrum filename="spectra/srf_100.spd" name="srf"/>
+		</sensor>
+		<sensor type="orthographic" name="sensor101">
+			<transform name="to_world">
+				<rotate x="1" angle="81.81497018051252"/>
+				<rotate y="1" angle="1.1482203404417535e-06"/>
+				<rotate z="1" angle="-147.53383460070293"/>
+				<translate value="0.212533 -0.334046 -0.056948"/>
+			</transform>
+			<film type="hdrfilm" name="film">
+				<integer name="width" value="$resx"/>
+				<integer name="height" value="$resy"/>
+				<boolean name="sample_border" value="false"/>
+			</film>
+			<spectrum filename="spectra/srf_101.spd" name="srf"/>
+		</sensor>
+		<sensor type="orthographic" name="sensor102">
+			<transform name="to_world">
+				<rotate x="1" angle="81.88112739281326"/>
+				<rotate y="1" angle="4.4038387586093043e-07"/>
+				<rotate z="1" angle="-147.8319450372173"/>
+				<translate value="0.210827 -0.335202 -0.056491"/>
+			</transform>
+			<film type="hdrfilm" name="film">
+				<integer name="width" value="$resx"/>
+				<integer name="height" value="$resy"/>
+				<boolean name="sample_border" value="false"/>
+			</film>
+			<spectrum filename="spectra/srf_102.spd" name="srf"/>
+		</sensor>
+		<sensor type="orthographic" name="sensor103">
+			<transform name="to_world">
+				<rotate x="1" angle="81.94805641649022"/>
+				<rotate y="1" angle="2.003587622699823e-06"/>
+				<rotate z="1" angle="-148.13252800221125"/>
+				<translate value="0.209101 -0.336360 -0.056028"/>
+			</transform>
+			<film type="hdrfilm" name="film">
+				<integer name="width" value="$resx"/>
+				<integer name="height" value="$resy"/>
+				<boolean name="sample_border" value="false"/>
+			</film>
+			<spectrum filename="spectra/srf_103.spd" name="srf"/>
+		</sensor>
+		<sensor type="orthographic" name="sensor104">
+			<transform name="to_world">
+				<rotate x="1" angle="82.01580506286757"/>
+				<rotate y="1" angle="-1.6888470558646797e-07"/>
+				<rotate z="1" angle="-148.43566545795474"/>
+				<translate value="0.207353 -0.337517 -0.055560"/>
+			</transform>
+			<film type="hdrfilm" name="film">
+				<integer name="width" value="$resx"/>
+				<integer name="height" value="$resy"/>
+				<boolean name="sample_border" value="false"/>
+			</film>
+			<spectrum filename="spectra/srf_104.spd" name="srf"/>
+		</sensor>
+		<sensor type="orthographic" name="sensor105">
+			<transform name="to_world">
+				<rotate x="1" angle="82.08439382251284"/>
+				<rotate y="1" angle="-9.838231176220185e-07"/>
+				<rotate z="1" angle="-148.74143936671788"/>
+				<translate value="0.205583 -0.338676 -0.055086"/>
+			</transform>
+			<film type="hdrfilm" name="film">
+				<integer name="width" value="$resx"/>
+				<integer name="height" value="$resy"/>
+				<boolean name="sample_border" value="false"/>
+			</film>
+			<spectrum filename="spectra/srf_105.spd" name="srf"/>
+		</sensor>
+		<sensor type="orthographic" name="sensor106">
+			<transform name="to_world">
+				<rotate x="1" angle="82.1538295256152"/>
+				<rotate y="1" angle="1.1679776407897554e-06"/>
+				<rotate z="1" angle="-149.049945351149"/>
+				<translate value="0.203790 -0.339835 -0.054605"/>
+			</transform>
+			<film type="hdrfilm" name="film">
+				<integer name="width" value="$resx"/>
+				<integer name="height" value="$resy"/>
+				<boolean name="sample_border" value="false"/>
+			</film>
+			<spectrum filename="spectra/srf_106.spd" name="srf"/>
+		</sensor>
+		<sensor type="orthographic" name="sensor107">
+			<transform name="to_world">
+				<rotate x="1" angle="82.22415998349881"/>
+				<rotate y="1" angle="-9.98988307676486e-08"/>
+				<rotate z="1" angle="-149.36122439238318"/>
+				<translate value="0.201975 -0.340994 -0.054119"/>
+			</transform>
+			<film type="hdrfilm" name="film">
+				<integer name="width" value="$resx"/>
+				<integer name="height" value="$resy"/>
+				<boolean name="sample_border" value="false"/>
+			</film>
+			<spectrum filename="spectra/srf_107.spd" name="srf"/>
+		</sensor>
+		<sensor type="orthographic" name="sensor108">
+			<transform name="to_world">
+				<rotate x="1" angle="82.29539885654205"/>
+				<rotate y="1" angle="-9.494215257430605e-08"/>
+				<rotate z="1" angle="-149.6753857734471"/>
+				<translate value="0.200136 -0.342155 -0.053626"/>
+			</transform>
+			<film type="hdrfilm" name="film">
+				<integer name="width" value="$resx"/>
+				<integer name="height" value="$resy"/>
+				<boolean name="sample_border" value="false"/>
+			</film>
+			<spectrum filename="spectra/srf_108.spd" name="srf"/>
+		</sensor>
+		<sensor type="orthographic" name="sensor109">
+			<transform name="to_world">
+				<rotate x="1" angle="82.36755980512324"/>
+				<rotate y="1" angle="1.057884038157206e-06"/>
+				<rotate z="1" angle="-149.99253877736746"/>
+				<translate value="0.198273 -0.343315 -0.053127"/>
+			</transform>
+			<film type="hdrfilm" name="film">
+				<integer name="width" value="$resx"/>
+				<integer name="height" value="$resy"/>
+				<boolean name="sample_border" value="false"/>
+			</film>
+			<spectrum filename="spectra/srf_109.spd" name="srf"/>
+		</sensor>
+		<sensor type="orthographic" name="sensor110">
+			<transform name="to_world">
+				<rotate x="1" angle="82.44067698018821"/>
+				<rotate y="1" angle="-9.837045465434936e-07"/>
+				<rotate z="1" angle="-150.31275170603598"/>
+				<translate value="0.196384 -0.344477 -0.052621"/>
+			</transform>
+			<film type="hdrfilm" name="film">
+				<integer name="width" value="$resx"/>
+				<integer name="height" value="$resy"/>
+				<boolean name="sample_border" value="false"/>
+			</film>
+			<spectrum filename="spectra/srf_110.spd" name="srf"/>
+		</sensor>
+		<sensor type="orthographic" name="sensor111">
+			<transform name="to_world">
+				<rotate x="1" angle="82.51478453268285"/>
+				<rotate y="1" angle="7.908872102009482e-07"/>
+				<rotate z="1" angle="-150.6361338424794"/>
+				<translate value="0.194470 -0.345639 -0.052108"/>
+			</transform>
+			<film type="hdrfilm" name="film">
+				<integer name="width" value="$resx"/>
+				<integer name="height" value="$resy"/>
+				<boolean name="sample_border" value="false"/>
+			</film>
+			<spectrum filename="spectra/srf_111.spd" name="srf"/>
+		</sensor>
+		<sensor type="orthographic" name="sensor112">
+			<transform name="to_world">
+				<rotate x="1" angle="82.58989612298548"/>
+				<rotate y="1" angle="1.9456011746358772e-06"/>
+				<rotate z="1" angle="-150.96279446972446"/>
+				<translate value="0.192530 -0.346801 -0.051588"/>
+			</transform>
+			<film type="hdrfilm" name="film">
+				<integer name="width" value="$resx"/>
+				<integer name="height" value="$resy"/>
+				<boolean name="sample_border" value="false"/>
+			</film>
+			<spectrum filename="spectra/srf_112.spd" name="srf"/>
+		</sensor>
+		<sensor type="orthographic" name="sensor113">
+			<transform name="to_world">
+				<rotate x="1" angle="82.66607322279863"/>
+				<rotate y="1" angle="1.1076488795917554e-06"/>
+				<rotate z="1" angle="-151.29282921041946"/>
+				<translate value="0.190561 -0.347964 -0.051061"/>
+			</transform>
+			<film type="hdrfilm" name="film">
+				<integer name="width" value="$resx"/>
+				<integer name="height" value="$resy"/>
+				<boolean name="sample_border" value="false"/>
+			</film>
+			<spectrum filename="spectra/srf_113.spd" name="srf"/>
+		</sensor>
+		<sensor type="orthographic" name="sensor114">
+			<transform name="to_world">
+				<rotate x="1" angle="82.7433158321223"/>
+				<rotate y="1" angle="-1.560350814734057e-06"/>
+				<rotate z="1" angle="-151.6263883287262"/>
+				<translate value="0.188565 -0.349128 -0.050526"/>
+			</transform>
+			<film type="hdrfilm" name="film">
+				<integer name="width" value="$resx"/>
+				<integer name="height" value="$resy"/>
+				<boolean name="sample_border" value="false"/>
+			</film>
+			<spectrum filename="spectra/srf_114.spd" name="srf"/>
+		</sensor>
+		<sensor type="orthographic" name="sensor115">
+			<transform name="to_world">
+				<rotate x="1" angle="82.82167859246987"/>
+				<rotate y="1" angle="1.643736205595547e-06"/>
+				<rotate z="1" angle="-151.9635811076714"/>
+				<translate value="0.186539 -0.350292 -0.049983"/>
+			</transform>
+			<film type="hdrfilm" name="film">
+				<integer name="width" value="$resx"/>
+				<integer name="height" value="$resy"/>
+				<boolean name="sample_border" value="false"/>
+			</film>
+			<spectrum filename="spectra/srf_115.spd" name="srf"/>
+		</sensor>
+		<sensor type="orthographic" name="sensor116">
+			<transform name="to_world">
+				<rotate x="1" angle="82.90120931516549"/>
+				<rotate y="1" angle="6.405720586222365e-07"/>
+				<rotate z="1" angle="-152.30454415103844"/>
+				<translate value="0.184484 -0.351457 -0.049432"/>
+			</transform>
+			<film type="hdrfilm" name="film">
+				<integer name="width" value="$resx"/>
+				<integer name="height" value="$resy"/>
+				<boolean name="sample_border" value="false"/>
+			</film>
+			<spectrum filename="spectra/srf_116.spd" name="srf"/>
+		</sensor>
+		<sensor type="orthographic" name="sensor117">
+			<transform name="to_world">
+				<rotate x="1" angle="82.9819080002092"/>
+				<rotate y="1" angle="1.0297013721246946e-06"/>
+				<rotate z="1" angle="-152.64940040223237"/>
+				<translate value="0.182397 -0.352623 -0.048873"/>
+			</transform>
+			<film type="hdrfilm" name="film">
+				<integer name="width" value="$resx"/>
+				<integer name="height" value="$resy"/>
+				<boolean name="sample_border" value="false"/>
+			</film>
+			<spectrum filename="spectra/srf_117.spd" name="srf"/>
+		</sensor>
+		<sensor type="orthographic" name="sensor118">
+			<transform name="to_world">
+				<rotate x="1" angle="83.06386344006017"/>
+				<rotate y="1" angle="-1.1792096297029378e-06"/>
+				<rotate z="1" angle="-152.99832744617166"/>
+				<translate value="0.180277 -0.353789 -0.048305"/>
+			</transform>
+			<film type="hdrfilm" name="film">
+				<integer name="width" value="$resx"/>
+				<integer name="height" value="$resy"/>
+				<boolean name="sample_border" value="false"/>
+			</film>
+			<spectrum filename="spectra/srf_118.spd" name="srf"/>
+		</sensor>
+		<sensor type="orthographic" name="sensor119">
+			<transform name="to_world">
+				<rotate x="1" angle="83.14708246490761"/>
+				<rotate y="1" angle="-4.469506780562171e-07"/>
+				<rotate z="1" angle="-153.35148920739633"/>
+				<translate value="0.178125 -0.354956 -0.047728"/>
+			</transform>
+			<film type="hdrfilm" name="film">
+				<integer name="width" value="$resx"/>
+				<integer name="height" value="$resy"/>
+				<boolean name="sample_border" value="false"/>
+			</film>
+			<spectrum filename="spectra/srf_119.spd" name="srf"/>
+		</sensor>
+		<sensor type="orthographic" name="sensor120">
+			<transform name="to_world">
+				<rotate x="1" angle="83.23164703702155"/>
+				<rotate y="1" angle="-6.922051324322403e-07"/>
+				<rotate z="1" angle="-153.70903595006814"/>
+				<translate value="0.175937 -0.356123 -0.047142"/>
+			</transform>
+			<film type="hdrfilm" name="film">
+				<integer name="width" value="$resx"/>
+				<integer name="height" value="$resy"/>
+				<boolean name="sample_border" value="false"/>
+			</film>
+			<spectrum filename="spectra/srf_120.spd" name="srf"/>
+		</sensor>
+		<sensor type="orthographic" name="sensor121">
+			<transform name="to_world">
+				<rotate x="1" angle="83.31757764696947"/>
+				<rotate y="1" angle="-2.2318964888440075e-07"/>
+				<rotate z="1" angle="-154.07115891948388"/>
+				<translate value="0.173714 -0.357291 -0.046546"/>
+			</transform>
+			<film type="hdrfilm" name="film">
+				<integer name="width" value="$resx"/>
+				<integer name="height" value="$resy"/>
+				<boolean name="sample_border" value="false"/>
+			</film>
+			<spectrum filename="spectra/srf_121.spd" name="srf"/>
+		</sensor>
+		<sensor type="orthographic" name="sensor122">
+			<transform name="to_world">
+				<rotate x="1" angle="83.40494942683227"/>
+				<rotate y="1" angle="-2.618221011117289e-06"/>
+				<rotate z="1" angle="-154.43803570056195"/>
+				<translate value="0.171453 -0.358460 -0.045941"/>
+			</transform>
+			<film type="hdrfilm" name="film">
+				<integer name="width" value="$resx"/>
+				<integer name="height" value="$resy"/>
+				<boolean name="sample_border" value="false"/>
+			</film>
+			<spectrum filename="spectra/srf_122.spd" name="srf"/>
+		</sensor>
+		<sensor type="orthographic" name="sensor123">
+			<transform name="to_world">
+				<rotate x="1" angle="83.49378969736664"/>
+				<rotate y="1" angle="-5.158446475669608e-07"/>
+				<rotate z="1" angle="-154.80989851973413"/>
+				<translate value="0.169153 -0.359629 -0.045324"/>
+			</transform>
+			<film type="hdrfilm" name="film">
+				<integer name="width" value="$resx"/>
+				<integer name="height" value="$resy"/>
+				<boolean name="sample_border" value="false"/>
+			</film>
+			<spectrum filename="spectra/srf_123.spd" name="srf"/>
+		</sensor>
+		<sensor type="orthographic" name="sensor124">
+			<transform name="to_world">
+				<rotate x="1" angle="83.58420774159926"/>
+				<rotate y="1" angle="-9.00334727677724e-07"/>
+				<rotate z="1" angle="-155.18697960343218"/>
+				<translate value="0.166812 -0.360799 -0.044697"/>
+			</transform>
+			<film type="hdrfilm" name="film">
+				<integer name="width" value="$resx"/>
+				<integer name="height" value="$resy"/>
+				<boolean name="sample_border" value="false"/>
+			</film>
+			<spectrum filename="spectra/srf_124.spd" name="srf"/>
+		</sensor>
+		<sensor type="orthographic" name="sensor125">
+			<transform name="to_world">
+				<rotate x="1" angle="83.67624454066518"/>
+				<rotate y="1" angle="-3.369397189565106e-07"/>
+				<rotate z="1" angle="-155.56949751770958"/>
+				<translate value="0.164429 -0.361969 -0.044059"/>
+			</transform>
+			<film type="hdrfilm" name="film">
+				<integer name="width" value="$resx"/>
+				<integer name="height" value="$resy"/>
+				<boolean name="sample_border" value="false"/>
+			</film>
+			<spectrum filename="spectra/srf_125.spd" name="srf"/>
+		</sensor>
+		<sensor type="orthographic" name="sensor126">
+			<transform name="to_world">
+				<rotate x="1" angle="83.76996156626693"/>
+				<rotate y="1" angle="-3.973648636835777e-07"/>
+				<rotate z="1" angle="-155.95771180975478"/>
+				<translate value="0.162002 -0.363141 -0.043408"/>
+			</transform>
+			<film type="hdrfilm" name="film">
+				<integer name="width" value="$resx"/>
+				<integer name="height" value="$resy"/>
+				<boolean name="sample_border" value="false"/>
+			</film>
+			<spectrum filename="spectra/srf_126.spd" name="srf"/>
+		</sensor>
+		<sensor type="orthographic" name="sensor127">
+			<transform name="to_world">
+				<rotate x="1" angle="83.86543395048537"/>
+				<rotate y="1" angle="7.154666407060915e-07"/>
+				<rotate z="1" angle="-156.35192300789123"/>
+				<translate value="0.159528 -0.364312 -0.042746"/>
+			</transform>
+			<film type="hdrfilm" name="film">
+				<integer name="width" value="$resx"/>
+				<integer name="height" value="$resy"/>
+				<boolean name="sample_border" value="false"/>
+			</film>
+			<spectrum filename="spectra/srf_127.spd" name="srf"/>
+		</sensor>
+		<sensor type="orthographic" name="sensor128">
+			<transform name="to_world">
+				<rotate x="1" angle="83.96278463672556"/>
+				<rotate y="1" angle="5.014500168562809e-07"/>
+				<rotate z="1" angle="-156.75243164044244"/>
+				<translate value="0.157006 -0.365485 -0.042070"/>
+			</transform>
+			<film type="hdrfilm" name="film">
+				<integer name="width" value="$resx"/>
+				<integer name="height" value="$resy"/>
+				<boolean name="sample_border" value="false"/>
+			</film>
+			<spectrum filename="spectra/srf_128.spd" name="srf"/>
+		</sensor>
+		<sensor type="orthographic" name="sensor129">
+			<transform name="to_world">
+				<rotate x="1" angle="84.06209558725755"/>
+				<rotate y="1" angle="-1.2306800626687503e-06"/>
+				<rotate z="1" angle="-157.15956555648856"/>
+				<translate value="0.154433 -0.366658 -0.041380"/>
+			</transform>
+			<film type="hdrfilm" name="film">
+				<integer name="width" value="$resx"/>
+				<integer name="height" value="$resy"/>
+				<boolean name="sample_border" value="false"/>
+			</film>
+			<spectrum filename="spectra/srf_129.spd" name="srf"/>
+		</sensor>
+		<sensor type="orthographic" name="sensor130">
+			<transform name="to_world">
+				<rotate x="1" angle="84.16342827378385"/>
+				<rotate y="1" angle="9.215049067485443e-08"/>
+				<rotate z="1" angle="-157.57367992586643"/>
+				<translate value="0.151807 -0.367832 -0.040677"/>
+			</transform>
+			<film type="hdrfilm" name="film">
+				<integer name="width" value="$resx"/>
+				<integer name="height" value="$resy"/>
+				<boolean name="sample_border" value="false"/>
+			</film>
+			<spectrum filename="spectra/srf_130.spd" name="srf"/>
+		</sensor>
+		<sensor type="orthographic" name="sensor131">
+			<transform name="to_world">
+				<rotate x="1" angle="84.26692613027706"/>
+				<rotate y="1" angle="-1.0370758825424483e-06"/>
+				<rotate z="1" angle="-157.9951708995479"/>
+				<translate value="0.149124 -0.369006 -0.039958"/>
+			</transform>
+			<film type="hdrfilm" name="film">
+				<integer name="width" value="$resx"/>
+				<integer name="height" value="$resy"/>
+				<boolean name="sample_border" value="false"/>
+			</film>
+			<spectrum filename="spectra/srf_131.spd" name="srf"/>
+		</sensor>
+		<sensor type="orthographic" name="sensor132">
+			<transform name="to_world">
+				<rotate x="1" angle="84.37268477938554"/>
+				<rotate y="1" angle="-5.008920712318399e-07"/>
+				<rotate z="1" angle="-158.42448927001823"/>
+				<translate value="0.146382 -0.370181 -0.039223"/>
+			</transform>
+			<film type="hdrfilm" name="film">
+				<integer name="width" value="$resx"/>
+				<integer name="height" value="$resy"/>
+				<boolean name="sample_border" value="false"/>
+			</film>
+			<spectrum filename="spectra/srf_132.spd" name="srf"/>
+		</sensor>
+		<sensor type="orthographic" name="sensor133">
+			<transform name="to_world">
+				<rotate x="1" angle="84.48086131546019"/>
+				<rotate y="1" angle="6.856759371155073e-07"/>
+				<rotate z="1" angle="-158.86209949014096"/>
+				<translate value="0.143577 -0.371357 -0.038471"/>
+			</transform>
+			<film type="hdrfilm" name="film">
+				<integer name="width" value="$resx"/>
+				<integer name="height" value="$resy"/>
+				<boolean name="sample_border" value="false"/>
+			</film>
+			<spectrum filename="spectra/srf_133.spd" name="srf"/>
+		</sensor>
+		<sensor type="orthographic" name="sensor134">
+			<transform name="to_world">
+				<rotate x="1" angle="84.59159234228444"/>
+				<rotate y="1" angle="3.5116621282450966e-07"/>
+				<rotate z="1" angle="-159.30853431467133"/>
+				<translate value="0.140705 -0.372533 -0.037702"/>
+			</transform>
+			<film type="hdrfilm" name="film">
+				<integer name="width" value="$resx"/>
+				<integer name="height" value="$resy"/>
+				<boolean name="sample_border" value="false"/>
+			</film>
+			<spectrum filename="spectra/srf_134.spd" name="srf"/>
+		</sensor>
+		<sensor type="orthographic" name="sensor135">
+			<transform name="to_world">
+				<rotate x="1" angle="84.70503495420918"/>
+				<rotate y="1" angle="-5.14611101239302e-07"/>
+				<rotate z="1" angle="-159.76438113987797"/>
+				<translate value="0.137762 -0.373710 -0.036913"/>
+			</transform>
+			<film type="hdrfilm" name="film">
+				<integer name="width" value="$resx"/>
+				<integer name="height" value="$resy"/>
+				<boolean name="sample_border" value="false"/>
+			</film>
+			<spectrum filename="spectra/srf_135.spd" name="srf"/>
+		</sensor>
+		<sensor type="orthographic" name="sensor136">
+			<transform name="to_world">
+				<rotate x="1" angle="84.82135990596367"/>
+				<rotate y="1" angle="-6.998560712184693e-07"/>
+				<rotate z="1" angle="-160.23026834316454"/>
+				<translate value="0.134744 -0.374887 -0.036105"/>
+			</transform>
+			<film type="hdrfilm" name="film">
+				<integer name="width" value="$resx"/>
+				<integer name="height" value="$resy"/>
+				<boolean name="sample_border" value="false"/>
+			</film>
+			<spectrum filename="spectra/srf_136.spd" name="srf"/>
+		</sensor>
+		<sensor type="orthographic" name="sensor137">
+			<transform name="to_world">
+				<rotate x="1" angle="84.940772103223"/>
+				<rotate y="1" angle="-6.272975938259305e-07"/>
+				<rotate z="1" angle="-160.70694724533973"/>
+				<translate value="0.131645 -0.376066 -0.035274"/>
+			</transform>
+			<film type="hdrfilm" name="film">
+				<integer name="width" value="$resx"/>
+				<integer name="height" value="$resy"/>
+				<boolean name="sample_border" value="false"/>
+			</film>
+			<spectrum filename="spectra/srf_137.spd" name="srf"/>
+		</sensor>
+		<sensor type="orthographic" name="sensor138">
+			<transform name="to_world">
+				<rotate x="1" angle="85.06351060260813"/>
+				<rotate y="1" angle="1.0434369919053754e-06"/>
+				<rotate z="1" angle="-161.1952511294823"/>
+				<translate value="0.128459 -0.377245 -0.034421"/>
+			</transform>
+			<film type="hdrfilm" name="film">
+				<integer name="width" value="$resx"/>
+				<integer name="height" value="$resy"/>
+				<boolean name="sample_border" value="false"/>
+			</film>
+			<spectrum filename="spectra/srf_138.spd" name="srf"/>
+		</sensor>
+		<sensor type="orthographic" name="sensor139">
+			<transform name="to_world">
+				<rotate x="1" angle="85.18981446074001"/>
+				<rotate y="1" angle="3.770607623747385e-07"/>
+				<rotate z="1" angle="-161.69608158056263"/>
+				<translate value="0.125180 -0.378424 -0.033542"/>
+			</transform>
+			<film type="hdrfilm" name="film">
+				<integer name="width" value="$resx"/>
+				<integer name="height" value="$resy"/>
+				<boolean name="sample_border" value="false"/>
+			</film>
+			<spectrum filename="spectra/srf_139.spd" name="srf"/>
+		</sensor>
+		<sensor type="orthographic" name="sensor140">
+			<transform name="to_world">
+				<rotate x="1" angle="85.31997054556378"/>
+				<rotate y="1" angle="2.964110556503063e-07"/>
+				<rotate z="1" angle="-162.21050410809133"/>
+				<translate value="0.121801 -0.379604 -0.032636"/>
+			</transform>
+			<film type="hdrfilm" name="film">
+				<integer name="width" value="$resx"/>
+				<integer name="height" value="$resy"/>
+				<boolean name="sample_border" value="false"/>
+			</film>
+			<spectrum filename="spectra/srf_140.spd" name="srf"/>
+		</sensor>
+		<sensor type="orthographic" name="sensor141">
+			<transform name="to_world">
+				<rotate x="1" angle="85.45432719672709"/>
+				<rotate y="1" angle="1.9203018722553937e-08"/>
+				<rotate z="1" angle="-162.73974814611893"/>
+				<translate value="0.118312 -0.380785 -0.031702"/>
+			</transform>
+			<film type="hdrfilm" name="film">
+				<integer name="width" value="$resx"/>
+				<integer name="height" value="$resy"/>
+				<boolean name="sample_border" value="false"/>
+			</film>
+			<spectrum filename="spectra/srf_141.spd" name="srf"/>
+		</sensor>
+		<sensor type="orthographic" name="sensor142">
+			<transform name="to_world">
+				<rotate x="1" angle="85.59326007463432"/>
+				<rotate y="1" angle="-9.085343503131616e-08"/>
+				<rotate z="1" angle="-163.28522071361448"/>
+				<translate value="0.114703 -0.381967 -0.030735"/>
+			</transform>
+			<film type="hdrfilm" name="film">
+				<integer name="width" value="$resx"/>
+				<integer name="height" value="$resy"/>
+				<boolean name="sample_border" value="false"/>
+			</film>
+			<spectrum filename="spectra/srf_142.spd" name="srf"/>
+		</sensor>
+		<sensor type="orthographic" name="sensor143">
+			<transform name="to_world">
+				<rotate x="1" angle="85.73719948120316"/>
+				<rotate y="1" angle="-7.689031144649225e-07"/>
+				<rotate z="1" angle="-163.8485610559788"/>
+				<translate value="0.110963 -0.383149 -0.029732"/>
+			</transform>
+			<film type="hdrfilm" name="film">
+				<integer name="width" value="$resx"/>
+				<integer name="height" value="$resy"/>
+				<boolean name="sample_border" value="false"/>
+			</film>
+			<spectrum filename="spectra/srf_143.spd" name="srf"/>
+		</sensor>
+		<sensor type="orthographic" name="sensor144">
+			<transform name="to_world">
+				<rotate x="1" angle="85.88670549194558"/>
+				<rotate y="1" angle="3.658822067802047e-07"/>
+				<rotate z="1" angle="-164.43170894693614"/>
+				<translate value="0.107078 -0.384332 -0.028692"/>
+			</transform>
+			<film type="hdrfilm" name="film">
+				<integer name="width" value="$resx"/>
+				<integer name="height" value="$resy"/>
+				<boolean name="sample_border" value="false"/>
+			</film>
+			<spectrum filename="spectra/srf_144.spd" name="srf"/>
+		</sensor>
+		<sensor type="orthographic" name="sensor145">
+			<transform name="to_world">
+				<rotate x="1" angle="86.04239282388684"/>
+				<rotate y="1" angle="-2.8024895253648096e-07"/>
+				<rotate z="1" angle="-165.03698665080435"/>
+				<translate value="0.103032 -0.385516 -0.027607"/>
+			</transform>
+			<film type="hdrfilm" name="film">
+				<integer name="width" value="$resx"/>
+				<integer name="height" value="$resy"/>
+				<boolean name="sample_border" value="false"/>
+			</film>
+			<spectrum filename="spectra/srf_145.spd" name="srf"/>
+		</sensor>
+		<sensor type="orthographic" name="sensor146">
+			<transform name="to_world">
+				<rotate x="1" angle="86.20502645821402"/>
+				<rotate y="1" angle="-1.1468693425908175e-06"/>
+				<rotate z="1" angle="-165.66719454514308"/>
+				<translate value="0.098804 -0.386700 -0.026475"/>
+			</transform>
+			<film type="hdrfilm" name="film">
+				<integer name="width" value="$resx"/>
+				<integer name="height" value="$resy"/>
+				<boolean name="sample_border" value="false"/>
+			</film>
+			<spectrum filename="spectra/srf_146.spd" name="srf"/>
+		</sensor>
+		<sensor type="orthographic" name="sensor147">
+			<transform name="to_world">
+				<rotate x="1" angle="86.37553530065422"/>
+				<rotate y="1" angle="9.351919785425672e-07"/>
+				<rotate z="1" angle="-166.32580236605074"/>
+				<translate value="0.094371 -0.387885 -0.025287"/>
+			</transform>
+			<film type="hdrfilm" name="film">
+				<integer name="width" value="$resx"/>
+				<integer name="height" value="$resy"/>
+				<boolean name="sample_border" value="false"/>
+			</film>
+			<spectrum filename="spectra/srf_147.spd" name="srf"/>
+		</sensor>
+		<sensor type="orthographic" name="sensor148">
+			<transform name="to_world">
+				<rotate x="1" angle="86.55508731355552"/>
+				<rotate y="1" angle="6.946555335365895e-08"/>
+				<rotate z="1" angle="-167.0170858119477"/>
+				<translate value="0.089702 -0.389071 -0.024036"/>
+			</transform>
+			<film type="hdrfilm" name="film">
+				<integer name="width" value="$resx"/>
+				<integer name="height" value="$resy"/>
+				<boolean name="sample_border" value="false"/>
+			</film>
+			<spectrum filename="spectra/srf_148.spd" name="srf"/>
+		</sensor>
+		<sensor type="orthographic" name="sensor149">
+			<transform name="to_world">
+				<rotate x="1" angle="86.74517830834614"/>
+				<rotate y="1" angle="5.700894911036327e-07"/>
+				<rotate z="1" angle="-167.7465909964401"/>
+				<translate value="0.084757 -0.390257 -0.022711"/>
+			</transform>
+			<film type="hdrfilm" name="film">
+				<integer name="width" value="$resx"/>
+				<integer name="height" value="$resy"/>
+				<boolean name="sample_border" value="false"/>
+			</film>
+			<spectrum filename="spectra/srf_149.spd" name="srf"/>
+		</sensor>
+		<film type="hdrfilm" name="film">
+			<integer name="width" value="$resx"/>
+			<integer name="height" value="$resy"/>
+			<boolean name="sample_border" value="false"/>
+		</film>
+		<sampler type="independent" name="sampler">
+			<integer name="sample_count" value="$spp"/>
+		</sampler>
+	</sensor>
+
+<!-- Materials -->
+
+
+<!-- Emitters -->
+
+	<emitter type="directional" id="light" name="light">
+		<point name="direction" x="-0.9659258" y="-0.0" z="-0.25881904"/>
+		<spectrum filename="spectra/01267_Light_Door_sce.spd" name="irradiance"/>
+	</emitter>
+
+<!-- Shapes -->
+
+	<shape type="rectangle" id="grating_patch" name="grating_patch">
+		<bsdf type="twosided" name="material">
+			<bsdf type="roughgrating" name="bsdf">
+				<string name="distribution" value="ggx"/>
+				<string name="lobe_type" value="sinusoidal"/>
+				<float name="height" value="$resy"/>
+				<float name="inv_period_x" value="0.700000"/>
+				<float name="inv_period_y" value="0.700000"/>
+				<boolean name="radial" value="false"/>
+				<integer name="lobes" value="5"/>
+				<integer name="multiplier" value="10"/>
+				<float name="grating_angle" value="0.000000"/>
+				<float name="alpha" value="0.020000"/>
+			</bsdf>
+		</bsdf>
+		<transform name="to_world">
+			<matrix value="0.000000 0.000000 0.100000 0.000000 -0.100000 0.000000 0.000000 0.000000 0.000000 1.000000 0.000000 0.000000 0.000000 0.000000 0.000000 1.000000"/>
+		</transform>
+	</shape>
+
+<!-- Volumes -->
+
+</scene>

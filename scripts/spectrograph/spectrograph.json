@@ -7,7 +7,7 @@
     },
     "spectrum" : {
         "type" : "spectrum",
-        "filename": "scripts/spectrograph/data/materials/01267_Light_Door_sce.spd"
+        "filename": "scripts/spectrograph/data/materials/00003_White_Painted_Room_Ceiling_sce.spd"
     },
     "use_srfs" : true,
     "use_prior" : true

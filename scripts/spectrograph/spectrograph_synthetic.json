@@ -11,6 +11,6 @@
         "values" : "50, 300, 0, 65, 100, 100"
 
     },
-    "use_srfs" : false,
+    "use_srfs" : true,
     "use_prior" : true
 }

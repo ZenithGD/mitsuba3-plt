@@ -15,6 +15,35 @@ import argparse
 from scripts.utils import *
 # from scripts.rendering.integrators.plt import PLTIntegrator
 
+def render_scene(scene, samples, integrator="path", denoise=False):
+    
+    #render scene using the desired integrator
+    integrator = mi.load_dict({
+        "type" : "stokes",
+        "nested" : {
+            "type" : integrator,
+            "max_depth": 7,
+            "rr_depth": 50,
+            'samples_per_pass': 512
+        }
+    })
+    result = integrator.render(scene, spp=samples)
+    bmp = mi.Bitmap(result).convert()
+
+    L, sp = stokes_to_bitmaps(bmp)
+    
+    if denoise:
+        print("Denoising...")
+        print(L.size())
+        # Denoise the rendered image
+        denoiser = mi.OptixDenoiser(input_size=L.size(), albedo=False, normals=False, temporal=False)
+        L = denoiser(L)
+
+        for i, s in enumerate(sp):
+            sp[i] = denoiser(s)
+
+    return L, sp, result
+
 def main(args):
     
     # load scene
@@ -27,44 +56,18 @@ def main(args):
     if args.verbose:
         scene_params = mi.traverse(scene)
         print(scene_params)
-        print(scene)
 
     #render scene using the desired integrator
-    integrator = mi.load_dict({
-        # "type": "stokes_fw" if args.integrator == "plt" else "stokes",
-        "type" : "stokes",
-        "nested" : {
-            "type" : args.integrator,
-            "max_depth": 7,
-            "rr_depth": 50,
-            'samples_per_pass': 512
-        }
-    })
-
+    
     print("Rendering...")
-    start = time.perf_counter_ns()
-    result = integrator.render(scene, spp=args.spp)
-    bmp = mi.Bitmap(result).convert()
+    L, sp, result = render_scene(scene, args.spp, args.integrator, args.denoise)
     el = time.perf_counter_ns() - start
     print(f"...done. ({el / 1e6} ms)")
-
-    L, sp = stokes_to_bitmaps(bmp)
-
-    if args.denoise:
-        print("Denoising...")
-        print(L.size())
-        # Denoise the rendered image
-        denoiser = mi.OptixDenoiser(input_size=L.size(), albedo=False, normals=False, temporal=False)
-        L = denoiser(L)
-
-        for i, s in enumerate(sp):
-            sp[i] = denoiser(s)
 
     # folder to store data
     folder_path = ""
     if args.outdir:
         folder_path = args.outdir
-
         try:
             os.makedirs(folder_path)
             print(f"Creating folder at '{folder_path}'")

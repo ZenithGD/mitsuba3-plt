@@ -68,7 +68,7 @@ def eval_spectrum(wavelengths, spectrum):
     si.wavelengths = mi.Float(wavelengths)
 
     ev = np.array(sp.eval(si))[0]
-    print(ev.shape)
+    
     if ev.shape[0] == 1:
         ev = np.repeat(ev, len(wavelengths))
         return ev
@@ -157,6 +157,7 @@ def main(args):
     intensity = np.ravel(np.mean(np.array(sp[0]), axis=-1))
 
     plot_spectra_comparison(np.ravel(measured_wls), intensity / prior_intensity, eval_spectrum(measured_wls, spectrum))
+    print("RMSE:", np.sqrt(np.mean(np.square(intensity / prior_intensity - eval_spectrum(measured_wls, spectrum)))))
 
     save_spectrograph_output(args.outdir, L, sp)
 

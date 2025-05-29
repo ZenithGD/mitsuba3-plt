@@ -21,6 +21,7 @@
 				<integer name="height" value="$resy"/>
 				<boolean name="sample_border" value="false"/>
 			</film>
+			<spectrum filename="spectra/srf_0.spd" name="srf"/>
 		</sensor>
 		<sensor type="orthographic" name="sensor1">
 			<transform name="to_world">
@@ -34,6 +35,7 @@
 				<integer name="height" value="$resy"/>
 				<boolean name="sample_border" value="false"/>
 			</film>
+			<spectrum filename="spectra/srf_1.spd" name="srf"/>
 		</sensor>
 		<sensor type="orthographic" name="sensor2">
 			<transform name="to_world">
@@ -47,6 +49,7 @@
 				<integer name="height" value="$resy"/>
 				<boolean name="sample_border" value="false"/>
 			</film>
+			<spectrum filename="spectra/srf_2.spd" name="srf"/>
 		</sensor>
 		<sensor type="orthographic" name="sensor3">
 			<transform name="to_world">
@@ -60,6 +63,7 @@
 				<integer name="height" value="$resy"/>
 				<boolean name="sample_border" value="false"/>
 			</film>
+			<spectrum filename="spectra/srf_3.spd" name="srf"/>
 		</sensor>
 		<sensor type="orthographic" name="sensor4">
 			<transform name="to_world">
@@ -73,6 +77,7 @@
 				<integer name="height" value="$resy"/>
 				<boolean name="sample_border" value="false"/>
 			</film>
+			<spectrum filename="spectra/srf_4.spd" name="srf"/>
 		</sensor>
 		<sensor type="orthographic" name="sensor5">
 			<transform name="to_world">
@@ -86,6 +91,7 @@
 				<integer name="height" value="$resy"/>
 				<boolean name="sample_border" value="false"/>
 			</film>
+			<spectrum filename="spectra/srf_5.spd" name="srf"/>
 		</sensor>
 		<sensor type="orthographic" name="sensor6">
 			<transform name="to_world">
@@ -99,6 +105,7 @@
 				<integer name="height" value="$resy"/>
 				<boolean name="sample_border" value="false"/>
 			</film>
+			<spectrum filename="spectra/srf_6.spd" name="srf"/>
 		</sensor>
 		<sensor type="orthographic" name="sensor7">
 			<transform name="to_world">
@@ -112,6 +119,7 @@
 				<integer name="height" value="$resy"/>
 				<boolean name="sample_border" value="false"/>
 			</film>
+			<spectrum filename="spectra/srf_7.spd" name="srf"/>
 		</sensor>
 		<sensor type="orthographic" name="sensor8">
 			<transform name="to_world">
@@ -125,6 +133,7 @@
 				<integer name="height" value="$resy"/>
 				<boolean name="sample_border" value="false"/>
 			</film>
+			<spectrum filename="spectra/srf_8.spd" name="srf"/>
 		</sensor>
 		<sensor type="orthographic" name="sensor9">
 			<transform name="to_world">
@@ -138,6 +147,7 @@
 				<integer name="height" value="$resy"/>
 				<boolean name="sample_border" value="false"/>
 			</film>
+			<spectrum filename="spectra/srf_9.spd" name="srf"/>
 		</sensor>
 		<sensor type="orthographic" name="sensor10">
 			<transform name="to_world">
@@ -151,6 +161,7 @@
 				<integer name="height" value="$resy"/>
 				<boolean name="sample_border" value="false"/>
 			</film>
+			<spectrum filename="spectra/srf_10.spd" name="srf"/>
 		</sensor>
 		<sensor type="orthographic" name="sensor11">
 			<transform name="to_world">
@@ -164,6 +175,7 @@
 				<integer name="height" value="$resy"/>
 				<boolean name="sample_border" value="false"/>
 			</film>
+			<spectrum filename="spectra/srf_11.spd" name="srf"/>
 		</sensor>
 		<sensor type="orthographic" name="sensor12">
 			<transform name="to_world">
@@ -177,6 +189,7 @@
 				<integer name="height" value="$resy"/>
 				<boolean name="sample_border" value="false"/>
 			</film>
+			<spectrum filename="spectra/srf_12.spd" name="srf"/>
 		</sensor>
 		<sensor type="orthographic" name="sensor13">
 			<transform name="to_world">
@@ -190,6 +203,7 @@
 				<integer name="height" value="$resy"/>
 				<boolean name="sample_border" value="false"/>
 			</film>
+			<spectrum filename="spectra/srf_13.spd" name="srf"/>
 		</sensor>
 		<sensor type="orthographic" name="sensor14">
 			<transform name="to_world">
@@ -203,6 +217,7 @@
 				<integer name="height" value="$resy"/>
 				<boolean name="sample_border" value="false"/>
 			</film>
+			<spectrum filename="spectra/srf_14.spd" name="srf"/>
 		</sensor>
 		<sensor type="orthographic" name="sensor15">
 			<transform name="to_world">
@@ -216,6 +231,7 @@
 				<integer name="height" value="$resy"/>
 				<boolean name="sample_border" value="false"/>
 			</film>
+			<spectrum filename="spectra/srf_15.spd" name="srf"/>
 		</sensor>
 		<sensor type="orthographic" name="sensor16">
 			<transform name="to_world">
@@ -229,6 +245,7 @@
 				<integer name="height" value="$resy"/>
 				<boolean name="sample_border" value="false"/>
 			</film>
+			<spectrum filename="spectra/srf_16.spd" name="srf"/>
 		</sensor>
 		<sensor type="orthographic" name="sensor17">
 			<transform name="to_world">
@@ -242,6 +259,7 @@
 				<integer name="height" value="$resy"/>
 				<boolean name="sample_border" value="false"/>
 			</film>
+			<spectrum filename="spectra/srf_17.spd" name="srf"/>
 		</sensor>
 		<sensor type="orthographic" name="sensor18">
 			<transform name="to_world">
@@ -255,6 +273,7 @@
 				<integer name="height" value="$resy"/>
 				<boolean name="sample_border" value="false"/>
 			</film>
+			<spectrum filename="spectra/srf_18.spd" name="srf"/>
 		</sensor>
 		<sensor type="orthographic" name="sensor19">
 			<transform name="to_world">
@@ -268,6 +287,7 @@
 				<integer name="height" value="$resy"/>
 				<boolean name="sample_border" value="false"/>
 			</film>
+			<spectrum filename="spectra/srf_19.spd" name="srf"/>
 		</sensor>
 		<sensor type="orthographic" name="sensor20">
 			<transform name="to_world">
@@ -281,6 +301,7 @@
 				<integer name="height" value="$resy"/>
 				<boolean name="sample_border" value="false"/>
 			</film>
+			<spectrum filename="spectra/srf_20.spd" name="srf"/>
 		</sensor>
 		<sensor type="orthographic" name="sensor21">
 			<transform name="to_world">
@@ -294,6 +315,7 @@
 				<integer name="height" value="$resy"/>
 				<boolean name="sample_border" value="false"/>
 			</film>
+			<spectrum filename="spectra/srf_21.spd" name="srf"/>
 		</sensor>
 		<sensor type="orthographic" name="sensor22">
 			<transform name="to_world">
@@ -307,6 +329,7 @@
 				<integer name="height" value="$resy"/>
 				<boolean name="sample_border" value="false"/>
 			</film>
+			<spectrum filename="spectra/srf_22.spd" name="srf"/>
 		</sensor>
 		<sensor type="orthographic" name="sensor23">
 			<transform name="to_world">
@@ -320,6 +343,7 @@
 				<integer name="height" value="$resy"/>
 				<boolean name="sample_border" value="false"/>
 			</film>
+			<spectrum filename="spectra/srf_23.spd" name="srf"/>
 		</sensor>
 		<sensor type="orthographic" name="sensor24">
 			<transform name="to_world">
@@ -333,6 +357,7 @@
 				<integer name="height" value="$resy"/>
 				<boolean name="sample_border" value="false"/>
 			</film>
+			<spectrum filename="spectra/srf_24.spd" name="srf"/>
 		</sensor>
 		<sensor type="orthographic" name="sensor25">
 			<transform name="to_world">
@@ -346,6 +371,7 @@
 				<integer name="height" value="$resy"/>
 				<boolean name="sample_border" value="false"/>
 			</film>
+			<spectrum filename="spectra/srf_25.spd" name="srf"/>
 		</sensor>
 		<sensor type="orthographic" name="sensor26">
 			<transform name="to_world">
@@ -359,6 +385,7 @@
 				<integer name="height" value="$resy"/>
 				<boolean name="sample_border" value="false"/>
 			</film>
+			<spectrum filename="spectra/srf_26.spd" name="srf"/>
 		</sensor>
 		<sensor type="orthographic" name="sensor27">
 			<transform name="to_world">
@@ -372,6 +399,7 @@
 				<integer name="height" value="$resy"/>
 				<boolean name="sample_border" value="false"/>
 			</film>
+			<spectrum filename="spectra/srf_27.spd" name="srf"/>
 		</sensor>
 		<sensor type="orthographic" name="sensor28">
 			<transform name="to_world">
@@ -385,6 +413,7 @@
 				<integer name="height" value="$resy"/>
 				<boolean name="sample_border" value="false"/>
 			</film>
+			<spectrum filename="spectra/srf_28.spd" name="srf"/>
 		</sensor>
 		<sensor type="orthographic" name="sensor29">
 			<transform name="to_world">
@@ -398,6 +427,7 @@
 				<integer name="height" value="$resy"/>
 				<boolean name="sample_border" value="false"/>
 			</film>
+			<spectrum filename="spectra/srf_29.spd" name="srf"/>
 		</sensor>
 		<sensor type="orthographic" name="sensor30">
 			<transform name="to_world">
@@ -411,6 +441,7 @@
 				<integer name="height" value="$resy"/>
 				<boolean name="sample_border" value="false"/>
 			</film>
+			<spectrum filename="spectra/srf_30.spd" name="srf"/>
 		</sensor>
 		<sensor type="orthographic" name="sensor31">
 			<transform name="to_world">
@@ -424,6 +455,7 @@
 				<integer name="height" value="$resy"/>
 				<boolean name="sample_border" value="false"/>
 			</film>
+			<spectrum filename="spectra/srf_31.spd" name="srf"/>
 		</sensor>
 		<sensor type="orthographic" name="sensor32">
 			<transform name="to_world">
@@ -437,6 +469,7 @@
 				<integer name="height" value="$resy"/>
 				<boolean name="sample_border" value="false"/>
 			</film>
+			<spectrum filename="spectra/srf_32.spd" name="srf"/>
 		</sensor>
 		<sensor type="orthographic" name="sensor33">
 			<transform name="to_world">
@@ -450,6 +483,7 @@
 				<integer name="height" value="$resy"/>
 				<boolean name="sample_border" value="false"/>
 			</film>
+			<spectrum filename="spectra/srf_33.spd" name="srf"/>
 		</sensor>
 		<sensor type="orthographic" name="sensor34">
 			<transform name="to_world">
@@ -463,6 +497,7 @@
 				<integer name="height" value="$resy"/>
 				<boolean name="sample_border" value="false"/>
 			</film>
+			<spectrum filename="spectra/srf_34.spd" name="srf"/>
 		</sensor>
 		<sensor type="orthographic" name="sensor35">
 			<transform name="to_world">
@@ -476,6 +511,7 @@
 				<integer name="height" value="$resy"/>
 				<boolean name="sample_border" value="false"/>
 			</film>
+			<spectrum filename="spectra/srf_35.spd" name="srf"/>
 		</sensor>
 		<sensor type="orthographic" name="sensor36">
 			<transform name="to_world">
@@ -489,6 +525,7 @@
 				<integer name="height" value="$resy"/>
 				<boolean name="sample_border" value="false"/>
 			</film>
+			<spectrum filename="spectra/srf_36.spd" name="srf"/>
 		</sensor>
 		<sensor type="orthographic" name="sensor37">
 			<transform name="to_world">
@@ -502,6 +539,7 @@
 				<integer name="height" value="$resy"/>
 				<boolean name="sample_border" value="false"/>
 			</film>
+			<spectrum filename="spectra/srf_37.spd" name="srf"/>
 		</sensor>
 		<sensor type="orthographic" name="sensor38">
 			<transform name="to_world">
@@ -515,6 +553,7 @@
 				<integer name="height" value="$resy"/>
 				<boolean name="sample_border" value="false"/>
 			</film>
+			<spectrum filename="spectra/srf_38.spd" name="srf"/>
 		</sensor>
 		<sensor type="orthographic" name="sensor39">
 			<transform name="to_world">
@@ -528,6 +567,7 @@
 				<integer name="height" value="$resy"/>
 				<boolean name="sample_border" value="false"/>
 			</film>
+			<spectrum filename="spectra/srf_39.spd" name="srf"/>
 		</sensor>
 		<sensor type="orthographic" name="sensor40">
 			<transform name="to_world">
@@ -541,6 +581,7 @@
 				<integer name="height" value="$resy"/>
 				<boolean name="sample_border" value="false"/>
 			</film>
+			<spectrum filename="spectra/srf_40.spd" name="srf"/>
 		</sensor>
 		<sensor type="orthographic" name="sensor41">
 			<transform name="to_world">
@@ -554,6 +595,7 @@
 				<integer name="height" value="$resy"/>
 				<boolean name="sample_border" value="false"/>
 			</film>
+			<spectrum filename="spectra/srf_41.spd" name="srf"/>
 		</sensor>
 		<sensor type="orthographic" name="sensor42">
 			<transform name="to_world">
@@ -567,6 +609,7 @@
 				<integer name="height" value="$resy"/>
 				<boolean name="sample_border" value="false"/>
 			</film>
+			<spectrum filename="spectra/srf_42.spd" name="srf"/>
 		</sensor>
 		<sensor type="orthographic" name="sensor43">
 			<transform name="to_world">
@@ -580,6 +623,7 @@
 				<integer name="height" value="$resy"/>
 				<boolean name="sample_border" value="false"/>
 			</film>
+			<spectrum filename="spectra/srf_43.spd" name="srf"/>
 		</sensor>
 		<sensor type="orthographic" name="sensor44">
 			<transform name="to_world">
@@ -593,6 +637,7 @@
 				<integer name="height" value="$resy"/>
 				<boolean name="sample_border" value="false"/>
 			</film>
+			<spectrum filename="spectra/srf_44.spd" name="srf"/>
 		</sensor>
 		<sensor type="orthographic" name="sensor45">
 			<transform name="to_world">
@@ -606,6 +651,7 @@
 				<integer name="height" value="$resy"/>
 				<boolean name="sample_border" value="false"/>
 			</film>
+			<spectrum filename="spectra/srf_45.spd" name="srf"/>
 		</sensor>
 		<sensor type="orthographic" name="sensor46">
 			<transform name="to_world">
@@ -619,6 +665,7 @@
 				<integer name="height" value="$resy"/>
 				<boolean name="sample_border" value="false"/>
 			</film>
+			<spectrum filename="spectra/srf_46.spd" name="srf"/>
 		</sensor>
 		<sensor type="orthographic" name="sensor47">
 			<transform name="to_world">
@@ -632,6 +679,7 @@
 				<integer name="height" value="$resy"/>
 				<boolean name="sample_border" value="false"/>
 			</film>
+			<spectrum filename="spectra/srf_47.spd" name="srf"/>
 		</sensor>
 		<sensor type="orthographic" name="sensor48">
 			<transform name="to_world">
@@ -645,6 +693,7 @@
 				<integer name="height" value="$resy"/>
 				<boolean name="sample_border" value="false"/>
 			</film>
+			<spectrum filename="spectra/srf_48.spd" name="srf"/>
 		</sensor>
 		<sensor type="orthographic" name="sensor49">
 			<transform name="to_world">
@@ -658,6 +707,7 @@
 				<integer name="height" value="$resy"/>
 				<boolean name="sample_border" value="false"/>
 			</film>
+			<spectrum filename="spectra/srf_49.spd" name="srf"/>
 		</sensor>
 		<sensor type="orthographic" name="sensor50">
 			<transform name="to_world">
@@ -671,6 +721,7 @@
 				<integer name="height" value="$resy"/>
 				<boolean name="sample_border" value="false"/>
 			</film>
+			<spectrum filename="spectra/srf_50.spd" name="srf"/>
 		</sensor>
 		<sensor type="orthographic" name="sensor51">
 			<transform name="to_world">
@@ -684,6 +735,7 @@
 				<integer name="height" value="$resy"/>
 				<boolean name="sample_border" value="false"/>
 			</film>
+			<spectrum filename="spectra/srf_51.spd" name="srf"/>
 		</sensor>
 		<sensor type="orthographic" name="sensor52">
 			<transform name="to_world">
@@ -697,6 +749,7 @@
 				<integer name="height" value="$resy"/>
 				<boolean name="sample_border" value="false"/>
 			</film>
+			<spectrum filename="spectra/srf_52.spd" name="srf"/>
 		</sensor>
 		<sensor type="orthographic" name="sensor53">
 			<transform name="to_world">
@@ -710,6 +763,7 @@
 				<integer name="height" value="$resy"/>
 				<boolean name="sample_border" value="false"/>
 			</film>
+			<spectrum filename="spectra/srf_53.spd" name="srf"/>
 		</sensor>
 		<sensor type="orthographic" name="sensor54">
 			<transform name="to_world">
@@ -723,6 +777,7 @@
 				<integer name="height" value="$resy"/>
 				<boolean name="sample_border" value="false"/>
 			</film>
+			<spectrum filename="spectra/srf_54.spd" name="srf"/>
 		</sensor>
 		<sensor type="orthographic" name="sensor55">
 			<transform name="to_world">
@@ -736,6 +791,7 @@
 				<integer name="height" value="$resy"/>
 				<boolean name="sample_border" value="false"/>
 			</film>
+			<spectrum filename="spectra/srf_55.spd" name="srf"/>
 		</sensor>
 		<sensor type="orthographic" name="sensor56">
 			<transform name="to_world">
@@ -749,6 +805,7 @@
 				<integer name="height" value="$resy"/>
 				<boolean name="sample_border" value="false"/>
 			</film>
+			<spectrum filename="spectra/srf_56.spd" name="srf"/>
 		</sensor>
 		<sensor type="orthographic" name="sensor57">
 			<transform name="to_world">
@@ -762,6 +819,7 @@
 				<integer name="height" value="$resy"/>
 				<boolean name="sample_border" value="false"/>
 			</film>
+			<spectrum filename="spectra/srf_57.spd" name="srf"/>
 		</sensor>
 		<sensor type="orthographic" name="sensor58">
 			<transform name="to_world">
@@ -775,6 +833,7 @@
 				<integer name="height" value="$resy"/>
 				<boolean name="sample_border" value="false"/>
 			</film>
+			<spectrum filename="spectra/srf_58.spd" name="srf"/>
 		</sensor>
 		<sensor type="orthographic" name="sensor59">
 			<transform name="to_world">
@@ -788,6 +847,7 @@
 				<integer name="height" value="$resy"/>
 				<boolean name="sample_border" value="false"/>
 			</film>
+			<spectrum filename="spectra/srf_59.spd" name="srf"/>
 		</sensor>
 		<sensor type="orthographic" name="sensor60">
 			<transform name="to_world">
@@ -801,6 +861,7 @@
 				<integer name="height" value="$resy"/>
 				<boolean name="sample_border" value="false"/>
 			</film>
+			<spectrum filename="spectra/srf_60.spd" name="srf"/>
 		</sensor>
 		<sensor type="orthographic" name="sensor61">
 			<transform name="to_world">
@@ -814,6 +875,7 @@
 				<integer name="height" value="$resy"/>
 				<boolean name="sample_border" value="false"/>
 			</film>
+			<spectrum filename="spectra/srf_61.spd" name="srf"/>
 		</sensor>
 		<sensor type="orthographic" name="sensor62">
 			<transform name="to_world">
@@ -827,6 +889,7 @@
 				<integer name="height" value="$resy"/>
 				<boolean name="sample_border" value="false"/>
 			</film>
+			<spectrum filename="spectra/srf_62.spd" name="srf"/>
 		</sensor>
 		<sensor type="orthographic" name="sensor63">
 			<transform name="to_world">
@@ -840,6 +903,7 @@
 				<integer name="height" value="$resy"/>
 				<boolean name="sample_border" value="false"/>
 			</film>
+			<spectrum filename="spectra/srf_63.spd" name="srf"/>
 		</sensor>
 		<sensor type="orthographic" name="sensor64">
 			<transform name="to_world">
@@ -853,6 +917,7 @@
 				<integer name="height" value="$resy"/>
 				<boolean name="sample_border" value="false"/>
 			</film>
+			<spectrum filename="spectra/srf_64.spd" name="srf"/>
 		</sensor>
 		<sensor type="orthographic" name="sensor65">
 			<transform name="to_world">
@@ -866,6 +931,7 @@
 				<integer name="height" value="$resy"/>
 				<boolean name="sample_border" value="false"/>
 			</film>
+			<spectrum filename="spectra/srf_65.spd" name="srf"/>
 		</sensor>
 		<sensor type="orthographic" name="sensor66">
 			<transform name="to_world">
@@ -879,6 +945,7 @@
 				<integer name="height" value="$resy"/>
 				<boolean name="sample_border" value="false"/>
 			</film>
+			<spectrum filename="spectra/srf_66.spd" name="srf"/>
 		</sensor>
 		<sensor type="orthographic" name="sensor67">
 			<transform name="to_world">
@@ -892,6 +959,7 @@
 				<integer name="height" value="$resy"/>
 				<boolean name="sample_border" value="false"/>
 			</film>
+			<spectrum filename="spectra/srf_67.spd" name="srf"/>
 		</sensor>
 		<sensor type="orthographic" name="sensor68">
 			<transform name="to_world">
@@ -905,6 +973,7 @@
 				<integer name="height" value="$resy"/>
 				<boolean name="sample_border" value="false"/>
 			</film>
+			<spectrum filename="spectra/srf_68.spd" name="srf"/>
 		</sensor>
 		<sensor type="orthographic" name="sensor69">
 			<transform name="to_world">
@@ -918,6 +987,7 @@
 				<integer name="height" value="$resy"/>
 				<boolean name="sample_border" value="false"/>
 			</film>
+			<spectrum filename="spectra/srf_69.spd" name="srf"/>
 		</sensor>
 		<sensor type="orthographic" name="sensor70">
 			<transform name="to_world">
@@ -931,6 +1001,7 @@
 				<integer name="height" value="$resy"/>
 				<boolean name="sample_border" value="false"/>
 			</film>
+			<spectrum filename="spectra/srf_70.spd" name="srf"/>
 		</sensor>
 		<sensor type="orthographic" name="sensor71">
 			<transform name="to_world">
@@ -944,6 +1015,7 @@
 				<integer name="height" value="$resy"/>
 				<boolean name="sample_border" value="false"/>
 			</film>
+			<spectrum filename="spectra/srf_71.spd" name="srf"/>
 		</sensor>
 		<sensor type="orthographic" name="sensor72">
 			<transform name="to_world">
@@ -957,6 +1029,7 @@
 				<integer name="height" value="$resy"/>
 				<boolean name="sample_border" value="false"/>
 			</film>
+			<spectrum filename="spectra/srf_72.spd" name="srf"/>
 		</sensor>
 		<sensor type="orthographic" name="sensor73">
 			<transform name="to_world">
@@ -970,6 +1043,7 @@
 				<integer name="height" value="$resy"/>
 				<boolean name="sample_border" value="false"/>
 			</film>
+			<spectrum filename="spectra/srf_73.spd" name="srf"/>
 		</sensor>
 		<sensor type="orthographic" name="sensor74">
 			<transform name="to_world">
@@ -983,6 +1057,7 @@
 				<integer name="height" value="$resy"/>
 				<boolean name="sample_border" value="false"/>
 			</film>
+			<spectrum filename="spectra/srf_74.spd" name="srf"/>
 		</sensor>
 		<sensor type="orthographic" name="sensor75">
 			<transform name="to_world">
@@ -996,6 +1071,7 @@
 				<integer name="height" value="$resy"/>
 				<boolean name="sample_border" value="false"/>
 			</film>
+			<spectrum filename="spectra/srf_75.spd" name="srf"/>
 		</sensor>
 		<sensor type="orthographic" name="sensor76">
 			<transform name="to_world">
@@ -1009,6 +1085,7 @@
 				<integer name="height" value="$resy"/>
 				<boolean name="sample_border" value="false"/>
 			</film>
+			<spectrum filename="spectra/srf_76.spd" name="srf"/>
 		</sensor>
 		<sensor type="orthographic" name="sensor77">
 			<transform name="to_world">
@@ -1022,6 +1099,7 @@
 				<integer name="height" value="$resy"/>
 				<boolean name="sample_border" value="false"/>
 			</film>
+			<spectrum filename="spectra/srf_77.spd" name="srf"/>
 		</sensor>
 		<sensor type="orthographic" name="sensor78">
 			<transform name="to_world">
@@ -1035,6 +1113,7 @@
 				<integer name="height" value="$resy"/>
 				<boolean name="sample_border" value="false"/>
 			</film>
+			<spectrum filename="spectra/srf_78.spd" name="srf"/>
 		</sensor>
 		<sensor type="orthographic" name="sensor79">
 			<transform name="to_world">
@@ -1048,6 +1127,7 @@
 				<integer name="height" value="$resy"/>
 				<boolean name="sample_border" value="false"/>
 			</film>
+			<spectrum filename="spectra/srf_79.spd" name="srf"/>
 		</sensor>
 		<sensor type="orthographic" name="sensor80">
 			<transform name="to_world">
@@ -1061,6 +1141,7 @@
 				<integer name="height" value="$resy"/>
 				<boolean name="sample_border" value="false"/>
 			</film>
+			<spectrum filename="spectra/srf_80.spd" name="srf"/>
 		</sensor>
 		<sensor type="orthographic" name="sensor81">
 			<transform name="to_world">
@@ -1074,6 +1155,7 @@
 				<integer name="height" value="$resy"/>
 				<boolean name="sample_border" value="false"/>
 			</film>
+			<spectrum filename="spectra/srf_81.spd" name="srf"/>
 		</sensor>
 		<sensor type="orthographic" name="sensor82">
 			<transform name="to_world">
@@ -1087,6 +1169,7 @@
 				<integer name="height" value="$resy"/>
 				<boolean name="sample_border" value="false"/>
 			</film>
+			<spectrum filename="spectra/srf_82.spd" name="srf"/>
 		</sensor>
 		<sensor type="orthographic" name="sensor83">
 			<transform name="to_world">
@@ -1100,6 +1183,7 @@
 				<integer name="height" value="$resy"/>
 				<boolean name="sample_border" value="false"/>
 			</film>
+			<spectrum filename="spectra/srf_83.spd" name="srf"/>
 		</sensor>
 		<sensor type="orthographic" name="sensor84">
 			<transform name="to_world">
@@ -1113,6 +1197,7 @@
 				<integer name="height" value="$resy"/>
 				<boolean name="sample_border" value="false"/>
 			</film>
+			<spectrum filename="spectra/srf_84.spd" name="srf"/>
 		</sensor>
 		<sensor type="orthographic" name="sensor85">
 			<transform name="to_world">
@@ -1126,6 +1211,7 @@
 				<integer name="height" value="$resy"/>
 				<boolean name="sample_border" value="false"/>
 			</film>
+			<spectrum filename="spectra/srf_85.spd" name="srf"/>
 		</sensor>
 		<sensor type="orthographic" name="sensor86">
 			<transform name="to_world">
@@ -1139,6 +1225,7 @@
 				<integer name="height" value="$resy"/>
 				<boolean name="sample_border" value="false"/>
 			</film>
+			<spectrum filename="spectra/srf_86.spd" name="srf"/>
 		</sensor>
 		<sensor type="orthographic" name="sensor87">
 			<transform name="to_world">
@@ -1152,6 +1239,7 @@
 				<integer name="height" value="$resy"/>
 				<boolean name="sample_border" value="false"/>
 			</film>
+			<spectrum filename="spectra/srf_87.spd" name="srf"/>
 		</sensor>
 		<sensor type="orthographic" name="sensor88">
 			<transform name="to_world">
@@ -1165,6 +1253,7 @@
 				<integer name="height" value="$resy"/>
 				<boolean name="sample_border" value="false"/>
 			</film>
+			<spectrum filename="spectra/srf_88.spd" name="srf"/>
 		</sensor>
 		<sensor type="orthographic" name="sensor89">
 			<transform name="to_world">
@@ -1178,6 +1267,7 @@
 				<integer name="height" value="$resy"/>
 				<boolean name="sample_border" value="false"/>
 			</film>
+			<spectrum filename="spectra/srf_89.spd" name="srf"/>
 		</sensor>
 		<sensor type="orthographic" name="sensor90">
 			<transform name="to_world">
@@ -1191,6 +1281,7 @@
 				<integer name="height" value="$resy"/>
 				<boolean name="sample_border" value="false"/>
 			</film>
+			<spectrum filename="spectra/srf_90.spd" name="srf"/>
 		</sensor>
 		<sensor type="orthographic" name="sensor91">
 			<transform name="to_world">
@@ -1204,6 +1295,7 @@
 				<integer name="height" value="$resy"/>
 				<boolean name="sample_border" value="false"/>
 			</film>
+			<spectrum filename="spectra/srf_91.spd" name="srf"/>
 		</sensor>
 		<sensor type="orthographic" name="sensor92">
 			<transform name="to_world">
@@ -1217,6 +1309,7 @@
 				<integer name="height" value="$resy"/>
 				<boolean name="sample_border" value="false"/>
 			</film>
+			<spectrum filename="spectra/srf_92.spd" name="srf"/>
 		</sensor>
 		<sensor type="orthographic" name="sensor93">
 			<transform name="to_world">
@@ -1230,6 +1323,7 @@
 				<integer name="height" value="$resy"/>
 				<boolean name="sample_border" value="false"/>
 			</film>
+			<spectrum filename="spectra/srf_93.spd" name="srf"/>
 		</sensor>
 		<sensor type="orthographic" name="sensor94">
 			<transform name="to_world">
@@ -1243,6 +1337,7 @@
 				<integer name="height" value="$resy"/>
 				<boolean name="sample_border" value="false"/>
 			</film>
+			<spectrum filename="spectra/srf_94.spd" name="srf"/>
 		</sensor>
 		<sensor type="orthographic" name="sensor95">
 			<transform name="to_world">
@@ -1256,6 +1351,7 @@
 				<integer name="height" value="$resy"/>
 				<boolean name="sample_border" value="false"/>
 			</film>
+			<spectrum filename="spectra/srf_95.spd" name="srf"/>
 		</sensor>
 		<sensor type="orthographic" name="sensor96">
 			<transform name="to_world">
@@ -1269,6 +1365,7 @@
 				<integer name="height" value="$resy"/>
 				<boolean name="sample_border" value="false"/>
 			</film>
+			<spectrum filename="spectra/srf_96.spd" name="srf"/>
 		</sensor>
 		<sensor type="orthographic" name="sensor97">
 			<transform name="to_world">
@@ -1282,6 +1379,7 @@
 				<integer name="height" value="$resy"/>
 				<boolean name="sample_border" value="false"/>
 			</film>
+			<spectrum filename="spectra/srf_97.spd" name="srf"/>
 		</sensor>
 		<sensor type="orthographic" name="sensor98">
 			<transform name="to_world">
@@ -1295,6 +1393,7 @@
 				<integer name="height" value="$resy"/>
 				<boolean name="sample_border" value="false"/>
 			</film>
+			<spectrum filename="spectra/srf_98.spd" name="srf"/>
 		</sensor>
 		<sensor type="orthographic" name="sensor99">
 			<transform name="to_world">
@@ -1308,6 +1407,7 @@
 				<integer name="height" value="$resy"/>
 				<boolean name="sample_border" value="false"/>
 			</film>
+			<spectrum filename="spectra/srf_99.spd" name="srf"/>
 		</sensor>
 		<sensor type="orthographic" name="sensor100">
 			<transform name="to_world">
@@ -1321,6 +1421,7 @@
 				<integer name="height" value="$resy"/>
 				<boolean name="sample_border" value="false"/>
 			</film>
+			<spectrum filename="spectra/srf_100.spd" name="srf"/>
 		</sensor>
 		<sensor type="orthographic" name="sensor101">
 			<transform name="to_world">
@@ -1334,6 +1435,7 @@
 				<integer name="height" value="$resy"/>
 				<boolean name="sample_border" value="false"/>
 			</film>
+			<spectrum filename="spectra/srf_101.spd" name="srf"/>
 		</sensor>
 		<sensor type="orthographic" name="sensor102">
 			<transform name="to_world">
@@ -1347,6 +1449,7 @@
 				<integer name="height" value="$resy"/>
 				<boolean name="sample_border" value="false"/>
 			</film>
+			<spectrum filename="spectra/srf_102.spd" name="srf"/>
 		</sensor>
 		<sensor type="orthographic" name="sensor103">
 			<transform name="to_world">
@@ -1360,6 +1463,7 @@
 				<integer name="height" value="$resy"/>
 				<boolean name="sample_border" value="false"/>
 			</film>
+			<spectrum filename="spectra/srf_103.spd" name="srf"/>
 		</sensor>
 		<sensor type="orthographic" name="sensor104">
 			<transform name="to_world">
@@ -1373,6 +1477,7 @@
 				<integer name="height" value="$resy"/>
 				<boolean name="sample_border" value="false"/>
 			</film>
+			<spectrum filename="spectra/srf_104.spd" name="srf"/>
 		</sensor>
 		<sensor type="orthographic" name="sensor105">
 			<transform name="to_world">
@@ -1386,6 +1491,7 @@
 				<integer name="height" value="$resy"/>
 				<boolean name="sample_border" value="false"/>
 			</film>
+			<spectrum filename="spectra/srf_105.spd" name="srf"/>
 		</sensor>
 		<sensor type="orthographic" name="sensor106">
 			<transform name="to_world">
@@ -1399,6 +1505,7 @@
 				<integer name="height" value="$resy"/>
 				<boolean name="sample_border" value="false"/>
 			</film>
+			<spectrum filename="spectra/srf_106.spd" name="srf"/>
 		</sensor>
 		<sensor type="orthographic" name="sensor107">
 			<transform name="to_world">
@@ -1412,6 +1519,7 @@
 				<integer name="height" value="$resy"/>
 				<boolean name="sample_border" value="false"/>
 			</film>
+			<spectrum filename="spectra/srf_107.spd" name="srf"/>
 		</sensor>
 		<sensor type="orthographic" name="sensor108">
 			<transform name="to_world">
@@ -1425,6 +1533,7 @@
 				<integer name="height" value="$resy"/>
 				<boolean name="sample_border" value="false"/>
 			</film>
+			<spectrum filename="spectra/srf_108.spd" name="srf"/>
 		</sensor>
 		<sensor type="orthographic" name="sensor109">
 			<transform name="to_world">
@@ -1438,6 +1547,7 @@
 				<integer name="height" value="$resy"/>
 				<boolean name="sample_border" value="false"/>
 			</film>
+			<spectrum filename="spectra/srf_109.spd" name="srf"/>
 		</sensor>
 		<sensor type="orthographic" name="sensor110">
 			<transform name="to_world">
@@ -1451,6 +1561,7 @@
 				<integer name="height" value="$resy"/>
 				<boolean name="sample_border" value="false"/>
 			</film>
+			<spectrum filename="spectra/srf_110.spd" name="srf"/>
 		</sensor>
 		<sensor type="orthographic" name="sensor111">
 			<transform name="to_world">
@@ -1464,6 +1575,7 @@
 				<integer name="height" value="$resy"/>
 				<boolean name="sample_border" value="false"/>
 			</film>
+			<spectrum filename="spectra/srf_111.spd" name="srf"/>
 		</sensor>
 		<sensor type="orthographic" name="sensor112">
 			<transform name="to_world">
@@ -1477,6 +1589,7 @@
 				<integer name="height" value="$resy"/>
 				<boolean name="sample_border" value="false"/>
 			</film>
+			<spectrum filename="spectra/srf_112.spd" name="srf"/>
 		</sensor>
 		<sensor type="orthographic" name="sensor113">
 			<transform name="to_world">
@@ -1490,6 +1603,7 @@
 				<integer name="height" value="$resy"/>
 				<boolean name="sample_border" value="false"/>
 			</film>
+			<spectrum filename="spectra/srf_113.spd" name="srf"/>
 		</sensor>
 		<sensor type="orthographic" name="sensor114">
 			<transform name="to_world">
@@ -1503,6 +1617,7 @@
 				<integer name="height" value="$resy"/>
 				<boolean name="sample_border" value="false"/>
 			</film>
+			<spectrum filename="spectra/srf_114.spd" name="srf"/>
 		</sensor>
 		<sensor type="orthographic" name="sensor115">
 			<transform name="to_world">
@@ -1516,6 +1631,7 @@
 				<integer name="height" value="$resy"/>
 				<boolean name="sample_border" value="false"/>
 			</film>
+			<spectrum filename="spectra/srf_115.spd" name="srf"/>
 		</sensor>
 		<sensor type="orthographic" name="sensor116">
 			<transform name="to_world">
@@ -1529,6 +1645,7 @@
 				<integer name="height" value="$resy"/>
 				<boolean name="sample_border" value="false"/>
 			</film>
+			<spectrum filename="spectra/srf_116.spd" name="srf"/>
 		</sensor>
 		<sensor type="orthographic" name="sensor117">
 			<transform name="to_world">
@@ -1542,6 +1659,7 @@
 				<integer name="height" value="$resy"/>
 				<boolean name="sample_border" value="false"/>
 			</film>
+			<spectrum filename="spectra/srf_117.spd" name="srf"/>
 		</sensor>
 		<sensor type="orthographic" name="sensor118">
 			<transform name="to_world">
@@ -1555,6 +1673,7 @@
 				<integer name="height" value="$resy"/>
 				<boolean name="sample_border" value="false"/>
 			</film>
+			<spectrum filename="spectra/srf_118.spd" name="srf"/>
 		</sensor>
 		<sensor type="orthographic" name="sensor119">
 			<transform name="to_world">
@@ -1568,6 +1687,7 @@
 				<integer name="height" value="$resy"/>
 				<boolean name="sample_border" value="false"/>
 			</film>
+			<spectrum filename="spectra/srf_119.spd" name="srf"/>
 		</sensor>
 		<sensor type="orthographic" name="sensor120">
 			<transform name="to_world">
@@ -1581,6 +1701,7 @@
 				<integer name="height" value="$resy"/>
 				<boolean name="sample_border" value="false"/>
 			</film>
+			<spectrum filename="spectra/srf_120.spd" name="srf"/>
 		</sensor>
 		<sensor type="orthographic" name="sensor121">
 			<transform name="to_world">
@@ -1594,6 +1715,7 @@
 				<integer name="height" value="$resy"/>
 				<boolean name="sample_border" value="false"/>
 			</film>
+			<spectrum filename="spectra/srf_121.spd" name="srf"/>
 		</sensor>
 		<sensor type="orthographic" name="sensor122">
 			<transform name="to_world">
@@ -1607,6 +1729,7 @@
 				<integer name="height" value="$resy"/>
 				<boolean name="sample_border" value="false"/>
 			</film>
+			<spectrum filename="spectra/srf_122.spd" name="srf"/>
 		</sensor>
 		<sensor type="orthographic" name="sensor123">
 			<transform name="to_world">
@@ -1620,6 +1743,7 @@
 				<integer name="height" value="$resy"/>
 				<boolean name="sample_border" value="false"/>
 			</film>
+			<spectrum filename="spectra/srf_123.spd" name="srf"/>
 		</sensor>
 		<sensor type="orthographic" name="sensor124">
 			<transform name="to_world">
@@ -1633,6 +1757,7 @@
 				<integer name="height" value="$resy"/>
 				<boolean name="sample_border" value="false"/>
 			</film>
+			<spectrum filename="spectra/srf_124.spd" name="srf"/>
 		</sensor>
 		<sensor type="orthographic" name="sensor125">
 			<transform name="to_world">
@@ -1646,6 +1771,7 @@
 				<integer name="height" value="$resy"/>
 				<boolean name="sample_border" value="false"/>
 			</film>
+			<spectrum filename="spectra/srf_125.spd" name="srf"/>
 		</sensor>
 		<sensor type="orthographic" name="sensor126">
 			<transform name="to_world">
@@ -1659,6 +1785,7 @@
 				<integer name="height" value="$resy"/>
 				<boolean name="sample_border" value="false"/>
 			</film>
+			<spectrum filename="spectra/srf_126.spd" name="srf"/>
 		</sensor>
 		<sensor type="orthographic" name="sensor127">
 			<transform name="to_world">
@@ -1672,6 +1799,7 @@
 				<integer name="height" value="$resy"/>
 				<boolean name="sample_border" value="false"/>
 			</film>
+			<spectrum filename="spectra/srf_127.spd" name="srf"/>
 		</sensor>
 		<sensor type="orthographic" name="sensor128">
 			<transform name="to_world">
@@ -1685,6 +1813,7 @@
 				<integer name="height" value="$resy"/>
 				<boolean name="sample_border" value="false"/>
 			</film>
+			<spectrum filename="spectra/srf_128.spd" name="srf"/>
 		</sensor>
 		<sensor type="orthographic" name="sensor129">
 			<transform name="to_world">
@@ -1698,6 +1827,7 @@
 				<integer name="height" value="$resy"/>
 				<boolean name="sample_border" value="false"/>
 			</film>
+			<spectrum filename="spectra/srf_129.spd" name="srf"/>
 		</sensor>
 		<sensor type="orthographic" name="sensor130">
 			<transform name="to_world">
@@ -1711,6 +1841,7 @@
 				<integer name="height" value="$resy"/>
 				<boolean name="sample_border" value="false"/>
 			</film>
+			<spectrum filename="spectra/srf_130.spd" name="srf"/>
 		</sensor>
 		<sensor type="orthographic" name="sensor131">
 			<transform name="to_world">
@@ -1724,6 +1855,7 @@
 				<integer name="height" value="$resy"/>
 				<boolean name="sample_border" value="false"/>
 			</film>
+			<spectrum filename="spectra/srf_131.spd" name="srf"/>
 		</sensor>
 		<sensor type="orthographic" name="sensor132">
 			<transform name="to_world">
@@ -1737,6 +1869,7 @@
 				<integer name="height" value="$resy"/>
 				<boolean name="sample_border" value="false"/>
 			</film>
+			<spectrum filename="spectra/srf_132.spd" name="srf"/>
 		</sensor>
 		<sensor type="orthographic" name="sensor133">
 			<transform name="to_world">
@@ -1750,6 +1883,7 @@
 				<integer name="height" value="$resy"/>
 				<boolean name="sample_border" value="false"/>
 			</film>
+			<spectrum filename="spectra/srf_133.spd" name="srf"/>
 		</sensor>
 		<sensor type="orthographic" name="sensor134">
 			<transform name="to_world">
@@ -1763,6 +1897,7 @@
 				<integer name="height" value="$resy"/>
 				<boolean name="sample_border" value="false"/>
 			</film>
+			<spectrum filename="spectra/srf_134.spd" name="srf"/>
 		</sensor>
 		<sensor type="orthographic" name="sensor135">
 			<transform name="to_world">
@@ -1776,6 +1911,7 @@
 				<integer name="height" value="$resy"/>
 				<boolean name="sample_border" value="false"/>
 			</film>
+			<spectrum filename="spectra/srf_135.spd" name="srf"/>
 		</sensor>
 		<sensor type="orthographic" name="sensor136">
 			<transform name="to_world">
@@ -1789,6 +1925,7 @@
 				<integer name="height" value="$resy"/>
 				<boolean name="sample_border" value="false"/>
 			</film>
+			<spectrum filename="spectra/srf_136.spd" name="srf"/>
 		</sensor>
 		<sensor type="orthographic" name="sensor137">
 			<transform name="to_world">
@@ -1802,6 +1939,7 @@
 				<integer name="height" value="$resy"/>
 				<boolean name="sample_border" value="false"/>
 			</film>
+			<spectrum filename="spectra/srf_137.spd" name="srf"/>
 		</sensor>
 		<sensor type="orthographic" name="sensor138">
 			<transform name="to_world">
@@ -1815,6 +1953,7 @@
 				<integer name="height" value="$resy"/>
 				<boolean name="sample_border" value="false"/>
 			</film>
+			<spectrum filename="spectra/srf_138.spd" name="srf"/>
 		</sensor>
 		<sensor type="orthographic" name="sensor139">
 			<transform name="to_world">
@@ -1828,6 +1967,7 @@
 				<integer name="height" value="$resy"/>
 				<boolean name="sample_border" value="false"/>
 			</film>
+			<spectrum filename="spectra/srf_139.spd" name="srf"/>
 		</sensor>
 		<sensor type="orthographic" name="sensor140">
 			<transform name="to_world">
@@ -1841,6 +1981,7 @@
 				<integer name="height" value="$resy"/>
 				<boolean name="sample_border" value="false"/>
 			</film>
+			<spectrum filename="spectra/srf_140.spd" name="srf"/>
 		</sensor>
 		<sensor type="orthographic" name="sensor141">
 			<transform name="to_world">
@@ -1854,6 +1995,7 @@
 				<integer name="height" value="$resy"/>
 				<boolean name="sample_border" value="false"/>
 			</film>
+			<spectrum filename="spectra/srf_141.spd" name="srf"/>
 		</sensor>
 		<sensor type="orthographic" name="sensor142">
 			<transform name="to_world">
@@ -1867,6 +2009,7 @@
 				<integer name="height" value="$resy"/>
 				<boolean name="sample_border" value="false"/>
 			</film>
+			<spectrum filename="spectra/srf_142.spd" name="srf"/>
 		</sensor>
 		<sensor type="orthographic" name="sensor143">
 			<transform name="to_world">
@@ -1880,6 +2023,7 @@
 				<integer name="height" value="$resy"/>
 				<boolean name="sample_border" value="false"/>
 			</film>
+			<spectrum filename="spectra/srf_143.spd" name="srf"/>
 		</sensor>
 		<sensor type="orthographic" name="sensor144">
 			<transform name="to_world">
@@ -1893,6 +2037,7 @@
 				<integer name="height" value="$resy"/>
 				<boolean name="sample_border" value="false"/>
 			</film>
+			<spectrum filename="spectra/srf_144.spd" name="srf"/>
 		</sensor>
 		<sensor type="orthographic" name="sensor145">
 			<transform name="to_world">
@@ -1906,6 +2051,7 @@
 				<integer name="height" value="$resy"/>
 				<boolean name="sample_border" value="false"/>
 			</film>
+			<spectrum filename="spectra/srf_145.spd" name="srf"/>
 		</sensor>
 		<sensor type="orthographic" name="sensor146">
 			<transform name="to_world">
@@ -1919,6 +2065,7 @@
 				<integer name="height" value="$resy"/>
 				<boolean name="sample_border" value="false"/>
 			</film>
+			<spectrum filename="spectra/srf_146.spd" name="srf"/>
 		</sensor>
 		<sensor type="orthographic" name="sensor147">
 			<transform name="to_world">
@@ -1932,6 +2079,7 @@
 				<integer name="height" value="$resy"/>
 				<boolean name="sample_border" value="false"/>
 			</film>
+			<spectrum filename="spectra/srf_147.spd" name="srf"/>
 		</sensor>
 		<sensor type="orthographic" name="sensor148">
 			<transform name="to_world">
@@ -1945,6 +2093,7 @@
 				<integer name="height" value="$resy"/>
 				<boolean name="sample_border" value="false"/>
 			</film>
+			<spectrum filename="spectra/srf_148.spd" name="srf"/>
 		</sensor>
 		<sensor type="orthographic" name="sensor149">
 			<transform name="to_world">
@@ -1958,6 +2107,7 @@
 				<integer name="height" value="$resy"/>
 				<boolean name="sample_border" value="false"/>
 			</film>
+			<spectrum filename="spectra/srf_149.spd" name="srf"/>
 		</sensor>
 		<film type="hdrfilm" name="film">
 			<integer name="width" value="$resx"/>
@@ -1976,10 +2126,7 @@
 
 	<emitter type="directional" id="light" name="light">
 		<point name="direction" x="-0.9659258" y="-0.0" z="-0.25881904"/>
-		<texture type="irregular" name="irradiance">
-			<string name="wavelengths" value="400, 500, 550, 600, 650, 700"/>
-			<string name="values" value="50, 300, 0, 65, 100, 100"/>
-		</texture>
+		<spectrum filename="spectra/00003_White_Painted_Room_Ceiling_sce.spd" name="irradiance"/>
 	</emitter>
 
 <!-- Shapes -->
