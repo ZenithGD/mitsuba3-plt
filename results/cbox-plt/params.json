@@ -1,1 +1,6 @@
-{"bitmap_size": {"width": 500, "height": 500}, "samples": 1024, "time": "1.6536978183333333 m", "time_per_sample": "96.89635654296875 ms"}
+{
+    "bitmap_size": { "width": 500, "height": 500 },
+    "samples": 1024,
+    "time": "1.6536978183333333 m",
+    "time_per_sample": "96.89635654296875 ms"
+}

@@ -60,7 +60,7 @@ def main(args):
         }
 
         with open(os.path.join(folder_path, f"params_{spp}.json"), "w") as f:
-            json.dump(render_data, f)
+            json.dump(render_data, f, indent=2)
 
 
 
