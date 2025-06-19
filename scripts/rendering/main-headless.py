@@ -15,35 +15,6 @@ import argparse
 from scripts.utils import *
 # from scripts.rendering.integrators.plt import PLTIntegrator
 
-def render_scene(scene, samples, integrator="path", denoise=False):
-    
-    #render scene using the desired integrator
-    integrator = mi.load_dict({
-        "type" : "stokes",
-        "nested" : {
-            "type" : integrator,
-            "max_depth": 7,
-            "rr_depth": 50,
-            'samples_per_pass': 512
-        }
-    })
-    result = integrator.render(scene, spp=samples)
-    bmp = mi.Bitmap(result).convert()
-
-    L, sp = stokes_to_bitmaps(bmp)
-    
-    if denoise:
-        print("Denoising...")
-        print(L.size())
-        # Denoise the rendered image
-        denoiser = mi.OptixDenoiser(input_size=L.size(), albedo=False, normals=False, temporal=False)
-        L = denoiser(L)
-
-        for i, s in enumerate(sp):
-            sp[i] = denoiser(s)
-
-    return L, sp, result
-
 def main(args):
     
     # load scene
@@ -51,7 +22,7 @@ def main(args):
     start = time.perf_counter_ns()
     scene = mi.load_file(args.scene)
     el = time.perf_counter_ns() - start
-    print(f"...done. ({el / 1e6} ms)")
+    print(f"...done. ({format_time(el)})")
 
     if args.verbose:
         scene_params = mi.traverse(scene)
@@ -62,7 +33,7 @@ def main(args):
     print("Rendering...")
     L, sp, result = render_scene(scene, args.spp, args.integrator, args.denoise)
     el = time.perf_counter_ns() - start
-    print(f"...done. ({el / 1e6} ms)")
+    print(f"...done. ({format_time(el)})")
 
     # folder to store data
     folder_path = ""
@@ -73,7 +44,6 @@ def main(args):
             print(f"Creating folder at '{folder_path}'")
         except FileExistsError:
             pass
-            
     
     mi.util.write_bitmap(os.path.join(folder_path, f'result.exr'), L, write_async=True)
     mi.util.write_bitmap(os.path.join(folder_path, f'result.png'), L, write_async=True)
@@ -89,7 +59,8 @@ def main(args):
             "height" : L.size().y
         },
         "samples" : args.spp,
-        "time": el / 1e9
+        "time": format_time(el),
+        "time_per_sample": format_time(el / args.spp)
     }
 
     with open(os.path.join(folder_path, "params.json"), "w") as f:

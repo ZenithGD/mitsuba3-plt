@@ -187,8 +187,10 @@ class PLTIntegrator(ADIntegrator):
         i = mi.UInt32(0)
 
         while i < self.max_depth:
+            # Accumulate both contributions
+            # They are already weighted by their respective MIS weight
 
-            # account for emissive geometry
+            # account for emissive geometry by replaying subpath
             L = spec_add(L, self.solve_replay_emissive(mode, 
                 scene, 
                 sampler, 
@@ -373,21 +375,18 @@ class PLTIntegrator(ADIntegrator):
 
         # 4. Measure beam at sensor
 
-        # return self.__measure(
-        #     mode,
-        #     scene, 
-        #     sampler, 
-        #     depth, 
-        #     δL, 
-        #     δaovs, 
-        #     state_in, 
-        #     bounce.active,
-        #     bounce_buffer,
-        #     wavelength,
-        #     Li,
-        #     bounce.rr_weight)
-
-        return Li
+        return self.measure(
+            mode,
+            scene, 
+            sampler, 
+            depth, 
+            δL, 
+            δaovs, 
+            state_in, 
+            bounce.active,
+            bounce_buffer,
+            wavelength,
+            Li)
 
     @dr.syntax
     def replay_path(self,
@@ -446,7 +445,7 @@ class PLTIntegrator(ADIntegrator):
         return α
 
     @dr.syntax
-    def __measure(self,
+    def measure(self,
                       mode : dr.ADMode, 
                       scene : mi.Scene, 
                       sampler : mi.Sampler,
@@ -457,8 +456,7 @@ class PLTIntegrator(ADIntegrator):
                       active : mi.Bool,
                       bounce_buffer : dr.Local[mi.BounceData3f],
                       wavelength : mi.Float,
-                      Li : mi.Spectrum,
-                      path_mod : mi.Float) -> mi.Spectrum:
+                      Li : mi.Spectrum) -> mi.Spectrum:
         
         # Propagate beam to camera (TODO)
         

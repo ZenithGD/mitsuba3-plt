@@ -104,10 +104,8 @@ def main(args):
         print(scene_params)
 
     # set up the total relative transformation
-    tf = mi.Transform4f().translate([0, 0.1, 0])
-
     # video generation
-    result = cv2.VideoWriter('filename.avi', 
+    video_result = cv2.VideoWriter('filename.avi', 
                             cv2.VideoWriter_fourcc(*'MJPG'),
                             10, scene_params["elm__1.film.size"])
 
@@ -131,6 +129,11 @@ def main(args):
 
         # write one frame
         mi.util.write_bitmap(os.path.join(folder_path, f'frame{i}.png'), sp[0], write_async=True)
+
+        result.write(sp[0])
+
+    cv2.destroyAllWindows()
+    video_result.release()
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description="Wave-based scripted renderer.")
