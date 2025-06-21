@@ -15,7 +15,20 @@ import argparse
 from scripts.utils import *
 # from scripts.rendering.integrators.plt import PLTIntegrator
 
+def process_override_value(st : str):
+
+    # for now only floats
+    return float(st)
+
 def main(args):
+
+    # process overrides in dict
+    overrides = {}
+    print(args.override)
+    for ov in args.override:
+        ov_split = ov.split("=")
+        name, value = ov_split[0], process_override_value(ov_split[1])
+        overrides[name] = value
     
     # load scene
     print("Loading scene...")
@@ -23,13 +36,20 @@ def main(args):
     scene = mi.load_file(args.scene)
     el = time.perf_counter_ns() - start
     print(f"...done. ({format_time(el)})")
-
+    
+    scene_params = mi.traverse(scene)
+    
     if args.verbose:
-        scene_params = mi.traverse(scene)
         print(scene_params)
 
-    #render scene using the desired integrator
-    
+    # apply each override
+    for name, value in overrides.items():
+        print("overriding", name, "=", value)
+        scene_params[name] = value
+
+    scene_params.update()
+
+    #render scene using the desired integrator    
     print("Rendering...")
     L, sp, result = render_scene(scene, args.spp, args.integrator, args.denoise)
     el = time.perf_counter_ns() - start
@@ -96,10 +116,11 @@ if __name__ == '__main__':
     parser.add_argument("--spectral", "-s", action="store_true", help="Whether to perform spectral rendering.")
     parser.add_argument("--verbose", "-v", action="store_true", help="Shows additional information during rendering (ONLY USE WHILE DEBUGGING!).")
     parser.add_argument("--plot", "-p", action="store_true", help="Plot result")
-    parser.add_argument("--integrator", "-i", type=str, help="Integrator type.", default="mispath")
+    parser.add_argument("--integrator", "-i", type=str, help="Integratsor type.", default="mispath")
     parser.add_argument("--spp", type=int, help="Samples per pixel", default=64)
     parser.add_argument("--outdir", "-o", type=str, help="The folder in which to store the results")
     parser.add_argument("--denoise", "-d", action="store_true", help="Whether to denoise the final result.")
+    parser.add_argument("--override", "-r", type=str, nargs="*", help="Set of overrides to apply to the scene.", default=[])
     
     args = parser.parse_args()
 

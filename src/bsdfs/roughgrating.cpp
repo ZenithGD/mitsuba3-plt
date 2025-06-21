@@ -239,13 +239,13 @@ public:
             if (props.has_property("inv_period"))
                 Throw("Grating inv inv_period: please specify"
                       "either 'inv_period' or 'inv_period_x'/'inv_period_x'.");
-            m_inv_period_x = props.get<ScalarFloat>("inv_period_x");
-            m_inv_period_y = props.get<ScalarFloat>("inv_period_y");
+            m_inv_period_x = props.texture<Texture>("inv_period_x");
+            m_inv_period_y = props.texture<Texture>("inv_period_y");
         } else {
             m_inv_period_x = m_inv_period_y =
-                props.get<ScalarFloat>("inv_period", 0.1f);
+                props.texture<Texture>("inv_period", 0.1f);
         }
-        m_height = props.get<ScalarFloat>("height", 0.3f);
+        m_height = props.texture<Texture>("height", 0.3f);
         m_lobes  = props.get<uint32_t>("lobes", 5);
         std::string lobe_type =
             props.get<std::string>("lobe_type", "rectangular");
@@ -266,7 +266,7 @@ public:
                 static_cast<uint32_t>(m_lobe_type) |
                 static_cast<uint32_t>(DiffractionGratingType::Radial));
         }
-        m_multiplier = props.get("multiplier", 1.0f);
+        m_multiplier = props.texture<Texture>("multiplier", 1.0f);
 
         m_components.clear();
         m_components.push_back(m_flags);
@@ -293,6 +293,21 @@ public:
                              ParamFlags::Differentiable |
                                  ParamFlags::Discontinuous);
         callback->put_object("k", m_k.get(),
+                             ParamFlags::Differentiable |
+                                 ParamFlags::Discontinuous);
+        callback->put_object("inv_period_x", m_inv_period_x.get(),
+                             ParamFlags::Differentiable |
+                                 ParamFlags::Discontinuous);
+        callback->put_object("inv_period_y", m_inv_period_y.get(),
+                             ParamFlags::Differentiable |
+                                 ParamFlags::Discontinuous);
+        callback->put_object("height", m_height.get(),
+                             ParamFlags::Differentiable |
+                                 ParamFlags::Discontinuous);
+        callback->put_object("grating_angle", m_grating_angle.get(),
+                             ParamFlags::Differentiable |
+                                 ParamFlags::Discontinuous);
+        callback->put_object("m_multiplier", m_grating_angle.get(),
                              ParamFlags::Differentiable |
                                  ParamFlags::Discontinuous);
     }
@@ -395,7 +410,7 @@ public:
 
     std::tuple<Vector3f, Float, Float, Vector2i, Mask>
     sample_diffract(const Vector2f &sample2, const SurfaceInteraction3f &si,
-                    Normal3f &n, const Float &wl) const {
+                    Normal3f &n, const Float &wl, Mask active) const {
         // new frame along normal to compute diffracted direction
         // in that frame
         Frame3f normalFrame(n);
@@ -403,10 +418,16 @@ public:
         // std::cout << wi << ";" << wi_local << std::endl;
 
         // sample lobe and diffract in local frame
-        DiffractionGrating3f grating(m_grating_angle->eval_1(si),
-                                     Vector2f(m_inv_period_x, m_inv_period_y),
-                                     m_height, m_lobes, m_lobe_type,
-                                     m_multiplier, si.uv);
+        DiffractionGrating3f grating(
+            m_grating_angle->eval_1(si),
+            Vector2f(
+                m_inv_period_x->eval_1(si, active), 
+                m_inv_period_y->eval_1(si, active)),
+            m_height->eval_1(si, active), 
+            m_lobes, 
+            m_lobe_type,
+            m_multiplier->eval_1(si, active), 
+            si.uv);
 
         auto [lobe, pdf_xy] =
             grating.sample_lobe(sample2, wi_local, wl * 1e-3f);
@@ -415,11 +436,11 @@ public:
 
         // std::cout << lobe << std::endl;
 
-        auto [wo_local, active] = grating.diffract(wi_local, lobe, wl * 1e-3f);
+        auto [wo_local, active_diff] = grating.diffract(wi_local, lobe, wl * 1e-3f);
         // std::cout << wo_local << std::endl;
 
         Vector3f wo = normalFrame.to_world(wo_local);
-        return { wo, pdf_xy.x() * pdf_xy.y(), intensity, lobe, active };
+        return { wo, pdf_xy.x() * pdf_xy.y(), intensity, lobe, active & active_diff };
     }
 
     std::pair<PLTSamplePhaseData3f, GeneralizedRadiance3f>
@@ -474,7 +495,7 @@ public:
         }
 
         std::tie(bs.wo, grating_pdf, intensity, lobe, active_diffracted) =
-            sample_diffract(lobe_sample2, si, m, wavelength);
+            sample_diffract(lobe_sample2, si, m, wavelength, active);
         bs.eta               = 1.f;
         bs.sampled_component = 0;
         bs.sampled_type      = +BSDFFlags::GlossyReflection;
@@ -544,12 +565,12 @@ public:
         if constexpr (is_spectral_v<Spectrum>) {
             PLTSamplePhaseData3f sd(bs, lobe, reflection_dir, si.wavelengths);
 
-            return { sd, (F * weight * intensity * m_multiplier) & active };
+            return { sd, (F * weight * intensity * m_multiplier->eval_1(si, active)) & active };
         } else {
             PLTSamplePhaseData3f sd(bs, lobe, reflection_dir,
                                     UnpolarizedSpectrum(wavelength));
 
-            return { sd, (F * weight * intensity * m_multiplier) & active };
+            return { sd, (F * weight * intensity * m_multiplier->eval_1(si, active)) & active };
         }
     }
 
@@ -658,10 +679,16 @@ public:
                                      m_sample_visible);
 
         // instantiate grating model
-        DiffractionGrating3f grating(m_grating_angle->eval_1(si),
-                                     Vector2f(m_inv_period_x, m_inv_period_y),
-                                     m_height, m_lobes, m_lobe_type,
-                                     m_multiplier, si.uv);
+        DiffractionGrating3f grating(
+            m_grating_angle->eval_1(si),
+            Vector2f(
+                m_inv_period_x->eval_1(si, active), 
+                m_inv_period_y->eval_1(si, active)),
+            m_height->eval_1(si, active), 
+            m_lobes, 
+            m_lobe_type,
+            m_multiplier->eval_1(si, active), 
+            si.uv);
 
         // fallback in RGB mode
         if constexpr (!is_spectral_v<Spectrum>) {
@@ -932,10 +959,16 @@ public:
         MI_MASKED_FUNCTION(ProfilerPhase::BSDFEvaluate, active);
 
         // instantiate grating model
-        DiffractionGrating3f grating(m_grating_angle->eval_1(si),
-                                     Vector2f(m_inv_period_x, m_inv_period_y),
-                                     m_height, m_lobes, m_lobe_type,
-                                     m_multiplier, si.uv);
+        DiffractionGrating3f grating(
+            m_grating_angle->eval_1(si),
+            Vector2f(
+                m_inv_period_x->eval_1(si, active), 
+                m_inv_period_y->eval_1(si, active)),
+            m_height->eval_1(si, active), 
+            m_lobes, 
+            m_lobe_type,
+            m_multiplier->eval_1(si, active), 
+            si.uv);
 
         Float k;
         if constexpr (is_spectral_v<Spectrum>) {
@@ -1074,10 +1107,10 @@ private:
     /// Physical grating model parameters
 
     /// @brief Period of the grating in um.
-    float m_inv_period_x, m_inv_period_y;
+    ref<Texture> m_inv_period_x, m_inv_period_y;
 
     /// @brief Height of the grating in um.
-    float m_height;
+    ref<Texture> m_height;
 
     /// @brief Angle of the grating.
     ref<Texture> m_grating_angle;
@@ -1092,7 +1125,7 @@ private:
     bool m_radial;
 
     /// @brief Scaling factor for outgoing radiance.
-    float m_multiplier;
+    ref<Texture> m_multiplier;
 };
 
 MI_IMPLEMENT_CLASS_VARIANT(RoughGrating, BSDF)
