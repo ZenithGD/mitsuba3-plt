@@ -3,7 +3,7 @@
     "width": 800,
     "height": 600
   },
-  "samples": 64,
-  "time": "5.7574974 s",
-  "time_per_sample": "89.960896875 ms"
+  "samples": 8192,
+  "time": "8.668584355 m",
+  "time_per_sample": "63.490608068847656 ms"
 }

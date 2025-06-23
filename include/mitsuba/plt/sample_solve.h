@@ -37,14 +37,20 @@ struct PLTSamplePhaseData
      */
     UnpolarizedSpectrum sampling_wavelengths;
 
+    /**
+     * The coherence information incoming from the subpath connecting the light
+     * to the current vertex.
+     */
+    Coherence3f coherence;
+
     // add more data here if needed...
 
     PLTSamplePhaseData(const BSDFSample3f &sp, const Vector2i& lobe, 
-        const Frame3f& sn, const UnpolarizedSpectrum& wl)
-        : bsdf_sample(sp), diffraction_lobe(lobe), internal_frame(sn), sampling_wavelengths(wl)
+        const Frame3f& sn, const Coherence3f& c, const UnpolarizedSpectrum& wl)
+        : bsdf_sample(sp), diffraction_lobe(lobe), internal_frame(sn), coherence(c), sampling_wavelengths(wl)
     {}
 
-    DRJIT_STRUCT(PLTSamplePhaseData, bsdf_sample, diffraction_lobe, internal_frame, sampling_wavelengths)
+    DRJIT_STRUCT(PLTSamplePhaseData, bsdf_sample, diffraction_lobe, internal_frame, coherence, sampling_wavelengths)
 };
 
 NAMESPACE_END(mitsuba)

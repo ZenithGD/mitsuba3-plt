@@ -1,0 +1,9 @@
+{
+  "bitmap_size": {
+    "width": 800,
+    "height": 600
+  },
+  "samples": 8192,
+  "time": "10.951941661666668 m",
+  "time_per_sample": "80.21441646728516 ms"
+}

@@ -88,6 +88,8 @@ class PLTIntegrator(ADIntegrator):
         # Additional debug info
         aovs = [ mi.Spectrum(0) ]
 
+        opl = mi.Float(0.0)
+
         while active:
 
             # 1. Intersect with scene geometry
@@ -208,13 +210,12 @@ class PLTIntegrator(ADIntegrator):
                 state_in, active, 
                 bounce_buffer, wavelength, i))
 
+            L = mi.Spectrum(L)
+            
             # next bounce
             i += 1
 
-            L = mi.Spectrum(L)
-
         return (L, active, [], [])
-        
     
     @dr.syntax
     def solve_replay_NEE(self, 
@@ -246,6 +247,10 @@ class PLTIntegrator(ADIntegrator):
         Returns:
             mi.Spectrum: The contribution of this light path
         """
+        
+        # assume very coherent light from the start. 
+        # the coherence properties should come from the emitter
+        coherence = mi.Coherence3f(mi.Float(1e-18), mi.Float(0.0))
 
         bounce = bounce_buffer.read(bounce_idx)
         bsdf_ctx = mi.BSDFContext()
@@ -267,7 +272,12 @@ class PLTIntegrator(ADIntegrator):
 
         # no need to recompute UV coordinates again, just get the bsdf
         bsdf = si.bsdf()
-        sd = mi.PLTSamplePhaseData3f(dr.zeros(mi.BSDFSample3f), bounce.sampled_lobe, mi.Vector3f(0.0), bounce.sampling_wavelengths)
+        sd = mi.PLTSamplePhaseData3f(
+            dr.zeros(mi.BSDFSample3f), 
+            bounce.sampled_lobe, 
+            mi.Vector3f(0.0), 
+            mi.Coherence3f(mi.Float(0.0), mi.Float(0.0)),
+            bounce.sampling_wavelengths)
         bsdf_val = bsdf.wbsdf_eval(bsdf_ctx, si, wo, sd, bounce.active)
         bsdf_pdf = bsdf.wbsdf_pdf(bsdf_ctx, si, wo, sd, bounce.active)
         bsdf_val = bsdf_val.L
@@ -283,21 +293,22 @@ class PLTIntegrator(ADIntegrator):
             state_in, 
             bounce.active,
             bounce_buffer,
+            coherence,
             wavelength, 
             bounce_idx)
 
         return em_weight * mis_em * bsdf_val * α
     
-    @dr.syntax
-    def source_PLT_beam(self,  
-                        mode : dr.ADMode, 
-                        scene : mi.Scene, 
-                        Le : mi.Spectrum,
-                        dir : mi.Vector3f,
-                        is_environment : mi.Bool,
-                        active : mi.Bool):
+    # @dr.syntax
+    # def source_PLT_beam(self,  
+    #                     mode : dr.ADMode, 
+    #                     scene : mi.Scene, 
+    #                     Le : mi.Spectrum,
+    #                     dir : mi.Vector3f,
+    #                     is_environment : mi.Bool,
+    #                     active : mi.Bool):
 
-        beam = dr.select()
+    #     beam = dr.select()
 
     
     @dr.syntax    
@@ -330,6 +341,10 @@ class PLTIntegrator(ADIntegrator):
         Returns:
             mi.Spectrum: The contribution of this light path
         """
+
+        # assume very coherent light from the start. 
+        # the coherence properties should come from the emitter
+        coherence = mi.Coherence3f(mi.Float(1e-18), mi.Float(0.0))
 
         # 1. Read bounce and prepare light source info
         # Read bounce
@@ -368,6 +383,7 @@ class PLTIntegrator(ADIntegrator):
             state_in, 
             bounce.active,
             bounce_buffer,
+            coherence,
             wavelength, 
             bounce_idx)
             
@@ -399,6 +415,7 @@ class PLTIntegrator(ADIntegrator):
                       state_in : any,
                       active : mi.Bool,
                       bounce_buffer : dr.Local[mi.BounceData3f],
+                      coherence : mi.Coherence3f,
                       wavelength : mi.Float,
                       bounce_idx : mi.UInt32) -> mi.Spectrum:
         """Compute the weight of this path and compute forward coherence transport
@@ -428,15 +445,25 @@ class PLTIntegrator(ADIntegrator):
 
             # Read subpath bounce
             bounce = bounce_buffer[bidx]
+            
+            # propagate
+            coherence.propagate(
+                bounce.interaction.t, 
+                bounce.interaction.is_valid())
 
             # Propagate beam and evolve distribution (TODO)
             bsdf = bounce.interaction.bsdf()
 
-            # Correct way
-            sd = mi.PLTSamplePhaseData3f(dr.zeros(mi.BSDFSample3f), bounce.sampled_lobe, mi.Vector3f(0.0), bounce.sampling_wavelengths)
+            # A: Correct way
+            sd = mi.PLTSamplePhaseData3f(
+                dr.zeros(mi.BSDFSample3f), 
+                bounce.sampled_lobe, 
+                mi.Vector3f(0.0), 
+                coherence, 
+                bounce.sampling_wavelengths)
             α[bounce.active] = bsdf.wbsdf_weight(bsdf_ctx, bounce.interaction, bounce.wo, sd).L * α[bounce.active]
 
-            # Debug using information from sample pass
+            # B: Debug using information from sample pass
             #α[bounce.active] = bounce.bsdf_weight * α[bounce.active]
             
             # next bounce in forward path

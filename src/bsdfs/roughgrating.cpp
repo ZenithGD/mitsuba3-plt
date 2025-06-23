@@ -268,6 +268,9 @@ public:
         }
         m_multiplier = props.texture<Texture>("multiplier", 1.0f);
 
+        // Assume light is very coherent by default -> small angular spread
+        m_coherence = props.get<ScalarFloat>("coherence", 1e-18f);
+
         m_components.clear();
         m_components.push_back(m_flags);
     }
@@ -458,12 +461,20 @@ public:
 
             UnpolarizedSpectrum(0.0f);
             if constexpr (is_spectral_v<Spectrum>) {
-                PLTSamplePhaseData3f sd(bs, Vector2i(0, 0), Vector3f(0, 0, 0),
-                                        si.wavelengths);
+                PLTSamplePhaseData<Float, Spectrum> sd(
+                    bs, 
+                    Vector2i(0, 0), 
+                    Vector3f(0, 0, 0), 
+                    Coherence<Float, Spectrum>(Float(0.0f), Float(0.0f)), 
+                    si.wavelengths);
                 return { sd, GeneralizedRadiance3f(0.0f) };
             } else {
-                PLTSamplePhaseData3f sd(bs, Vector2i(0, 0), Vector3f(0, 0, 0),
-                                        UnpolarizedSpectrum(0.0));
+                PLTSamplePhaseData<Float, Spectrum> sd(
+                    bs, 
+                    Vector2i(0, 0), 
+                    Vector3f(0, 0, 0), 
+                    Coherence<Float, Spectrum>(Float(0.0f), Float(0.0f)), 
+                    UnpolarizedSpectrum(0.0));
                 return { sd, GeneralizedRadiance3f(0.0f) };
             }
         }
@@ -563,12 +574,21 @@ public:
             weight *= m_specular_reflectance->eval(si, active);
 
         if constexpr (is_spectral_v<Spectrum>) {
-            PLTSamplePhaseData3f sd(bs, lobe, reflection_dir, si.wavelengths);
+            PLTSamplePhaseData3f sd(
+                bs, 
+                lobe, 
+                reflection_dir, 
+                Coherence3f(Float(0.0f), Float(0.0f)),
+                si.wavelengths);
 
             return { sd, (F * weight * intensity * m_multiplier->eval_1(si, active)) & active };
         } else {
-            PLTSamplePhaseData3f sd(bs, lobe, reflection_dir,
-                                    UnpolarizedSpectrum(wavelength));
+            PLTSamplePhaseData3f sd(
+                bs, 
+                lobe, 
+                reflection_dir,
+                Coherence3f(Float(0.0f), Float(0.0f)),        
+                UnpolarizedSpectrum(wavelength));
 
             return { sd, (F * weight * intensity * m_multiplier->eval_1(si, active)) & active };
         }
@@ -690,6 +710,8 @@ public:
             m_multiplier->eval_1(si, active), 
             si.uv);
 
+        Vector3f reflection_dir = reflect(si.wi);
+
         // fallback in RGB mode
         if constexpr (!is_spectral_v<Spectrum>) {
 
@@ -712,6 +734,7 @@ public:
 
                     for (int i = 0; i < 3; i++) {
                         auto wl = wavelengths[i];
+                        Float k = dr::TwoPi<Float> / (wl * 1e-3f);
 
                         Float lobe_intensity =
                             grating.lobe_intensity(lobe, si.wi, wl * 1e-3f);
@@ -727,7 +750,16 @@ public:
                                 dr::abs(dr::unit_angle(center_dir, wo)) < a,
                             lobe_intensity, 0.0);
 
-                        auto r = lobes_result * colour;
+                        // angular coherence between the center direction and the reflected dir
+                        // TODO: admit anisotropic coherence information
+                        Coherence3f coh(m_coherence, 1.0f);
+                        Float angle_offset = dr::abs(dr::unit_angle(reflection_dir, center_dir));
+                        Float inv_det = dr::select(dr::isnan(coh.inv_coherence_det(k)), 0.0f, coh.inv_coherence_det(k));
+                        Float angular_coh = dr::exp(-0.5f * angle_offset * inv_det * angle_offset);
+                        angular_coh = dr::select(dr::isnan(angular_coh), 0.0f, angular_coh);
+                        // std::cout << "l:" << lobe << ", angular:" << angular_coh << std::endl;
+
+                        auto r = lobes_result * colour * angular_coh;
 
                         result += Spectrum(r);
                     }
@@ -823,6 +855,7 @@ public:
                     for (int i = 0; i < dr::size_v<decltype(wavelengths)>;
                          i++) {
                         auto wl = wavelengths[i];
+                        Float k = dr::TwoPi<Float> / (wl * 1e-3f);
 
                         Float lobe_intensity =
                             grating.lobe_intensity(lobe, si.wi, wl * 1e-3f);
@@ -832,10 +865,20 @@ public:
                         std::tie(center_dir, lobe_active) =
                             grating.diffract(si.wi, lobe, wl * 1e-3f);
 
+                        // angular coherence between the center direction and the reflected dir
+                        // TODO: admit anisotropic coherence information
+                        Coherence3f coh(m_coherence, 1.0f);
+                        Float angle_offset = dr::abs(dr::unit_angle(reflection_dir, center_dir));
+                        Float inv_det = dr::select(dr::isnan(coh.inv_coherence_det(k)), 0.0f, coh.inv_coherence_det(k));
+                        Float angular_coh = dr::exp(-0.5f * angle_offset * inv_det * angle_offset);
+                        angular_coh = dr::select(dr::isnan(angular_coh), 0.0f, angular_coh);
+
+                        // std::cout << "angular_coh:" << angular_coh << std::endl;
+
                         Float lobes_result = dr::select(
                             lobe_active &
                                 dr::abs(dr::unit_angle(center_dir, wo)) < a,
-                            lobe_intensity, 0.0);
+                            lobe_intensity * angular_coh, 0.0);
 
                         result[i] += lobes_result;
                     }
@@ -1123,6 +1166,9 @@ private:
 
     /// @brief Whether the grating rotates w.r.t the UV center (0.5, 0.5).
     bool m_radial;
+
+    /// @brief Assume isotropic coherence information
+    Float m_coherence;
 
     /// @brief Scaling factor for outgoing radiance.
     ref<Texture> m_multiplier;

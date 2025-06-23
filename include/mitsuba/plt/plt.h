@@ -85,7 +85,7 @@ public:
      * \param k The wavenumber
      * \return Matrix2f The inverse coherence matrix's determinant
      */
-    Matrix2f inv_coherence_det(Float k) const {
+    Float inv_coherence_det(Float k) const {
         return dr::det(inv_coherence_matrix(k));
     }
 
@@ -95,7 +95,7 @@ public:
      * \param k The wavenumber
      * \return Matrix2f The inverse coherence matrix's determinant
      */
-    Matrix2f inv_coherence_det() const {
+    Float inv_coherence_det() const {
         return dr::det(inv_coherence_matrix());
     }
 

@@ -47,7 +47,8 @@
 			<integer name="lobes" value="7" />
 			<float name="grating_angle" value="0" />
 			<float name="multiplier" value="10" />
-			<float name="alpha" value="0.01"/>
+			<float name="alpha" value="0.02"/>
+			<float name="coherence" value="3e-3" />
 		</bsdf>
 	</bsdf>
 

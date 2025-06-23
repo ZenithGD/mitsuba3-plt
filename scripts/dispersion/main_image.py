@@ -3,7 +3,7 @@ import argparse
 import mitsuba as mi
 import drjit as dr
 
-mi.set_variant("cuda_ad_rgb_polarized")
+mi.set_variant("cuda_ad_spectral_polarized")
 
 import numpy as np
 import matplotlib.pyplot as plt
@@ -184,7 +184,8 @@ def main_2d(args):
         'inv_period_y' : 0.65,
         'radial' : False,
         'lobes' : 5,
-        'grating_angle' : 45,
+        'grating_angle' : 45.0,
+        'coherence' : 2e+3,
         **alpha
     })
 
@@ -194,6 +195,8 @@ def main_2d(args):
     wavelengths = None
     if mi.is_spectral:
         wavelengths = mi.UnpolarizedSpectrum(λs, λs, λs, λs)
+    else:
+        wavelengths = mi.Color3f(λs, λs, λs)
 
     angle = 30
     eval_context = {

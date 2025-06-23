@@ -3,6 +3,8 @@
 #include <mitsuba/render/bsdf.h>
 #include <mitsuba/render/texture.h>
 #include <mitsuba/core/properties.h>
+#include <mitsuba/plt/fwd.h>
+#include <mitsuba/plt/plt.h>
 
 NAMESPACE_BEGIN(mitsuba)
 
@@ -33,12 +35,22 @@ BSDF<Float, Spectrum>::wbsdf_sample(
     GeneralizedRadiance<Float, Spectrum> gr(weight);
     if constexpr ( is_spectral_v<Spectrum> )
     {
-        PLTSamplePhaseData<Float, Spectrum> sd(sp, Vector2i(0, 0), Vector3f(0, 0, 0), si.wavelengths);
+        PLTSamplePhaseData<Float, Spectrum> sd(
+            sp, 
+            Vector2i(0, 0), 
+            Vector3f(0, 0, 0), 
+            Coherence<Float, Spectrum>(Float(0.0f), Float(0.0f)), 
+            si.wavelengths);
     
         return { sd, gr };  
     }
     else {
-        PLTSamplePhaseData<Float, Spectrum> sd(sp, Vector2i(0, 0), Vector3f(0, 0, 0), UnpolarizedSpectrum(0.0));
+        PLTSamplePhaseData<Float, Spectrum> sd(
+            sp, 
+            Vector2i(0, 0), 
+            Vector3f(0, 0, 0), 
+            Coherence<Float, Spectrum>(Float(0.0f), Float(0.0f)), 
+            UnpolarizedSpectrum(0.0));
     
         return { sd, gr };  
     }

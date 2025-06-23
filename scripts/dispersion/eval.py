@@ -11,6 +11,7 @@ from utils import *
 def eval_wbsdf_image(bsdf, eval_context):
     # Create a (dummy) surface interaction to use for the evaluation of the BSDF
     si = dr.zeros(mi.SurfaceInteraction3f)
+    si.wavelengths = eval_context["wavelengths"] if mi.is_spectral else mi.Color0f()
     
     # Specify an incident direction with 45 degrees elevation
     si.wi = eval_context["wi"]
@@ -27,7 +28,12 @@ def eval_wbsdf_image(bsdf, eval_context):
     wo = sph_to_dir(theta_o, phi_o)
 
     # Evaluate the whole array (18000 directions) at once
-    sd = mi.PLTSamplePhaseData3f(dr.zeros(mi.BSDFSample3f), mi.Vector2i(0), mi.Vector3f(0.0), mi.Color0f())
+    sd = mi.PLTSamplePhaseData3f(
+        dr.zeros(mi.BSDFSample3f), 
+        mi.Vector2i(0), 
+        mi.Vector3f(0.0), 
+        mi.Coherence3f(mi.Float(0.0), mi.Float(0.0)), 
+        eval_context["wavelengths"])
     values = bsdf.wbsdf_eval(mi.BSDFContext(), si, wo, sd)
 
     if mi.is_spectral:
