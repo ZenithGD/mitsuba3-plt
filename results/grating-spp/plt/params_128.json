@@ -1,0 +1,11 @@
+{
+  "bitmap_size": {
+    "width": 800,
+    "height": 600
+  },
+  "samples": 128,
+  "time": "11.408866300000001 s",
+  "time_per_sample": "89.13176796875001 ms",
+  "FLIP_error": 0.019720014184713364,
+  "RMSE_error": 0.033563315868377686
+}

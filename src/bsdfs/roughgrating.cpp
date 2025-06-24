@@ -753,7 +753,7 @@ public:
                         // angular coherence between the center direction and the reflected dir
                         // TODO: admit anisotropic coherence information
                         Coherence3f coh(m_coherence, 1.0f);
-                        Float angle_offset = dr::abs(dr::unit_angle(reflection_dir, center_dir));
+                        Float angle_offset = dr::abs(dr::unit_angle(reflection_dir, wo));
                         Float inv_det = dr::select(dr::isnan(coh.inv_coherence_det(k)), 0.0f, coh.inv_coherence_det(k));
                         Float angular_coh = dr::exp(-0.5f * angle_offset * inv_det * angle_offset);
                         angular_coh = dr::select(dr::isnan(angular_coh), 0.0f, angular_coh);
@@ -867,20 +867,30 @@ public:
 
                         // angular coherence between the center direction and the reflected dir
                         // TODO: admit anisotropic coherence information
-                        Coherence3f coh(m_coherence, 1.0f);
-                        Float angle_offset = dr::abs(dr::unit_angle(reflection_dir, center_dir));
-                        Float inv_det = dr::select(dr::isnan(coh.inv_coherence_det(k)), 0.0f, coh.inv_coherence_det(k));
-                        Float angular_coh = dr::exp(-0.5f * angle_offset * inv_det * angle_offset);
-                        angular_coh = dr::select(dr::isnan(angular_coh), 0.0f, angular_coh);
+                        if ( lx == 0 && ly == 0 ) {
+                            Float lobes_result = dr::select(
+                                lobe_active &
+                                    dr::abs(dr::unit_angle(center_dir, wo)) < a,
+                                lobe_intensity, 0.0);
 
-                        // std::cout << "angular_coh:" << angular_coh << std::endl;
+                            result[i] += lobes_result;
+                        }
+                        else {
+                            Coherence3f coh(m_coherence, 1.0f);
+                            Float angle_offset = dr::abs(dr::unit_angle(reflection_dir, wo));
+                            Float inv_det = dr::select(dr::isnan(coh.inv_coherence_det(k)), 0.0f, coh.inv_coherence_det(k));
+                            Float angular_coh = dr::exp(-0.5f * angle_offset * inv_det * angle_offset);
+                            angular_coh = dr::select(dr::isnan(angular_coh), 0.0f, angular_coh);
 
-                        Float lobes_result = dr::select(
-                            lobe_active &
-                                dr::abs(dr::unit_angle(center_dir, wo)) < a,
-                            lobe_intensity * angular_coh, 0.0);
+                            // std::cout << "angular_coh:" << angular_coh << std::endl;
 
-                        result[i] += lobes_result;
+                            Float lobes_result = dr::select(
+                                lobe_active &
+                                    dr::abs(dr::unit_angle(center_dir, wo)) < a,
+                                lobe_intensity * angular_coh, 0.0);
+
+                            result[i] += lobes_result;
+                        }
                     }
 
                     // // evaluate microfacet distribution considering the

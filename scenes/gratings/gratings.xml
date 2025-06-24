@@ -42,22 +42,25 @@
 			<!-- <string name="material" value="Au" /> -->
 			<string name="lobe_type" value="sinusoidal" />
 			<float name="height" value="0.04" />
-			<float name="inv_period" value="0.9" />
+			<float name="inv_period" value="0.6" />
 			<boolean name="radial" value="false" />
 			<integer name="lobes" value="7" />
 			<float name="grating_angle" value="0" />
 			<float name="multiplier" value="10" />
-			<float name="alpha" value="0.02"/>
-			<float name="coherence" value="3e-3" />
+			<float name="alpha" value="0.04"/>
+			<!-- The coherence value here represents Omega * k^2 -->
+			<float name="coherence" value="6e+5" />
 		</bsdf>
 	</bsdf>
 
 <!-- Emitters -->
-	<emitter type="directional" id="elm__7" name="elm__7">
+	<emitter type="directionalspot" id="elm__7" name="elm__7">
+	<!-- <emitter type="directional" id="elm__7" name="elm__7"> -->
 		<!-- <spectrum type="irregular" name="irradiance">
 			<string name="wavelengths" value="400, 460, 520, 580, 700"/>
 			<string name="values" value="20, 0, 0, 0, 20"/>
 		</spectrum> -->
+		<float name="spread_angle" value="0.003" />
 		<rgb name="irradiance" value="20, 20, 20" />
 		<transform name="to_world">
 			<matrix value="1.000000 0.000000 0.000000 0.000000 0.000000 0.707107 -0.707107 11.921600 0.000000 0.707107 0.707107 0.000000 0.000000 0.000000 0.000000 1.000000"/>

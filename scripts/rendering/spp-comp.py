@@ -99,8 +99,9 @@ def main(args):
     if args.verbose:
         scene_params = mi.traverse(scene)
         print(scene_params)
-
-    path_flips, path_rmses, path_render_times = perform_experiment(args, scene, "path")
+    if args.path_comp:
+        path_flips, path_rmses, path_render_times = perform_experiment(args, scene, "path")
+    
     plt_flips, plt_rmses, plt_render_times = perform_experiment(args, scene, "plt")
 
     # now plot both errors
@@ -109,9 +110,11 @@ def main(args):
     # plt.tight_layout()
     fig.subplots_adjust(wspace=0.4, hspace=0.5)
 
-    ax_flip.plot(args.spp, path_flips, label="Path traced")
-    ax_rmse.plot(args.spp, path_rmses, label="Path traced")
-    ax_time.plot(args.spp, path_render_times, label="Path traced")
+    if args.path_comp:
+        ax_flip.plot(args.spp, path_flips, label="Path traced")
+        ax_rmse.plot(args.spp, path_rmses, label="Path traced")
+        ax_time.plot(args.spp, path_render_times, label="Path traced")
+
     ax_flip.plot(args.spp, plt_flips, label="PLT")
     ax_rmse.plot(args.spp, plt_rmses, label="PLT")
     ax_time.plot(args.spp, plt_render_times, label="PLT")
@@ -147,6 +150,8 @@ if __name__ == '__main__':
     parser.add_argument("--outdir", "-o", type=str, help="The folder in which to store the results")
     parser.add_argument("--denoise", "-d", action="store_true", help="Whether to denoise the final result.")
     parser.add_argument("--reference", "-r", type=str, help="The reference image")
+    parser.add_argument("--path_comp", "-c", action="store_true", help="Whether to compare against path traced solution")
+    
     
     args = parser.parse_args()
 
