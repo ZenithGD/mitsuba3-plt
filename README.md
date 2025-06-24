@@ -1,5 +1,16 @@
 <!-- <img src="https://github.com/mitsuba-renderer/mitsuba3/raw/master/docs/images/logo_plain.png" width="120" height="120" alt="Mitsuba logo"> -->
 
+# Mitsuba PLT
+
+Physical Light Transport implemented into Mitsuba 3
+
+## Usage 
+
+- The rendering scripts are found inside `scripts\rendering`:
+  - Scenes can be rendered using the bundled script in `main-headless.py` using the `plt` integrator plugin. More information about the options can be found by using the `-h` option in the command line.
+  - The spectrograph experiment can be run with the script in `render-spectrograph.py`. More information about the options can be found by using the `-h` option in the command line.
+- Additional tests can also be found inside the `scripts` folder.
+
 <img src="https://raw.githubusercontent.com/mitsuba-renderer/mitsuba-data/master/docs/images/banners/banner_01.jpg"
 alt="Mitsuba banner">
 
