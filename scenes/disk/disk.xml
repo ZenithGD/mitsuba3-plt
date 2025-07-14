@@ -46,12 +46,13 @@
 			<!-- <string name="material" value="W" /> -->
 			<string name="lobe_type" value="sinusoidal" />
 			<float name="height" value="0.04" />
-			<float name="inv_period" value="0.8" />
+			<float name="inv_period_x" value="0.8" />
+			<float name="inv_period_y" value="0.8" />
 			<boolean name="radial" value="true" />
 			<integer name="lobes" value="7" />
 			<float name="grating_angle" value="0" />
 			<float name="multiplier" value="10" />
-			<float name="alpha" value="0.02"/>
+			<float name="alpha" value="0.01"/>
 		</bsdf>
 	</bsdf>
 	<bsdf type="twosided" id="default-bsdf" name="default-bsdf">

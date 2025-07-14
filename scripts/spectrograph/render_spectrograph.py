@@ -54,12 +54,15 @@ def render_scene(scene, samples):
 
 def save_spectrograph_output(folder_path, L, sp):
 
-    mi.util.write_bitmap(os.path.join(folder_path, f'result.exr'), L, write_async=True)
-    mi.util.write_bitmap(os.path.join(folder_path, f'result.png'), L, write_async=True)
+    img = np.repeat(sp[0], 5, 0)
+    mi.util.write_bitmap(os.path.join(folder_path, f'result.exr'), img, write_async=True)
+    mi.util.write_bitmap(os.path.join(folder_path, f'result.png'), img, write_async=True)
 
-    for i, si in enumerate(sp):
-        mi.util.write_bitmap(os.path.join(folder_path, f'result_s{i}.exr'), si, write_async=True)
-        mi.util.write_bitmap(os.path.join(folder_path, f'result_s{i}.png'), si, write_async=True)
+    # normalize and stack
+    L = (L - L.min()) / (L.max() - L.min())
+    L = np.vstack([L] * 5)
+
+    plt.imsave(os.path.join(folder_path, f'intensity.png'), L, cmap='hot', format='png')
 
 def eval_spectrum(wavelengths, spectrum):
     sp = mi.load_dict(spectrum)
@@ -88,14 +91,14 @@ def plot_spectra_comparison(wavelengths, recovered, original):
     plot_spectra(ax22, wavelengths, original - recovered, label="Difference", color="green")
     
     for ax in [ax11, ax12, ax21]:
-        ax.set_xlabel("wavelengths")
+        ax.set_xlabel("Wavelengths (nm)")
         ax.set_ylabel("intensity")
         ax.set_ylim(0, np.maximum(np.max(original), np.max(recovered)) * 1.1)
     
     for ax in [ax11, ax12, ax21, ax22]:
         ax.legend()
 
-    ax.set_xlabel("wavelengths")
+    ax.set_xlabel("Wavelengths (nm)")
     ax.set_ylabel("error")
     max_diff = np.max(np.abs(original-recovered))
     ax.set_ylim(-max_diff * 1.1, max_diff * 1.1)
@@ -145,10 +148,18 @@ def main(args):
     print(f"done. ({scene_build_time / 1e6} ms)")
 
     print("Simulating spectrograph capture... ", end="")
-    start = time.perf_counter_ns()
+   
+    if args.prior:
+        sp_prior = np.load(args.prior)
+    else: 
+        print("Rendering prior distribution... ")
+        start = time.perf_counter_ns()
+        L_prior, sp_prior, raw_prior = render_scene(mi.load_dict(prior_scene), 10000000)        
+        render_time = time.perf_counter_ns() - start
+        print(f"done. ({render_time / 1e6} ms)")
+        np.save("prior.npy", np.array(sp_prior))
 
-    
-    L_prior, sp_prior, raw_prior = render_scene(mi.load_dict(prior_scene), args.spp)
+    start = time.perf_counter_ns()
     L, sp, raw = render_scene(mi.load_dict(scene), args.spp)
     render_time = time.perf_counter_ns() - start
     print(f"done. ({render_time / 1e6} ms)")
@@ -159,7 +170,7 @@ def main(args):
     plot_spectra_comparison(np.ravel(measured_wls), intensity / prior_intensity, eval_spectrum(measured_wls, spectrum))
     print("RMSE:", np.sqrt(np.mean(np.square(intensity / prior_intensity - eval_spectrum(measured_wls, spectrum)))))
 
-    save_spectrograph_output(args.outdir, L, sp)
+    save_spectrograph_output(args.outdir, intensity / prior_intensity, sp)
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description="Wave-based scripted renderer.")
@@ -168,6 +179,7 @@ if __name__ == '__main__':
     parser.add_argument("--spectral", "-s", action="store_true", help="Whether to perform spectral rendering.")
     parser.add_argument("--verbose", "-v", action="store_true", help="Shows additional information during rendering (ONLY USE WHILE DEBUGGING!).")
     parser.add_argument("--spp", type=int, help="Samples per pixel", default=64)
+    parser.add_argument("--prior", type=str, help="The path to a stored prior")
 
     args = parser.parse_args()
 

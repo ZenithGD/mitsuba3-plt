@@ -65,9 +65,9 @@ def generate_scene_elements(folder_path, domain_wls, measured_wls, srfs, use_srf
         'inv_period_y' : 0.7,
         'radial' : False,
         'lobes' : 5,
-        'multiplier' : 10,
+        'multiplier' : 10.0,
         'grating_angle' : 0.0,
-        'alpha' : 0.02
+        'alpha' : 0.03
     }
 
     grtype = mi.DiffractionGratingType.Sinusoidal

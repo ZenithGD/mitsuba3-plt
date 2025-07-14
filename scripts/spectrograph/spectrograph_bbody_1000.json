@@ -1,0 +1,14 @@
+{
+    "wavelengths" : {
+        "min" : 400.0,
+        "max" : 700.0,
+        "measure_points" : 150,
+        "domain_points" : 150
+    },
+    "spectrum" : {
+        "type" : "blackbody",
+        "temperature" : 1000
+    },
+    "use_srfs" : true,
+    "use_prior" : true
+}

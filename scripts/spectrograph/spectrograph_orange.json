@@ -1,0 +1,14 @@
+{
+    "wavelengths" : {
+        "min" : 400.0,
+        "max" : 700.0,
+        "measure_points" : 150,
+        "domain_points" : 150
+    },
+    "spectrum" : {
+        "type" : "spectrum",
+        "filename": "scripts/spectrograph/data/materials/00009_Orange_Painted_Corridor_Walls_sce.spd"
+    },
+    "use_srfs" : true,
+    "use_prior" : true
+}

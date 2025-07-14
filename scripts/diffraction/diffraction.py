@@ -14,9 +14,12 @@ mi.set_variant("cuda_ad_rgb_polarized")
 
 nlobesx = 9
 nlobesy = 9
+diff_times = []
+int_times = []
 wi = sph_to_dir(dr.deg2rad(45), 0.0)
 
 def compute_metrics(periodx, periody, angle, h, wi, wl):
+    global diff_times, int_times
 
     grtype = mi.DiffractionGratingType.Sinusoidal
     grating = mi.DiffractionGrating3f(
@@ -38,7 +41,6 @@ def compute_metrics(periodx, periody, angle, h, wi, wl):
     lobes_yv = lobes_yv.ravel()
     
     lobevec = mi.Vector2i(dr.cuda.Int(lobes_xv), dr.cuda.Int(lobes_yv))
-    print(lobes_xv, lobes_yv)
         
     start = time.perf_counter_ns()
     ddiff, active = grating.diffract(
@@ -48,7 +50,6 @@ def compute_metrics(periodx, periody, angle, h, wi, wl):
     
     ddiff[~active] = mi.Vector3f(0.0)
 
-    print(np.array(ddiff))
     # print(np.array(lobevec))
     # ddiff = diffract_manual(wi, lobevec, wl, mi.Vector2f(periodx, periody))
     secs = time.perf_counter_ns() - start
@@ -62,20 +63,21 @@ def compute_metrics(periodx, periody, angle, h, wi, wl):
     intensity_timer += secs
 
     ldirs = np.array(ddiff * intensity).T
-
-    print(ldirs)
     intensities = np.array(intensity).reshape(nlobesx, nlobesy)
 
-    print(f"avg time diffract = {diffr_timer*1e-3/(nlobesx * nlobesy):.5f} us.")
-    print(f"avg time intensity = {intensity_timer*1e-3/(nlobesx * nlobesy):.5f} us.")
+    t_diff = diffr_timer*1e-3/(nlobesx * nlobesy)
+    t_int = intensity_timer*1e-3/(nlobesx * nlobesy)
+    print(f"avg time diffract = {t_diff:.5f} us.")
+    print(f"avg time intensity = {t_int:.5f} us.")
 
+    diff_times.append(t_diff)
+    int_times.append(t_int)
     return ldirs, intensities
 
 def plot_metrics(ax1, ax2, ldirs, intensities):
     ax1.set_title("Diffraction lobes (scaled)")
     ax2.set_title("Diffraction intensities")
 
-    print(ldirs.shape)
     visualize_grating_3d(wi, ldirs, ax=ax1)
 
     visualize_lobe_intensity(intensities, ax=ax2, normalize=True)
@@ -226,4 +228,6 @@ wl_slider.on_changed(update_wl)
 
 plt.show()
 
-print("done.")
+print("done. ")
+print(f"diff time: {np.mean(diff_times)} +- {np.std(diff_times)} us")
+print(f"int time: {np.mean(int_times)} +- {np.std(int_times)} us")
