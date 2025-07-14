@@ -109,14 +109,14 @@ def main(args):
                             cv2.VideoWriter_fourcc(*'MJPG'),
                             10, scene_params["elm__1.film.size"])
 
-    frames = 60
+    frames = 90
     initial_pos = mi.Transform4f(scene_params["elm__1.to_world"])
     move_vector = mi.Point3f(-2.7, 0, 2.1)
     max_rotation = -90
     for i in tqdm(range(frames)):
         # modify scene params
-        t = i / 60.0
-        easing = mi.Float(np.sin(2.0 * np.pi * t - np.pi / 2.0) / 2.0 + 0.5)
+        t = i / frames
+        easing = mi.Float(np.sin(np.pi * t - np.pi / 2.0) / 2.0 + 0.5)
         scene_params["elm__1.to_world"] = mi.Transform4f() \
             .rotate(axis=[0, 1, 0], angle=max_rotation * easing) \
             .translate(easing * move_vector) \
@@ -129,8 +129,6 @@ def main(args):
 
         # write one frame
         mi.util.write_bitmap(os.path.join(folder_path, f'frame{i}.png'), sp[0], write_async=True)
-
-        result.write(sp[0])
 
     cv2.destroyAllWindows()
     video_result.release()
