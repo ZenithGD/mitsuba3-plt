@@ -46,7 +46,8 @@
 			<!-- <string name="material" value="W" /> -->
 			<string name="lobe_type" value="sinusoidal" />
 			<float name="height" value="0.04" />
-			<float name="inv_period" value="0.8" />
+			<float name="inv_period" value="0.8
+			" />
 			<boolean name="radial" value="true" />
 			<integer name="lobes" value="7" />
 			<float name="grating_angle" value="0" />
